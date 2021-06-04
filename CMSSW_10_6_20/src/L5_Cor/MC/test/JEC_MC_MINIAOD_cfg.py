@@ -58,8 +58,7 @@ process.load("PhysicsTools.PatAlgos.selectionLayer1.selectedPatCandidates_cff")
 
 from RecoJets.Configuration.GenJetParticles_cff import *
 
-process.GlobalTag.globaltag = "106X_upgrade2018_realistic_v15_L1v1"
-#process.GlobalTag.globaltag = "102X_upgrade2018_realistic_v20"
+process.GlobalTag.globaltag = "102X_upgrade2018_realistic_v21"
 #process.GlobalTag.globaltag = "102X_upgrade2018_realistic_v15"
 #RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/
 #from Configuration.AlCa.GlobalTag import GlobalTag
@@ -76,16 +75,16 @@ process.load("PhysicsTools.PatAlgos.patSequences_cff")
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 inFiles = cms.untracked.vstring(
+'root://cms-xrd-global.cern.ch//store/mc/RunIIAutumn18MiniAOD/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/110000/079C3FC4-8835-394B-8E54-1C67DFAE7E8D.root'
 #'root://cmsxrootd.fnal.gov//store/mc/RunIIAutumn18MiniAOD/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext3-v2/00000/7D55475A-931D-1F47-8BF9-905DD6DC15B8.root'
 #'root://cmsxrootd.fnal.gov//store/mc/RunIIAutumn18MiniAOD/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15_ext2-v2/50000/FE475AA9-6572-E548-BF9B-A6DCD6B9BBA1.root'
 #'root://cmsxrootd.fnal.gov//store/mc/RunIIAutumn18MiniAOD/TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/280000/97265F3B-9BED-0742-829D-F4C2920C28F4.root'
 #'root://cmsxrootd.fnal.gov//store/mc/RunIIAutumn18MiniAOD/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/120000/B39F6C1A-06EA-484D-A076-3C7C0794239F.root'
 #'root://cmsxrootd.fnal.gov//store/mc/RunIIAutumn18MiniAOD/QCD_bEnriched_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/10000/C6B0BA02-7244-7B4A-83C1-E9D9397A0A7C.root'
 #'root://cmsxrootd.fnal.gov//store/mc/RunIIAutumn18MiniAOD/QCD_bEnriched_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v2/20000/105691C7-8434-2940-88D2-7369139692CB.root'   
- 'root://cmsxrootd.fnal.gov//store/mc/RunIISummer19UL18MiniAOD/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/260000/0112B4DB-39FA-4645-A39D-912087A8C335.root'
    )
 
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(2000))
 #process.firstEvent = cms.untracked.PSet(input = cms.untracked.int32(5000))
 process.source = cms.Source("PoolSource", fileNames = inFiles )
 
@@ -177,6 +176,8 @@ process.mcjets =  cms.EDAnalyzer('Leptop',
 
 	 Data =  cms.untracked.bool(False),
 	 MonteCarlo =  cms.untracked.bool(True),
+         YEAR = cms.untracked.int32(2018),
+         UltraLegacy =  cms.untracked.bool(False),                        
 	 isReco = cms.untracked.bool(True),
  	 ReRECO = cms.untracked.bool(True),
 	 SoftDrop_ON =  cms.untracked.bool(True),
@@ -197,7 +198,7 @@ process.mcjets =  cms.EDAnalyzer('Leptop',
 	 minPt = cms.untracked.double(15.),
 	 maxEta = cms.untracked.double(3.),
          maxGenEta = cms.untracked.double(5.),
-	 AK8PtCut = cms.untracked.double(300.),
+	 AK8PtCut = cms.untracked.double(200.),
 	 nkTsub = cms.untracked.int32(2),
 
 	Beamspot = cms.InputTag("offlineBeamSpot"),
@@ -248,25 +249,25 @@ process.mcjets =  cms.EDAnalyzer('Leptop',
 
    	 HistFill = cms.untracked.bool(True),
 
-	 jecL1FastFileAK4          = cms.string('Summer19UL18_V5_MC/Summer19UL18_V5_MC_L1FastJet_AK4PFchs.txt'),
-         jecL1FastFileAK8          = cms.string('Summer19UL18_V5_MC/Summer19UL18_V5_MC_L1FastJet_AK8PFPuppi.txt'),
-         jecL2RelativeFileAK4      = cms.string('Summer19UL18_V5_MC/Summer19UL18_V5_MC_L2Relative_AK4PFchs.txt'),
-         jecL2RelativeFileAK8      = cms.string('Summer19UL18_V5_MC/Summer19UL18_V5_MC_L2Relative_AK8PFPuppi.txt'),
-         jecL3AbsoluteFileAK4      = cms.string('Summer19UL18_V5_MC/Summer19UL18_V5_MC_L3Absolute_AK4PFchs.txt'),
-         jecL3AbsoluteFileAK8      = cms.string('Summer19UL18_V5_MC/Summer19UL18_V5_MC_L3Absolute_AK8PFPuppi.txt'),
-         jecL2L3ResidualFileAK4    = cms.string('Summer19UL18_V5_MC/Summer19UL18_V5_MC_L2L3Residual_AK4PFchs.txt'),
-         jecL2L3ResidualFileAK8    = cms.string('Summer19UL18_V5_MC/Summer19UL18_V5_MC_L2L3Residual_AK8PFPuppi.txt'),
+	 jecL1FastFileAK4          = cms.string('Autumn18_V19_MC/Autumn18_V19_MC_L1FastJet_AK4PFchs.txt'),
+         jecL1FastFileAK8          = cms.string('Autumn18_V19_MC/Autumn18_V19_MC_L1FastJet_AK8PFPuppi.txt'),
+         jecL2RelativeFileAK4      = cms.string('Autumn18_V19_MC/Autumn18_V19_MC_L2Relative_AK4PFchs.txt'),
+         jecL2RelativeFileAK8      = cms.string('Autumn18_V19_MC/Autumn18_V19_MC_L2Relative_AK8PFPuppi.txt'),
+         jecL3AbsoluteFileAK4      = cms.string('Autumn18_V19_MC/Autumn18_V19_MC_L3Absolute_AK4PFchs.txt'),
+         jecL3AbsoluteFileAK8      = cms.string('Autumn18_V19_MC/Autumn18_V19_MC_L3Absolute_AK8PFPuppi.txt'),
+         jecL2L3ResidualFileAK4    = cms.string('Autumn18_V19_MC/Autumn18_V19_MC_L2L3Residual_AK4PFchs.txt'),
+         jecL2L3ResidualFileAK8    = cms.string('Autumn18_V19_MC/Autumn18_V19_MC_L2L3Residual_AK8PFPuppi.txt'),
 
-	 PtResoFileAK4  = cms.string('Summer19UL18_JRV2_MC_PtResolution_AK4PFchs.txt'),
-         PtResoFileAK8  = cms.string('Summer19UL18_JRV2_MC_PtResolution_AK8PFPuppi.txt'),
-         PtSFFileAK4 = cms.string('Summer19UL18_JRV2_MC_SF_AK4PFchs.txt'),
-         PtSFFileAK8 = cms.string('Summer19UL18_JRV2_MC_SF_AK8PFPuppi.txt'),
+	 PtResoFileAK4  = cms.string('Autumn18_V7b_MC_PtResolution_AK4PFchs.txt'),
+         PtResoFileAK8  = cms.string('Autumn18_V7b_MC_PtResolution_AK8PFPuppi.txt'),
+         PtSFFileAK4 = cms.string('Autumn18_V7b_MC_SF_AK4PFchs.txt'),
+         PtSFFileAK8 = cms.string('Autumn18_V7b_MC_SF_AK8PFPuppi.txt'),
 
 	 HBHENoiseFilterResultLabel = cms.InputTag("HBHENoiseFilterResultProducer", "HBHENoiseFilterResult"),
          HBHENoiseFilterResultNoMinZLabel = cms.InputTag("HBHENoiseFilterResultProducerNoMinZ", "HBHENoiseFilterResult"),
 
-	 JECUncFileAK4 = cms.string("Summer19UL18_V5_MC/Summer19UL18_V5_MC_UncertaintySources_AK4PFchs.txt"),
-	 JECUncFileAK8 = cms.string("Summer19UL18_V5_MC/Summer19UL18_V5_MC_UncertaintySources_AK8PFPuppi.txt"),
+	 JECUncFileAK4 = cms.string("Autumn18_V19_MC/Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt"),
+	 JECUncFileAK8 = cms.string("Autumn18_V19_MC/Autumn18_V19_MC_UncertaintySources_AK8PFPuppi.txt"),
 
 	 bits = cms.InputTag("TriggerResults","","HLT"),
          prescales = cms.InputTag("patTrigger","","RECO"),
@@ -301,7 +302,6 @@ process.goodVertices = cms.EDFilter("VertexSelector",
 )
 process.load('RecoMET.METFilters.primaryVertexFilter_cfi')
 process.primaryVertexFilter.vertexCollection = cms.InputTag("offlineSlimmedPrimaryVertices")
-#process.primaryVertexFilter.vertexCollection = cms.InputTag("offlinePrimaryVertices")
 process.load('RecoMET.METFilters.globalTightHalo2016Filter_cfi')
 process.load('RecoMET.METFilters.globalSuperTightHalo2016Filter_cfi')
 process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
@@ -312,7 +312,7 @@ process.load('RecoMET.METFilters.EcalDeadCellTriggerPrimitiveFilter_cfi')
 process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
 process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
 process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
-process.BadPFMuonFilter.vtx = cms.InputTag("offlineSlimmedPrimaryVertices") 
+process.BadPFMuonFilter.vtx = cms.InputTag("offlineSlimmedPrimaryVertices")
 process.BadPFMuonFilter.taggingMode = cms.bool(True)
 
 process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
