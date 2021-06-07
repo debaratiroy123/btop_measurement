@@ -267,8 +267,8 @@ TLorentzVector productX(TLorentzVector X, TLorentzVector Y, float pro1, float pr
 
 struct JetIDVars
 {
-float NHF, NEMF, MUF, CHF, CEMF;
-int NumConst, NumNeutralParticle, CHM;
+  float NHF, NEMF, MUF, CHF, CEMF;
+  int NumConst, NumNeutralParticle, CHM;
 };
 
 bool getJetID(JetIDVars vars, string jettype="CHS", int year=2018, double eta=0, bool tightLepVeto=true, bool UltraLegacy=false){
@@ -280,89 +280,89 @@ bool getJetID(JetIDVars vars, string jettype="CHS", int year=2018, double eta=0,
     return false;
   }
   
- float NHF, NEMF, MUF, CHF, CEMF;
- int NumConst, NumNeutralParticle, CHM;
- 
- NHF = vars.NHF; 
- NEMF = vars.NEMF;
- MUF = vars.MUF;
- CHF = vars.CHF;
- CEMF = vars.CEMF;
- NumConst = vars.NumConst;
- NumNeutralParticle = vars.NumNeutralParticle;
- CHM = vars.CHM;
- 
- bool JetID = false;
- 
-if(!UltraLegacy){
-
-	if(year==2018 && jettype=="CHS"){
-	  
-	  JetID = ( (fabs(eta)<=2.6 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.6 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.6 && fabs(eta)<=2.7 && CEMF<0.8 && CHM>0 && NEMF<0.99 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.6 && fabs(eta)<=2.7 && CHM>0 && NEMF<0.99 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.7 && fabs(eta)<=3.0 && NEMF>0.02 && NEMF<0.99 && NumNeutralParticle>2) || (fabs(eta)>3.0 && NEMF<0.90 && NHF>0.2 && NumNeutralParticle>10));
-	}
-
-	if(year==2018 && jettype=="PUPPI"){
-	  
-	  JetID = ( (fabs(eta)<=2.6 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.6 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.6 && fabs(eta)<=2.7 && CEMF<0.8 && NEMF<0.99 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.6 && fabs(eta)<=2.7 && NEMF<0.99 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)<=3.0 && NHF<0.99) || (fabs(eta)>3.0 && NEMF<0.90 && NHF>0.02 && NumNeutralParticle>2 && NumNeutralParticle<15));
-	}
-	
-	if(year==2017 && jettype=="CHS"){
-	
-	  JetID = ( (fabs(eta)<=2.4 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.4 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 &&  NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 &&  NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.7 && fabs(eta)<=3.0 && NEMF>0.02 && NEMF<0.99 && NumNeutralParticle>2) || (fabs(eta)>3.0 && NEMF<0.90 && NHF>0.02 && NumNeutralParticle>10));
-	}
-
-	if(year==2017 && jettype=="PUPPI"){
-	
-	JetID = ( (fabs(eta)<=2.4 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.4 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) ||
- (fabs(eta)>2.4 && fabs(eta)<=2.7 &&  NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 &&  NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.7 && fabs(eta)<=3.0 && NHF<0.99) || (fabs(eta)>3.0 && NEMF<0.90 && NHF>0.02 && NumNeutralParticle>2 && NumNeutralParticle<15));
-	}
-
-	if(year==2016 && jettype=="CHS"){
-	
-	JetID = ( (fabs(eta)<=2.4 && CEMF<0.90 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.4 && CEMF<0.99 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9  && !tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.7 && fabs(eta)<=3.0 && NEMF>0.01 && NHF<0.98 && NumNeutralParticle>2) || (fabs(eta)>3.0 && NEMF<0.90 && NumNeutralParticle>10));
-	}
-
-	if(year==2016 && jettype=="PUPPI"){
-	
-	JetID = ( (fabs(eta)<=2.4 && CEMF<0.9 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.4 && CEMF<0.99 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ));
-	if(fabs(eta)>2.7) { JetID = false; }
-	}
- }
- 
-else {
+  float NHF, NEMF, MUF, CHF, CEMF;
+  int NumConst, NumNeutralParticle, CHM;
   
-  if(year==2017||year==2018){
+  NHF = vars.NHF; 
+  NEMF = vars.NEMF;
+  MUF = vars.MUF;
+  CHF = vars.CHF;
+  CEMF = vars.CEMF;
+  NumConst = vars.NumConst;
+  NumNeutralParticle = vars.NumNeutralParticle;
+  CHM = vars.CHM;
+  
+  bool JetID = false;
+  
+  if(!UltraLegacy){
     
-    if(jettype=="CHS"){
+    if(year==2018 && jettype=="CHS"){
       
-		JetID = ( fabs(eta)<=2.6 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || ( fabs(eta)<=2.6 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || ( fabs(eta)>2.6 && fabs(eta)<=2.7 && CEMF<0.8 && CHM>0 && NEMF<0.99 && MUF <0.8 && NHF < 0.9 ) || ( fabs(eta)>2.6 && fabs(eta)<=2.7 && CHM>0 && NEMF<0.99 && NHF < 0.9 ) || ( fabs(eta)>2.7 && fabs(eta)<=3.0 && NEMF>0.01 && NEMF<0.99 && NumNeutralParticle>1 ) || ( fabs(eta)>3.0 && NEMF<0.90 && NHF>0.2 && NumNeutralParticle>10) ;
+      JetID = ( (fabs(eta)<=2.6 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.6 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.6 && fabs(eta)<=2.7 && CEMF<0.8 && CHM>0 && NEMF<0.99 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.6 && fabs(eta)<=2.7 && CHM>0 && NEMF<0.99 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.7 && fabs(eta)<=3.0 && NEMF>0.02 && NEMF<0.99 && NumNeutralParticle>2) || (fabs(eta)>3.0 && NEMF<0.90 && NHF>0.2 && NumNeutralParticle>10));
     }
     
-    if(jettype=="PUPPI"){
-		  
-		JetID =  ( fabs(eta)<=2.6 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || ( fabs(eta)<=2.6 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || ( fabs(eta)>2.6 && fabs(eta)<=2.7 && CEMF<0.8 && NEMF<0.99 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || ( fabs(eta)>2.6 && fabs(eta)<=2.7 && NEMF<0.99 && NHF < 0.9 && !tightLepVeto ) || ( fabs(eta)>2.7 && fabs(eta)<=3.0 && NHF<0.9999 ) ||( fabs(eta)>3.0 && NEMF<0.90 && NumNeutralParticle>2 ) ;
+    if(year==2018 && jettype=="PUPPI"){
+      
+      JetID = ( (fabs(eta)<=2.6 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.6 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.6 && fabs(eta)<=2.7 && CEMF<0.8 && NEMF<0.99 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.6 && fabs(eta)<=2.7 && NEMF<0.99 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)<=3.0 && NHF<0.99) || (fabs(eta)>3.0 && NEMF<0.90 && NHF>0.02 && NumNeutralParticle>2 && NumNeutralParticle<15));
     }
-    // there is a inconsistency between table & lines in https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVUL
-    // table is chosen as it is consistent with the slides https://indico.cern.ch/event/937597/contributions/3940302/attachments/2073315/3481068/ULJetID_UL17_UL18_AK4PUPPI.pdf 
+    
+    if(year==2017 && jettype=="CHS"){
+      
+      JetID = ( (fabs(eta)<=2.4 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.4 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 &&  NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 &&  NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.7 && fabs(eta)<=3.0 && NEMF>0.02 && NEMF<0.99 && NumNeutralParticle>2) || (fabs(eta)>3.0 && NEMF<0.90 && NHF>0.02 && NumNeutralParticle>10));
+    }
+    
+    if(year==2017 && jettype=="PUPPI"){
+      
+      JetID = ( (fabs(eta)<=2.4 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.4 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) ||
+ (fabs(eta)>2.4 && fabs(eta)<=2.7 &&  NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 &&  NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.7 && fabs(eta)<=3.0 && NHF<0.99) || (fabs(eta)>3.0 && NEMF<0.90 && NHF>0.02 && NumNeutralParticle>2 && NumNeutralParticle<15));
+    }
+
+    if(year==2016 && jettype=="CHS"){
+      
+      JetID = ( (fabs(eta)<=2.4 && CEMF<0.90 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.4 && CEMF<0.99 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9  && !tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.7 && fabs(eta)<=3.0 && NEMF>0.01 && NHF<0.98 && NumNeutralParticle>2) || (fabs(eta)>3.0 && NEMF<0.90 && NumNeutralParticle>10));
+	}
+    
+    if(year==2016 && jettype=="PUPPI"){
+      
+      JetID = ( (fabs(eta)<=2.4 && CEMF<0.9 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)<=2.4 && CEMF<0.99 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || (fabs(eta)>2.4 && fabs(eta)<=2.7 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ));
+      if(fabs(eta)>2.7) { JetID = false; }
+	}
   }
-	
-  if(year==2016){
+  
+  else {
     
-    if(jettype=="CHS"){
+    if(year==2017||year==2018){
       
-      JetID =  ( fabs(eta)<=2.4 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || ( fabs(eta)<=2.4 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || ( fabs(eta)>2.4 && fabs(eta)<=2.7 && NEMF<0.99 && NHF < 0.9 ) || ( fabs(eta)>2.7 && fabs(eta)<=3.0 && NEMF>0.0 && NEMF<0.99 && NHF<0.9 && NumNeutralParticle>1 ) || ( fabs(eta)>3.0 && NEMF<0.90 && NHF>0.2 && NumNeutralParticle>10) ;
-				  
+      if(jettype=="CHS"){
+	
+	JetID = ( fabs(eta)<=2.6 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || ( fabs(eta)<=2.6 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || ( fabs(eta)>2.6 && fabs(eta)<=2.7 && CEMF<0.8 && CHM>0 && NEMF<0.99 && MUF <0.8 && NHF < 0.9 ) || ( fabs(eta)>2.6 && fabs(eta)<=2.7 && CHM>0 && NEMF<0.99 && NHF < 0.9 ) || ( fabs(eta)>2.7 && fabs(eta)<=3.0 && NEMF>0.01 && NEMF<0.99 && NumNeutralParticle>1 ) || ( fabs(eta)>3.0 && NEMF<0.90 && NHF>0.2 && NumNeutralParticle>10) ;
+      }
+      
+      if(jettype=="PUPPI"){
+	
+	JetID =  ( fabs(eta)<=2.6 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || ( fabs(eta)<=2.6 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || ( fabs(eta)>2.6 && fabs(eta)<=2.7 && CEMF<0.8 && NEMF<0.99 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || ( fabs(eta)>2.6 && fabs(eta)<=2.7 && NEMF<0.99 && NHF < 0.9 && !tightLepVeto ) || ( fabs(eta)>2.7 && fabs(eta)<=3.0 && NHF<0.9999 ) ||( fabs(eta)>3.0 && NEMF<0.90 && NumNeutralParticle>2 ) ;
+      }
+      // there is a inconsistency between table & lines in https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVUL
+      // table is chosen as it is consistent with the slides https://indico.cern.ch/event/937597/contributions/3940302/attachments/2073315/3481068/ULJetID_UL17_UL18_AK4PUPPI.pdf 
     }
-
-   if(jettype=="PUPPI"){
-		
-     JetID = ( fabs(eta)<=2.4 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || ( fabs(eta)<=2.4 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || ( fabs(eta)>2.4 && fabs(eta)<=2.7 && NEMF<0.99 && NHF < 0.98 ) || ( fabs(eta)>2.7 && fabs(eta)<=3.0 && NumNeutralParticle>=1 ) || ( fabs(eta)>3.0 && NEMF<0.90 && NumNeutralParticle>2  ) ;
-   }
-  }	
- }
-
- return JetID;
-
+    
+    if(year==2016){
+      
+      if(jettype=="CHS"){
+	
+	JetID =  ( fabs(eta)<=2.4 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || ( fabs(eta)<=2.4 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || ( fabs(eta)>2.4 && fabs(eta)<=2.7 && NEMF<0.99 && NHF < 0.9 ) || ( fabs(eta)>2.7 && fabs(eta)<=3.0 && NEMF>0.0 && NEMF<0.99 && NHF<0.9 && NumNeutralParticle>1 ) || ( fabs(eta)>3.0 && NEMF<0.90 && NHF>0.2 && NumNeutralParticle>10) ;
+	
+      }
+      
+      if(jettype=="PUPPI"){
+	
+	JetID = ( fabs(eta)<=2.4 && CEMF<0.8 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && MUF <0.8 && NHF < 0.9 && tightLepVeto ) || ( fabs(eta)<=2.4 && CHM>0 && CHF>0 && NumConst>1 && NEMF<0.9 && NHF < 0.9 && !tightLepVeto ) || ( fabs(eta)>2.4 && fabs(eta)<=2.7 && NEMF<0.99 && NHF < 0.98 ) || ( fabs(eta)>2.7 && fabs(eta)<=3.0 && NumNeutralParticle>=1 ) || ( fabs(eta)>3.0 && NEMF<0.90 && NumNeutralParticle>2  ) ;
+      }
+    }	
+  }
+  
+  return JetID;
+  
 }
 
 //class declaration
@@ -409,6 +409,7 @@ private:
   std::string CCtagger;
   std::string btag_CMVA_name;
   std::string btag_CSV_name;
+  
   int iTag;
   int iTagMET;
   double jtptthr;
@@ -451,7 +452,7 @@ private:
   edm::EDGetTokenT<edm::View<pat::Electron>> tok_electrons_;
   edm::EDGetTokenT<edm::View<pat::Photon>>tok_photons_;
   edm::EDGetTokenT<std::vector<PileupSummaryInfo> > pileup_;
-
+  
   edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
   edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> triggerObjects_;
   edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
@@ -495,17 +496,17 @@ private:
   float pfjetAK8sub2pt[njetmxAK8], pfjetAK8sub2eta[njetmxAK8], pfjetAK8sub2phi[njetmxAK8], pfjetAK8sub2mass[njetmxAK8], pfjetAK8sub2btag[njetmxAK8];
   float pfjetAK8sub2hadfrac[njetmxAK8], pfjetAK8sub2chhadfrac[njetmxAK8], pfjetAK8sub2neuhadfrac[njetmxAK8], pfjetAK8sub2emfrac[njetmxAK8], pfjetAK8sub2neuemfrac[njetmxAK8], pfjetAK8sub2phofrac[njetmxAK8], pfjetAK8sub2mufrac[njetmxAK8];
   
-  float pfjetAK8muinpt[njetmxAK8], pfjetAK8muineta[njetmxAK8], pfjetAK8muinphi[njetmxAK8], pfjetAK8muine[njetmxAK8];
+  float pfjetAK8muinpt[njetmxAK8], pfjetAK8muineta[njetmxAK8], pfjetAK8muinphi[njetmxAK8], pfjetAK8muinmass[njetmxAK8];
   
-  float pfjetAK8elinpt[njetmxAK8], pfjetAK8elineta[njetmxAK8], pfjetAK8elinphi[njetmxAK8], pfjetAK8eline[njetmxAK8];
+  float pfjetAK8elinpt[njetmxAK8], pfjetAK8elineta[njetmxAK8], pfjetAK8elinphi[njetmxAK8], pfjetAK8elinmass[njetmxAK8];
   
-  float pfjetAK8muinsubpt[njetmxAK8], pfjetAK8muinsubeta[njetmxAK8], pfjetAK8muinsubphi[njetmxAK8], pfjetAK8muinsube[njetmxAK8], pfjetAK8muinsubmass[njetmxAK8];
-  float pfjetAK8muinsubjpt[njetmxAK8], pfjetAK8muinsubjeta[njetmxAK8], pfjetAK8muinsubjphi[njetmxAK8], pfjetAK8muinsubje[njetmxAK8], pfjetAK8muinsubjmass[njetmxAK8];
+  float pfjetAK8muinsubpt[njetmxAK8], pfjetAK8muinsubeta[njetmxAK8], pfjetAK8muinsubphi[njetmxAK8], pfjetAK8muinsubmass[njetmxAK8];
+  float pfjetAK8muinsubjpt[njetmxAK8], pfjetAK8muinsubjeta[njetmxAK8], pfjetAK8muinsubjphi[njetmxAK8], pfjetAK8muinsubjmass[njetmxAK8];
   
   float pfjetAK8muinsubIfar[njetmxAK8], pfjetAK8muinsubI0[njetmxAK8], pfjetAK8muinsubInear[njetmxAK8];
   
-  float pfjetAK8elinsubpt[njetmxAK8], pfjetAK8elinsubeta[njetmxAK8], pfjetAK8elinsubphi[njetmxAK8], pfjetAK8elinsube[njetmxAK8], pfjetAK8elinsubmass[njetmxAK8];
-  float pfjetAK8elinsubjpt[njetmxAK8], pfjetAK8elinsubjeta[njetmxAK8], pfjetAK8elinsubjphi[njetmxAK8], pfjetAK8elinsubje[njetmxAK8], pfjetAK8elinsubjmass[njetmxAK8];
+  float pfjetAK8elinsubpt[njetmxAK8], pfjetAK8elinsubeta[njetmxAK8], pfjetAK8elinsubphi[njetmxAK8], pfjetAK8elinsubmass[njetmxAK8];
+  float pfjetAK8elinsubjpt[njetmxAK8], pfjetAK8elinsubjeta[njetmxAK8], pfjetAK8elinsubjphi[njetmxAK8], pfjetAK8elinsubjmass[njetmxAK8];
   
   float pfjetAK8elinsubIfar[njetmxAK8], pfjetAK8elinsubI0[njetmxAK8], pfjetAK8elinsubInear[njetmxAK8];
   
@@ -524,11 +525,11 @@ private:
   float pfjetAK4btag_CMVA[njetmx], pfjetAK4btag_CSV[njetmx], pfjetAK4btag_DeepCSV[njetmx], pfjetAK4btag_DeepCSV2[njetmx], pfjetAK4btag_DeepFlav[njetmx], pfjetAK4btag_DeepQCD[njetmx];
   float pfjetAK4CHF[njetmx], pfjetAK4NHF[njetmx], pfjetAK4MUF[njetmx], pfjetAK4PHF[njetmx], pfjetAK4CEMF[njetmx], pfjetAK4NEMF[njetmx], pfjetAK4EEF[njetmx], pfjetAK4HFHF[njetmx], pfjetAK4HFEMF[njetmx], pfjetAK4HOF[njetmx];
   int pfjetAK4CHM[njetmx], pfjetAK4NHM[njetmx], pfjetAK4MUM[njetmx], pfjetAK4PHM[njetmx], pfjetAK4Neucons[njetmx], pfjetAK4Chcons[njetmx], pfjetAK4EEM[njetmx], pfjetAK4HFHM[njetmx], pfjetAK4HFEMM[njetmx];
-
+  
   float pfjetAK4chrad[njetmx], pfjetAK4pTD[njetmx], pfjetAK4sdmass[njetmx];
 
   bool pfjetAK4jetID[njetmx], pfjetAK4jetID_tightlepveto[njetmx];
-
+  
   float pfjetAK4reso[njetmx], pfjetAK4resoup[njetmx], pfjetAK4resodn[njetmx];
   
   float pfjetAK4JEC[njetmx], pfjetAK4JECL1[njetmx], pfjetAK4JECL2[njetmx], pfjetAK4JECL3[njetmx], pfjetAK4JECL2L3[njetmx];
@@ -566,7 +567,7 @@ private:
   
   float muonposmatch[njetmx], muontrkink[njetmx], muonsegcom[njetmx], muonpfiso[njetmx], muontrkvtx[njetmx], muonhit[njetmx], muonpixhit[njetmx], muonmst[njetmx], muontrklay[njetmx], muonvalfrac[njetmx],mudxy_sv[njetmx];
   int muonndf[njetmx];
-    
+  
   bool muonisPF[njetmx], muonisGL[njetmx], muonisTRK[njetmx];
   bool muonisGoodGL[njetmx], muonisTight[njetmx], muonisHighPt[njetmx], muonisHighPttrk[njetmx], muonisMed[njetmx], muonisMedPr[njetmx], muonisLoose[njetmx];
   
@@ -606,7 +607,7 @@ private:
     bool phomvaid[njetmx];
     float phoe[njetmx], phoeta[njetmx], phophi[njetmx], phoe1by9[njetmx], phoe9by25[njetmx], phohadbyem[njetmx], photrkiso[njetmx], phoemiso[njetmx], phohadiso[njetmx], phochhadiso[njetmx], phoneuhadiso[njetmx], phoPUiso[njetmx], phophoiso[njetmx], phoietaieta[njetmx];
   */
-
+  
   int ntrigobjs;
   float trigobjpt[njetmx], trigobjeta[njetmx],trigobjphi[njetmx], trigobje[njetmx];
   bool trigobjHLT[njetmx], trigobjL1[njetmx],  trigobjBoth[njetmx];
@@ -618,10 +619,10 @@ private:
   float wtfact , weight2 = 1.0;
   int npu_vert;
   
-  int nchict;
-  int nvert;;
-  int ndofct;
-
+  //int nchict;
+  //int nvert;;
+  //int ndofct;
+  
   /*********initially with all triggers********/
   /*
     static const int nHLTmx = 17;
@@ -629,13 +630,13 @@ private:
   */  
   static const int nHLTmx = 12;
   const char *hlt_name[nHLTmx] = {"HLT_IsoMu24_v","HLT_Mu50_v","HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v","HLT_Ele115_CaloIdVT_GsfTrkIdT_v", "HLT_AK8PFJet500_v", "HLT_Photon200_v", "HLT_Mu37_Ele27_CaloIdL_MW_v", "HLT_Mu27_Ele37_CaloIdL_MW_v", "HLT_Mu37_TkMu27_v", "HLT_OldMu100", "HLT_TkMu100_v", "HLT_DoubleEle25_CaloIdL_MW_v"};
-
+  
   //HLT_AK8PFJet360_TrimMass30_v = > can be added 
   //HLT_Ele20_WPLoose_Gsf_v : this was there till 19th Jan, 2020 as 6th element 
-
+  
   float prescale_IsoMu24, prescale_Mu50, prescale_Ele50_PFJet165, prescale_Ele115, prescale_AK8PFJet500, prescale_Photon200, prescale_Mu37Ele27, prescale_Mu27Ele37, prescale_Mu37TkMu27, prescale_OldMu100, prescale_TkMu100, prescale_DoubleEle25;  
   bool hlt_IsoMu24, hlt_Mu50, hlt_Ele50_PFJet165, hlt_Ele115, hlt_AK8PFJet500, hlt_Photon200, hlt_Mu37Ele27, hlt_Mu27Ele37, hlt_Mu37TkMu27, hlt_OldMu100, hlt_TkMu100, hlt_DoubleEle25;  
-
+  
   int trig_value;
   
   HLTPrescaleProvider hltPrescaleProvider_;
@@ -646,11 +647,12 @@ private:
   JetCorrectorParameters *L1FastAK4, *L2RelativeAK4, *L3AbsoluteAK4, *L2L3ResidualAK4;
   vector<JetCorrectorParameters> vecL1FastAK4, vecL2RelativeAK4, vecL3AbsoluteAK4, vecL2L3ResidualAK4;
   FactorizedJetCorrector *jecL1FastAK4, *jecL2RelativeAK4, *jecL3AbsoluteAK4, *jecL2L3ResidualAK4;
- 
+  
   JetCorrectorParameters *L1FastAK8, *L2RelativeAK8, *L3AbsoluteAK8, *L2L3ResidualAK8;
   vector<JetCorrectorParameters> vecL1FastAK8, vecL2RelativeAK8, vecL3AbsoluteAK8, vecL2L3ResidualAK8;
   FactorizedJetCorrector *jecL1FastAK8, *jecL2RelativeAK8, *jecL3AbsoluteAK8, *jecL2L3ResidualAK8;
   
+  std::string melectronID_isowp90, melectronID_noisowp90;
   
   // std::string mFileName,mPuFileName,mPuTrigName;
   std::string mJECL1FastFileAK4, mJECL2RelativeFileAK4, mJECL3AbsoluteFileAK4, mJECL2L3ResidualFileAK4, mJECL1FastFileAK8, mJECL2RelativeFileAK8, mJECL3AbsoluteFileAK8, mJECL2L3ResidualFileAK8;
@@ -724,21 +726,21 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   tok_sv =consumes<reco::VertexCompositePtrCandidateCollection>( pset.getParameter<edm::InputTag>("SecondaryVertices"));
   
   tok_Rho_ = consumes<double>(pset.getParameter<edm::InputTag>("PFRho"));
-
+  
   //ea_miniiso_ = std::make_unique<EffectiveAreas>((pset.getParameter<edm::FileInPath>("EAFile_MiniIso")).fullPath());
   ea_miniiso_.reset(new EffectiveAreas((pset.getParameter<edm::FileInPath>("EAFile_MiniIso")).fullPath()));
   //edm::FileInPath fp = pset.getParameter<edm::FileInPath>("EAFile_MiniIso");
   //ea_miniiso_ = consumes<EffectiveAreas>((pset.getParameter<edm::FileInPath>("EAFile_MiniIso")).fullPath());
-
+  
   src_ = consumes<edm::View<pat::Muon>> ( pset.getParameter<edm::InputTag>("src"));
   relative_ = pset.getParameter<bool>("relative");
-
+  
   tok_mets_= consumes<pat::METCollection> ( pset.getParameter<edm::InputTag>("PFMet"));
   tok_genmets_= consumes<reco::GenMETCollection> ( pset.getParameter<edm::InputTag>("GENMet"));
- 
+  
   //pfToken_(consumes<pat::PackedCandidateCollection>(iConfig.getParameter<edm::InputTag>("pfCands")))
   tok_pfcands_ = consumes<pat::PackedCandidateCollection>( pset.getParameter<edm::InputTag>("pfCands"));
-
+  
   tok_muons_ = consumes<edm::View<pat::Muon>> ( pset.getParameter<edm::InputTag>("Muons"));
   tok_electrons_ = consumes<edm::View<pat::Electron>> ( pset.getParameter<edm::InputTag>("Electrons"));
   //tok_photons_ = consumes<edm::View<pat::Photon>>  ( pset.getParameter<edm::InputTag>("Photons"));
@@ -753,6 +755,9 @@ Leptop::Leptop(const edm::ParameterSet& pset):
     tok_genparticles_ = consumes<std::vector<reco::GenParticle>>( pset.getParameter<edm::InputTag>("GenParticles"));
   }
   
+  melectronID_isowp90       = pset.getParameter<std::string>("electronID_isowp90");
+  melectronID_noisowp90     = pset.getParameter<std::string>("electronID_noisowp90");
+
   mJECL1FastFileAK4         = pset.getParameter<std::string>("jecL1FastFileAK4");
   mJECL1FastFileAK8         = pset.getParameter<std::string>("jecL1FastFileAK8");
   mJECL2RelativeFileAK4     = pset.getParameter<std::string>("jecL2RelativeFileAK4");
@@ -761,7 +766,7 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   mJECL3AbsoluteFileAK8     = pset.getParameter<std::string> ("jecL3AbsoluteFileAK8");
   mJECL2L3ResidualFileAK4   = pset.getParameter<std::string> ("jecL2L3ResidualFileAK4");
   mJECL2L3ResidualFileAK8   = pset.getParameter<std::string> ("jecL2L3ResidualFileAK8");
-
+  
   mPtResoFileAK4  = pset.getParameter<std::string>("PtResoFileAK4");
   mPtResoFileAK8  = pset.getParameter<std::string>("PtResoFileAK8");
   mPtSFFileAK4  = pset.getParameter<std::string>("PtSFFileAK4");
@@ -792,9 +797,11 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   
   T1->Branch("ievt", &ievt, "ievt/i");
   T1->Branch("nprim", &nprim, "nprim/I");
-  T1->Branch("nvert", &nvert, "nvert/I");  
-  T1->Branch("ndofct", &ndofct, "ndofct/I");
-  T1->Branch("nchict", &nchict, "nchict/I");
+  
+  //T1->Branch("nvert", &nvert, "nvert/I");  
+  //T1->Branch("ndofct", &ndofct, "ndofct/I");
+  //T1->Branch("nchict", &nchict, "nchict/I");
+  
   T1->Branch("nprimi", &nprimi, "nprimi/I");
   
   // energy density //
@@ -810,7 +817,7 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   // trigger info //
   
   T1->Branch("trig_value",&trig_value,"trig_value/I");  
-
+  
   T1->Branch("hlt_IsoMu24",&hlt_IsoMu24,"hlt_IsoMu24/O");
   T1->Branch("hlt_Mu50",&hlt_Mu50,"hlt_Mu50/O");
   T1->Branch("hlt_Ele50_PFJet165",&hlt_Ele50_PFJet165,"hlt_Ele50_PFJet165/O");
@@ -965,17 +972,17 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("pfjetAK8muinpt", pfjetAK8muinpt, "pfjetAK8muinpt[npfjetAK8]/F");
   T1->Branch("pfjetAK8muineta", pfjetAK8muineta, "pfjetAK8muineta[npfjetAK8]/F");
   T1->Branch("pfjetAK8muinphi", pfjetAK8muinphi, "pfjetAK8muinphi[npfjetAK8]/F");
-  T1->Branch("pfjetAK8muine", pfjetAK8muine, "pfjetAK8muine[npfjetAK8]/F");
+  T1->Branch("pfjetAK8muinmass", pfjetAK8muinmass, "pfjetAK8muinmass[npfjetAK8]/F");
   
   T1->Branch("pfjetAK8elinpt", pfjetAK8elinpt, "pfjetAK8elinpt[npfjetAK8]/F");
   T1->Branch("pfjetAK8elineta", pfjetAK8elineta, "pfjetAK8elineta[npfjetAK8]/F");
   T1->Branch("pfjetAK8elinphi", pfjetAK8elinphi, "pfjetAK8elinphi[npfjetAK8]/F");
-  T1->Branch("pfjetAK8eline", pfjetAK8eline, "pfjetAK8eline[npfjetAK8]/F");
+  T1->Branch("pfjetAK8elinmass", pfjetAK8elinmass, "pfjetAK8elinmass[npfjetAK8]/F");
   
   T1->Branch("pfjetAK8muinsubpt", pfjetAK8muinsubpt, "pfjetAK8muinsubpt[npfjetAK8]/F");
   T1->Branch("pfjetAK8muinsubeta", pfjetAK8muinsubeta, "pfjetAK8muinsubeta[npfjetAK8]/F");
   T1->Branch("pfjetAK8muinsubphi", pfjetAK8muinsubphi, "pfjetAK8muinsubphi[npfjetAK8]/F");
-  T1->Branch("pfjetAK8muinsube", pfjetAK8muinsube, "pfjetAK8muinsube[npfjetAK8]/F");
+  //T1->Branch("pfjetAK8muinsube", pfjetAK8muinsube, "pfjetAK8muinsube[npfjetAK8]/F");
   T1->Branch("pfjetAK8muinsubmass", pfjetAK8muinsubmass, "pfjetAK8muinsubmass[npfjetAK8]/F");
 
   T1->Branch("pfjetAK8muinsubIfar", pfjetAK8muinsubIfar, "pfjetAK8muinsubIfar[npfjetAK8]/F");
@@ -985,13 +992,13 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("pfjetAK8muinsubjpt", pfjetAK8muinsubjpt, "pfjetAK8muinsubjpt[npfjetAK8]/F");
   T1->Branch("pfjetAK8muinsubjeta", pfjetAK8muinsubjeta, "pfjetAK8muinsubjeta[npfjetAK8]/F");
   T1->Branch("pfjetAK8muinsubjphi", pfjetAK8muinsubjphi, "pfjetAK8muinsubjphi[npfjetAK8]/F");
-  T1->Branch("pfjetAK8muinsubje", pfjetAK8muinsubje, "pfjetAK8muinsubje[npfjetAK8]/F");
+  //T1->Branch("pfjetAK8muinsubje", pfjetAK8muinsubje, "pfjetAK8muinsubje[npfjetAK8]/F");
   T1->Branch("pfjetAK8muinsubjmass", pfjetAK8muinsubjmass, "pfjetAK8muinsubjmass[npfjetAK8]/F");
   
   T1->Branch("pfjetAK8elinsubpt", pfjetAK8elinsubpt, "pfjetAK8elinsubpt[npfjetAK8]/F");
   T1->Branch("pfjetAK8elinsubeta", pfjetAK8elinsubeta, "pfjetAK8elinsubeta[npfjetAK8]/F");
   T1->Branch("pfjetAK8elinsubphi", pfjetAK8elinsubphi, "pfjetAK8elinsubphi[npfjetAK8]/F");
-  T1->Branch("pfjetAK8elinsube", pfjetAK8elinsube, "pfjetAK8elinsube[npfjetAK8]/F");
+  //T1->Branch("pfjetAK8elinsube", pfjetAK8elinsube, "pfjetAK8elinsube[npfjetAK8]/F");
   T1->Branch("pfjetAK8elinsubmass", pfjetAK8elinsubmass, "pfjetAK8elinsubmass[npfjetAK8]/F");
 
   T1->Branch("pfjetAK8elinsubIfar", pfjetAK8elinsubIfar,"pfjetAK8elinsubIfar[npfjetAK8]/F");
@@ -1001,7 +1008,7 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("pfjetAK8elinsubjpt", pfjetAK8elinsubjpt, "pfjetAK8elinsubjpt[npfjetAK8]/F");
   T1->Branch("pfjetAK8elinsubjeta", pfjetAK8elinsubjeta, "pfjetAK8elinsubjeta[npfjetAK8]/F");
   T1->Branch("pfjetAK8elinsubjphi", pfjetAK8elinsubjphi, "pfjetAK8elinsubjphi[npfjetAK8]/F");
-  T1->Branch("pfjetAK8elinsubje", pfjetAK8elinsubje, "pfjetAK8elinsubje[npfjetAK8]/F");
+  //T1->Branch("pfjetAK8elinsubje", pfjetAK8elinsubje, "pfjetAK8elinsubje[npfjetAK8]/F");
   T1->Branch("pfjetAK8elinsubjmass", pfjetAK8elinsubjmass, "pfjetAK8elinsubjmass[npfjetAK8]/F");
 
   T1->Branch("pfjetAK8subhaddiff",pfjetAK8subhaddiff,"pfjetAK8subhaddiff[npfjetAK8]/F");
@@ -1114,151 +1121,151 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("genpartm",genpartm,"genpartm[ngenparticles]/F");
   T1->Branch("genpartq",genpartq,"genpartq[ngenparticles]/F");
   
- 
+  
   } //isMC
   
   // Muon info //
   
-T1->Branch("nmuons",&nmuons,"nmuons/I");
-T1->Branch("muonisPF",muonisPF,"muonisPF[nmuons]/O");
-T1->Branch("muonisGL",muonisGL,"muonisGL[nmuons]/O");
-T1->Branch("muonisTRK",muonisTRK,"muonisTRK[nmuons]/O");
-
-T1->Branch("muonisLoose",muonisLoose,"muonisLoose[nmuons]/O");
-T1->Branch("muonisGoodGL",muonisGoodGL,"muonisGoodGL[nmuons]/O");
-T1->Branch("muonisMed",muonisMed,"muonisMed[nmuons]/O");
-T1->Branch("muonisMedPr",muonisMedPr,"muonisMedPr[nmuons]/O");
-T1->Branch("muonisTight",muonisTight,"muonisTight[nmuons]/O");
-T1->Branch("muonisHighPt",muonisHighPt,"muonisHighPt[nmuons]/O"); 
-T1->Branch("muonisHighPttrk",muonisHighPttrk,"muonisHighPttrk[nmuons]/O");
-
-T1->Branch("muonchiso", muonchiso, "muonchiso[nmuons]/F");
-T1->Branch("muonnhiso", muonnhiso, "muonnhiso[nmuons]/F");
-T1->Branch("muonphiso", muonphiso, "muonphiso[nmuons]/F");
-T1->Branch("muonminisoall", muonminisoall, "muonminisoall[nmuons]/F");
-T1->Branch("muoncharge", muoncharge, "muoncharge[nmuons]/F");
-T1->Branch("muonpt",muonpt,"muonpt[nmuons]/F");
-T1->Branch("muonp",muonp,"muonp[nmuons]/F");
-T1->Branch("muone",muone,"muone[nmuons]/F");
-T1->Branch("muoneta",muoneta,"muoneta[nmuons]/F");
-T1->Branch("muonphi",muonphi,"muonphi[nmuons]/F");
-T1->Branch("muondrbm",muondrbm,"muondrbm[nmuons]/F");
-T1->Branch("muontrkvtx",muontrkvtx,"muontrkvtx[nmuons]/F");
-T1->Branch("muondz",muondz,"muondz[nmuons]/F");
-T1->Branch("muonpter",muonpter,"muonpter[nmuons]/F");
-T1->Branch("muonchi",muonchi,"muonchi[nmuons]/F");
-T1->Branch("muonndf",muonndf,"muonndf[nmuons]/I");
-T1->Branch("muonecal",muonecal,"muonecal[nmuons]/F");
-T1->Branch("muonhcal",muonhcal,"muonhcal[nmuons]/F");
-
-T1->Branch("muonemiso",muonemiso,"muonemiso[nmuons]/F");
-T1->Branch("muonhadiso",muonhadiso,"muonhadiso[nmuons]/F");
-T1->Branch("muonpfiso",muonpfiso,"muonpfiso[nmuons]/F");
-T1->Branch("muontkpt03",muontkpt03,"muontkpt03[nmuons]/F");
-T1->Branch("muontkpt05",muontkpt05,"muontkpt05[nmuons]/F");
-
-T1->Branch("muonposmatch",muonposmatch,"muonposmatch[nmuons]/F");
-T1->Branch("muontrkink",muontrkink,"muontrkink[nmuons]/F");
-T1->Branch("muonsegcom",muonsegcom,"muonsegcom[nmuons]/F");
-T1->Branch("muonthit",muonhit,"muonhit[nmuons]/F");
-T1->Branch("muonpixhit",muonpixhit,"muonpixhit[nmuons]/F");
-T1->Branch("muonmst",muonmst,"muonmst[nmuons]/F");
-T1->Branch("muontrklay",muontrklay,"muontrklay[nmuons]/F"); 
-T1->Branch("muonvalfrac",muonvalfrac,"muonvalfrac[nmuons]/F"); 
-T1->Branch("mudxy_sv",mudxy_sv,"mudxy_sv[nmuons]/F");
-
-// Electron info //
-
-T1->Branch("nelecs",&nelecs,"nelecs/I");
-T1->Branch("elsupcl_eta",elsupcl_eta,"elsupcl_eta[nelecs]/F");
-T1->Branch("elsupcl_phi",elsupcl_phi,"elsupcl_phi[nelecs]/F");
-T1->Branch("elsupcl_rawE",elsupcl_rawE,"elsupcl_rawE[nelecs]/F");
-T1->Branch("elpt",elpt,"elpt[nelecs]/F");
-T1->Branch("elcharge", elcharge, "elcharge[nelecs]/F");
-//new 20 variables added//
-T1->Branch("elsigmaieta", elsigmaieta, "elsigmaieta[nelecs]/F");
-T1->Branch("elsigmaiphi", elsigmaiphi, "elsigmaiphi[nelecs]/F");
-T1->Branch("elr9full", elr9full, "elr9full[nelecs]/F");
-T1->Branch("elsupcl_etaw", elsupcl_etaw, "elsupcl_etaw[nelecs]/F");
-T1->Branch("elsupcl_phiw", elsupcl_phiw, "elsupcl_phiw[nelecs]/F");
-T1->Branch("elhcaloverecal", elhcaloverecal, "elhcaloverecal[nelecs]/F");
-T1->Branch("elcloctftrkn", elcloctftrkn, "elcloctftrkn[nelecs]/F");
-T1->Branch("elcloctftrkchi2", elcloctftrkchi2, "elcloctftrkchi2[nelecs]/F");
-T1->Branch("ele1x5bye5x5", ele1x5bye5x5, "ele1x5bye5x5[nelecs]/F");
-T1->Branch("elnormchi2", elnormchi2, "elnormchi2[nelecs]/F");
-T1->Branch("elhitsmiss", elhitsmiss, "elhitsmiss[nelecs]/F");
-T1->Branch("eltrkmeasure", eltrkmeasure, "eltrkmeasure[nelecs]/F");
-T1->Branch("elconvtxprob", elconvtxprob, "elconvtxprob[nelecs]/F");
-T1->Branch("elecloverpout", elecloverpout, "elecloverpout[nelecs]/F");
-T1->Branch("elecaletrkmomentum", elecaletrkmomentum, "elecaletrkmomentum[nelecs]/F");
-T1->Branch("eldeltaetacltrkcalo", eldeltaetacltrkcalo, "eldeltaetacltrkcalo[nelecs]/F");
-T1->Branch("elsupcl_preshvsrawe", elsupcl_preshvsrawe, "elsupcl_preshvsrawe[nelecs]/F");
-T1->Branch("elpfisolsumphet", elpfisolsumphet, "elpfisolsumphet[nelecs]/F");
-T1->Branch("elpfisolsumchhadpt", elpfisolsumchhadpt, "elpfisolsumchhadpt[nelecs]/F");
-T1->Branch("elpfsiolsumneuhadet", elpfsiolsumneuhadet, "elpfsiolsumneuhadet[nelecs]/F");
-///20 variables addition ended//
-T1->Branch("eleta",eleta,"eleta[nelecs]/F");
-T1->Branch("elphi",elphi,"elphi[nelecs]/F");
-T1->Branch("elp",elp,"elp[nelecs]/F");
-T1->Branch("ele",ele,"ele[nelecs]/F");
-T1->Branch("elmvaid",elmvaid,"elmvaid[nelecs]/O");
-T1->Branch("elmvaid_noIso",elmvaid_noIso,"elmvaid_noIso[nelecs]/O");
-T1->Branch("elmvaid_Fallv2WP90",elmvaid_Fallv2WP90,"elmvaid_Fallv2WP90[nelecs]/O");
-T1->Branch("elmvaid_Fallv2WP90_noIso",elmvaid_Fallv2WP90_noIso,"elmvaid_Fallv2WP90_noIso[nelecs]/O");
-T1->Branch("eldxy",eldxy,"eldxy[nelecs]/F");
-T1->Branch("eldxytrk",eldxytrk,"eldxytrk[nelecs]/F");
-T1->Branch("eldxy_sv",eldxy_sv,"eldxy_sv[nelecs]/F");
-T1->Branch("eldz",eldz,"eldz[nelecs]/F");
-T1->Branch("eldztrk",eldztrk,"eldztrk[nelecs]/F");
-T1->Branch("elhovere",elhovere,"elhovere[nelecs]/F");
-T1->Branch("elchi",elchi,"elchi[nelecs]/F");
-T1->Branch("elndf",elndf,"elndf[nelecs]/I");
-T1->Branch("eltkpt03",eltkpt03,"eltkpt03[nelecs]/F");
-T1->Branch("eltkpt04",eltkpt04,"eltkpt04[nelecs]/F");
-T1->Branch("elemiso04",elemiso04,"elemiso04[nelecs]/F");
-T1->Branch("elhadiso04",elhadiso04,"elhadiso04[nelecs]/F");
-T1->Branch("eletain",eletain,"eletain[nelecs]/F");
-T1->Branch("elphiin",elphiin,"elphiin[nelecs]/F");
-T1->Branch("elfbrem",elfbrem,"elfbrem[nelecs]/F");
-T1->Branch("elhadisodepth03",elhadisodepth03,"elhadisodepth03[nelecs]/F");
-T1->Branch("eleoverp",eleoverp,"eleoverp[nelecs]/F");
-T1->Branch("elietaieta",elietaieta,"elietaieta[nelecs]/F");
-T1->Branch("elmisshits",elmisshits,"elmisshits[nelecs]/F");
-T1->Branch("elchhadiso",elchhadiso,"elchhadiso[nelecs]/F");
-T1->Branch("elneuhadiso",elneuhadiso,"elneuhadiso[nelecs]/F");
-T1->Branch("elphoiso",elphoiso,"elphoiso[nelecs]/F");
-T1->Branch("elpuchhadiso",elpuchhadiso,"elpuchhadiso[nelecs]/F");
-T1->Branch("elpfiso",elpfiso,"elpfiso[nelecs]/F");
-T1->Branch("elconvdist",elconvdist,"elconvdist[nelecs]/F");
-T1->Branch("elconvdoct",elconvdoct,"elconvdoct[nelecs]/F");
-/*
-  T1->Branch("nphotons",&nphotons,"nphotons/I");
-  T1->Branch("phoe",phoe,"phoe[nphotons]/F");
-  T1->Branch("phoeta",phoeta,"phoeta[nphotons]/F");
-  T1->Branch("phophi",phophi,"phophi[nphotons]/F");
-  T1->Branch("phomvaid",phomvaid,"phomvaid[nphotons]/O");
-  T1->Branch("phoe1by9",phoe1by9,"phoe1by9[nphotons]/F");
-  T1->Branch("phoe9by25",phoe9by25,"phoe9by25[nphotons]/F");
-  T1->Branch("photrkiso",photrkiso,"photrkiso[nphotons]/F");
-  T1->Branch("phoemiso",phoemiso,"phoemiso[nphotons]/F");
-  T1->Branch("phohadiso",phohadiso,"phohadiso[nphotons]/F");
-  T1->Branch("phochhadiso",phochhadiso,"phochhadiso[nphotons]/F");
-  T1->Branch("phoneuhadiso",phoneuhadiso,"phoneuhadiso[nphotons]/F");
-  T1->Branch("phophoiso",phophoiso,"phophoiso[nphotons]/F");
-  T1->Branch("phoPUiso",phoPUiso,"phoPUiso[nphotons]/F");
-  T1->Branch("phohadbyem",phohadbyem,"phohadbyem[nphotons]/F");
-  T1->Branch("phoietaieta",phoietaieta,"phoietaieta[nphotons]/F");
-*/
- Nevt=0;
- ncnt = 0;
- irunold = -1;
+  T1->Branch("nmuons",&nmuons,"nmuons/I");
+  T1->Branch("muonisPF",muonisPF,"muonisPF[nmuons]/O");
+  T1->Branch("muonisGL",muonisGL,"muonisGL[nmuons]/O");
+  T1->Branch("muonisTRK",muonisTRK,"muonisTRK[nmuons]/O");
+  
+  T1->Branch("muonisLoose",muonisLoose,"muonisLoose[nmuons]/O");
+  T1->Branch("muonisGoodGL",muonisGoodGL,"muonisGoodGL[nmuons]/O");
+  T1->Branch("muonisMed",muonisMed,"muonisMed[nmuons]/O");
+  T1->Branch("muonisMedPr",muonisMedPr,"muonisMedPr[nmuons]/O");
+  T1->Branch("muonisTight",muonisTight,"muonisTight[nmuons]/O");
+  T1->Branch("muonisHighPt",muonisHighPt,"muonisHighPt[nmuons]/O"); 
+  T1->Branch("muonisHighPttrk",muonisHighPttrk,"muonisHighPttrk[nmuons]/O");
+  
+  T1->Branch("muonchiso", muonchiso, "muonchiso[nmuons]/F");
+  T1->Branch("muonnhiso", muonnhiso, "muonnhiso[nmuons]/F");
+  T1->Branch("muonphiso", muonphiso, "muonphiso[nmuons]/F");
+  T1->Branch("muonminisoall", muonminisoall, "muonminisoall[nmuons]/F");
+  T1->Branch("muoncharge", muoncharge, "muoncharge[nmuons]/F");
+  T1->Branch("muonpt",muonpt,"muonpt[nmuons]/F");
+  T1->Branch("muonp",muonp,"muonp[nmuons]/F");
+  T1->Branch("muone",muone,"muone[nmuons]/F");
+  T1->Branch("muoneta",muoneta,"muoneta[nmuons]/F");
+  T1->Branch("muonphi",muonphi,"muonphi[nmuons]/F");
+  T1->Branch("muondrbm",muondrbm,"muondrbm[nmuons]/F");
+  T1->Branch("muontrkvtx",muontrkvtx,"muontrkvtx[nmuons]/F");
+  T1->Branch("muondz",muondz,"muondz[nmuons]/F");
+  T1->Branch("muonpter",muonpter,"muonpter[nmuons]/F");
+  T1->Branch("muonchi",muonchi,"muonchi[nmuons]/F");
+  T1->Branch("muonndf",muonndf,"muonndf[nmuons]/I");
+  T1->Branch("muonecal",muonecal,"muonecal[nmuons]/F");
+  T1->Branch("muonhcal",muonhcal,"muonhcal[nmuons]/F");
+  
+  T1->Branch("muonemiso",muonemiso,"muonemiso[nmuons]/F");
+  T1->Branch("muonhadiso",muonhadiso,"muonhadiso[nmuons]/F");
+  T1->Branch("muonpfiso",muonpfiso,"muonpfiso[nmuons]/F");
+  T1->Branch("muontkpt03",muontkpt03,"muontkpt03[nmuons]/F");
+  T1->Branch("muontkpt05",muontkpt05,"muontkpt05[nmuons]/F");
+  
+  T1->Branch("muonposmatch",muonposmatch,"muonposmatch[nmuons]/F");
+  T1->Branch("muontrkink",muontrkink,"muontrkink[nmuons]/F");
+  T1->Branch("muonsegcom",muonsegcom,"muonsegcom[nmuons]/F");
+  T1->Branch("muonthit",muonhit,"muonhit[nmuons]/F");
+  T1->Branch("muonpixhit",muonpixhit,"muonpixhit[nmuons]/F");
+  T1->Branch("muonmst",muonmst,"muonmst[nmuons]/F");
+  T1->Branch("muontrklay",muontrklay,"muontrklay[nmuons]/F"); 
+  T1->Branch("muonvalfrac",muonvalfrac,"muonvalfrac[nmuons]/F"); 
+  T1->Branch("mudxy_sv",mudxy_sv,"mudxy_sv[nmuons]/F");
+  
+  // Electron info //
+  
+  T1->Branch("nelecs",&nelecs,"nelecs/I");
+  T1->Branch("elsupcl_eta",elsupcl_eta,"elsupcl_eta[nelecs]/F");
+  T1->Branch("elsupcl_phi",elsupcl_phi,"elsupcl_phi[nelecs]/F");
+  T1->Branch("elsupcl_rawE",elsupcl_rawE,"elsupcl_rawE[nelecs]/F");
+  T1->Branch("elpt",elpt,"elpt[nelecs]/F");
+  T1->Branch("elcharge", elcharge, "elcharge[nelecs]/F");
+  //new 20 variables added//
+  T1->Branch("elsigmaieta", elsigmaieta, "elsigmaieta[nelecs]/F");
+  T1->Branch("elsigmaiphi", elsigmaiphi, "elsigmaiphi[nelecs]/F");
+  T1->Branch("elr9full", elr9full, "elr9full[nelecs]/F");
+  T1->Branch("elsupcl_etaw", elsupcl_etaw, "elsupcl_etaw[nelecs]/F");
+  T1->Branch("elsupcl_phiw", elsupcl_phiw, "elsupcl_phiw[nelecs]/F");
+  T1->Branch("elhcaloverecal", elhcaloverecal, "elhcaloverecal[nelecs]/F");
+  T1->Branch("elcloctftrkn", elcloctftrkn, "elcloctftrkn[nelecs]/F");
+  T1->Branch("elcloctftrkchi2", elcloctftrkchi2, "elcloctftrkchi2[nelecs]/F");
+  T1->Branch("ele1x5bye5x5", ele1x5bye5x5, "ele1x5bye5x5[nelecs]/F");
+  T1->Branch("elnormchi2", elnormchi2, "elnormchi2[nelecs]/F");
+  T1->Branch("elhitsmiss", elhitsmiss, "elhitsmiss[nelecs]/F");
+  T1->Branch("eltrkmeasure", eltrkmeasure, "eltrkmeasure[nelecs]/F");
+  T1->Branch("elconvtxprob", elconvtxprob, "elconvtxprob[nelecs]/F");
+  T1->Branch("elecloverpout", elecloverpout, "elecloverpout[nelecs]/F");
+  T1->Branch("elecaletrkmomentum", elecaletrkmomentum, "elecaletrkmomentum[nelecs]/F");
+  T1->Branch("eldeltaetacltrkcalo", eldeltaetacltrkcalo, "eldeltaetacltrkcalo[nelecs]/F");
+  T1->Branch("elsupcl_preshvsrawe", elsupcl_preshvsrawe, "elsupcl_preshvsrawe[nelecs]/F");
+  T1->Branch("elpfisolsumphet", elpfisolsumphet, "elpfisolsumphet[nelecs]/F");
+  T1->Branch("elpfisolsumchhadpt", elpfisolsumchhadpt, "elpfisolsumchhadpt[nelecs]/F");
+  T1->Branch("elpfsiolsumneuhadet", elpfsiolsumneuhadet, "elpfsiolsumneuhadet[nelecs]/F");
+  ///20 variables addition ended//
+  T1->Branch("eleta",eleta,"eleta[nelecs]/F");
+  T1->Branch("elphi",elphi,"elphi[nelecs]/F");
+  T1->Branch("elp",elp,"elp[nelecs]/F");
+  T1->Branch("ele",ele,"ele[nelecs]/F");
+  T1->Branch("elmvaid",elmvaid,"elmvaid[nelecs]/O");
+  T1->Branch("elmvaid_noIso",elmvaid_noIso,"elmvaid_noIso[nelecs]/O");
+  T1->Branch("elmvaid_Fallv2WP90",elmvaid_Fallv2WP90,"elmvaid_Fallv2WP90[nelecs]/O");
+  T1->Branch("elmvaid_Fallv2WP90_noIso",elmvaid_Fallv2WP90_noIso,"elmvaid_Fallv2WP90_noIso[nelecs]/O");
+  T1->Branch("eldxy",eldxy,"eldxy[nelecs]/F");
+  T1->Branch("eldxytrk",eldxytrk,"eldxytrk[nelecs]/F");
+  T1->Branch("eldxy_sv",eldxy_sv,"eldxy_sv[nelecs]/F");
+  T1->Branch("eldz",eldz,"eldz[nelecs]/F");
+  T1->Branch("eldztrk",eldztrk,"eldztrk[nelecs]/F");
+  T1->Branch("elhovere",elhovere,"elhovere[nelecs]/F");
+  T1->Branch("elchi",elchi,"elchi[nelecs]/F");
+  T1->Branch("elndf",elndf,"elndf[nelecs]/I");
+  T1->Branch("eltkpt03",eltkpt03,"eltkpt03[nelecs]/F");
+  T1->Branch("eltkpt04",eltkpt04,"eltkpt04[nelecs]/F");
+  T1->Branch("elemiso04",elemiso04,"elemiso04[nelecs]/F");
+  T1->Branch("elhadiso04",elhadiso04,"elhadiso04[nelecs]/F");
+  T1->Branch("eletain",eletain,"eletain[nelecs]/F");
+  T1->Branch("elphiin",elphiin,"elphiin[nelecs]/F");
+  T1->Branch("elfbrem",elfbrem,"elfbrem[nelecs]/F");
+  T1->Branch("elhadisodepth03",elhadisodepth03,"elhadisodepth03[nelecs]/F");
+  T1->Branch("eleoverp",eleoverp,"eleoverp[nelecs]/F");
+  T1->Branch("elietaieta",elietaieta,"elietaieta[nelecs]/F");
+  T1->Branch("elmisshits",elmisshits,"elmisshits[nelecs]/F");
+  T1->Branch("elchhadiso",elchhadiso,"elchhadiso[nelecs]/F");
+  T1->Branch("elneuhadiso",elneuhadiso,"elneuhadiso[nelecs]/F");
+  T1->Branch("elphoiso",elphoiso,"elphoiso[nelecs]/F");
+  T1->Branch("elpuchhadiso",elpuchhadiso,"elpuchhadiso[nelecs]/F");
+  T1->Branch("elpfiso",elpfiso,"elpfiso[nelecs]/F");
+  T1->Branch("elconvdist",elconvdist,"elconvdist[nelecs]/F");
+  T1->Branch("elconvdoct",elconvdoct,"elconvdoct[nelecs]/F");
+  /*
+    T1->Branch("nphotons",&nphotons,"nphotons/I");
+    T1->Branch("phoe",phoe,"phoe[nphotons]/F");
+    T1->Branch("phoeta",phoeta,"phoeta[nphotons]/F");
+    T1->Branch("phophi",phophi,"phophi[nphotons]/F");
+    T1->Branch("phomvaid",phomvaid,"phomvaid[nphotons]/O");
+    T1->Branch("phoe1by9",phoe1by9,"phoe1by9[nphotons]/F");
+    T1->Branch("phoe9by25",phoe9by25,"phoe9by25[nphotons]/F");
+    T1->Branch("photrkiso",photrkiso,"photrkiso[nphotons]/F");
+    T1->Branch("phoemiso",phoemiso,"phoemiso[nphotons]/F");
+    T1->Branch("phohadiso",phohadiso,"phohadiso[nphotons]/F");
+    T1->Branch("phochhadiso",phochhadiso,"phochhadiso[nphotons]/F");
+    T1->Branch("phoneuhadiso",phoneuhadiso,"phoneuhadiso[nphotons]/F");
+    T1->Branch("phophoiso",phophoiso,"phophoiso[nphotons]/F");
+    T1->Branch("phoPUiso",phoPUiso,"phoPUiso[nphotons]/F");
+    T1->Branch("phohadbyem",phohadbyem,"phohadbyem[nphotons]/F");
+    T1->Branch("phoietaieta",phoietaieta,"phoietaieta[nphotons]/F");
+  */
+  Nevt=0;
+  ncnt = 0;
+  irunold = -1;
 }
 
 
 Leptop::~Leptop()
 {
  
-   // do anything here that needs to be done at desctruction time
+  // do anything here that needs to be done at desctruction time
    // (e.g. close files, deallocate resources etc.)
 
 }
@@ -1271,10 +1278,10 @@ Leptop::~Leptop()
 // ------------ method called for each event  ------------
 void
 Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
-
+  
   using namespace edm;
   Nevt++;
-
+  
   irun = iEvent.id().run();
   ilumi = iEvent.luminosityBlock();
   
@@ -1282,173 +1289,172 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
   
   //if (Nevt%100==1)cout <<"Leptop::analyze "<<Nevt<<" "<<iEvent.id().run()<<" "<<iEvent.id().event()<<endl;
   
-   wtfact = 1.;
-   
-   if(isMC){
-     edm::Handle<GenEventInfoProduct>eventinfo ;  
-     iEvent.getByToken(tok_wt_,eventinfo) ;
-     
-     if (eventinfo.isValid()){
+  wtfact = 1.;
+  
+  if(isMC){
+    edm::Handle<GenEventInfoProduct>eventinfo ;  
+    iEvent.getByToken(tok_wt_,eventinfo) ;
+    
+    if (eventinfo.isValid()){
        event_weight = eventinfo->weight();
        qscale = eventinfo->qScale();
-     }
-     
-     wtfact *= event_weight;
-   }
-   
-   Handle<VertexCollection> primaryVertices;
-   iEvent.getByToken(tok_primaryVertices_, primaryVertices);
-   reco::Vertex vertex = primaryVertices->at(0);
-
-   if (primaryVertices.isValid()) {
-	   
-     int ndofct_org=0;
-     int nchict_org=0;
-     int nvert_org = 0;
-     int nprimi_org = 0;
-     for (reco::VertexCollection::const_iterator vert=primaryVertices->begin(); vert<primaryVertices->end(); vert++) {
-       nvert_org++;
-       if (vert->isValid() && !vert->isFake()) {
-	 if (vert->ndof() > 4 && fabs(vert->position().z()) <= 24 && fabs(vert->position().Rho()) <= 2) {
-	   nprimi_org++;
-	 }
-	 if (vert->ndof()>7) {
-	   ndofct_org++;
-	   if (vert->normalizedChi2()<5) nchict_org++;
-	 }
-       }
-     }
-     nprim = min(999,nvert_org) + 1000*min(999,ndofct_org) + 1000000*min(999,nchict_org);
-
-     nvert = nvert_org;
-     nchict = nchict_org;
-     ndofct = ndofct_org;
-     nprimi = nprimi_org;
-     
-   } else { 
-     nprim = 0;
-     nprimi = 0;
-     nvert = nchict = ndofct = 0;
-   }
-   
-   reco::TrackBase::Point beamPoint(0,0, 0);
-   edm::Handle<reco::BeamSpot> beamSpotH;
-   
-   iEvent.getByToken(tok_beamspot_, beamSpotH);  //Label("offlineBeamSpot",beamSpotH);
-   if (beamSpotH.isValid()){
-     beamPoint = beamSpotH->position();
-   }
-   
-   npu_vert = 0;
-   
-   edm::Handle<reco::VertexCompositePtrCandidateCollection> svin;
-   iEvent.getByToken(tok_sv,svin);
-   
-   if (isMC) {
-     
-     edm::Handle<std::vector<PileupSummaryInfo> > PupInfo;
-     iEvent.getByToken(pileup_, PupInfo);
-     int npu = -1;
-     if (PupInfo.isValid()) {
-       std::vector<PileupSummaryInfo>::const_iterator PVI;
-       for(PVI = PupInfo->begin(); PVI != PupInfo->end(); ++PVI) {
-		if (PVI->getBunchCrossing()==0) {
-		  npu = PVI->getPU_NumInteractions();
-		  break;
-         }
-       }
-     }
-     
-     npu_vert = npu;
-     
-  }//isMC
-   
-   edm::Handle<double> Rho_PF;
-   
-   iEvent.getByToken(tok_Rho_,Rho_PF);
-   Rho = *Rho_PF;
-   
-   const char* variab1;
-   
-   edm::Handle<edm::TriggerResults> trigRes;
-   iEvent.getByToken(triggerBits_, trigRes);
-   
-   const edm::TriggerNames &names = iEvent.triggerNames(*trigRes);
-   
-   edm::Handle<pat::TriggerObjectStandAloneCollection> triggerObjects;
-   iEvent.getByToken(triggerObjects_, triggerObjects);
-   
-   edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
-   iEvent.getByToken(triggerPrescales_, triggerPrescales);
-   
-   int ihlttrg[nHLTmx+1]= {0};
-   bool booltrg[nHLTmx]= {false};
-   int iprescale[nHLTmx]= {0};
-   
-   for (int jk=0; jk<nHLTmx; jk++) {
-     for(unsigned ij = 0; ij<trigRes->size(); ++ij) {
-       std::string name = names.triggerName(ij);
-       variab1 = name.c_str(); 
-       if (strstr(variab1,hlt_name[jk]) && ((strlen(variab1)-strlen(hlt_name[jk]))<5))
-	 {
-	   if ((trigRes->accept(ij))){   //||(isMC)) {
-	     ihlttrg[jk] = ihlttrg[nHLTmx] = 1;
-	     booltrg[jk] = true;
-	     iprescale[jk] = hltPrescaleProvider_.prescaleValue(iEvent,pset,name);
-	   }
-	 }
-     }//ij     
-   }//jk
-   
-   trig_value = 1;
-   
-   for (int jk=1; jk<(nHLTmx+1); jk++) {
-     if(ihlttrg[nHLTmx-jk]>0) {
-       trig_value+=(1<<jk);
-     }
-   }
-   
-   vector<triggervar> alltrgobj;
-   if (trigRes.isValid()) { 
-     
-     const char* variab2 ;
-     
-     alltrgobj.clear(); 
-     
-     // const edm::TriggerNames &names = iEvent.triggerNames(*trigRes);
-     for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
-       
-       obj.unpackPathNames(names);
-       std::vector<std::string> pathNamesAll  = obj.pathNames(false);
-       
-       for (unsigned ih = 0, n = pathNamesAll.size(); ih < n; ih++) {
-		   
-		variab2 = pathNamesAll[ih].c_str(); 
-	 
-		for (int jk=0; jk<nHLTmx; jk++) {
-			if (strstr(variab2,hlt_name[jk]) && (strlen(variab2)-strlen(hlt_name[jk])<5)) {
-	     
-			if(obj.pt()>20 && fabs(obj.eta())<3.0) {
-	       
-				triggervar tmpvec1;
-	       
-				tmpvec1.both = obj.hasPathName( pathNamesAll[ih], true, true );
-				tmpvec1.highl  = obj.hasPathName( pathNamesAll[ih], false, true );
-				tmpvec1.level1 = obj.hasPathName( pathNamesAll[ih], true, false );
-				tmpvec1.trg4v = HepLorentzVector(obj.px(), obj.py(), obj.pz(), obj.energy());
-				tmpvec1.prescl = 1;    //triggerPrescales->getPrescaleForIndex(ij);
-				tmpvec1.ihlt = jk;
-				alltrgobj.push_back(tmpvec1);
-				}
-			}
-		 }//jk 
-       }//ih
-     }
-   }
+       wtfact *= event_weight; //Debarati : Moved inside according to GMA
+    }
+  }
   
-   ntrigobjs = alltrgobj.size();
-   if(ntrigobjs>njetmx) { ntrigobjs = njetmx; }
-   if(alltrgobj.size()>0){
+  Handle<VertexCollection> primaryVertices;
+  iEvent.getByToken(tok_primaryVertices_, primaryVertices);
+  reco::Vertex vertex = primaryVertices->at(0);
+  
+  if (primaryVertices.isValid()) {
+    
+    int ndofct_org=0;
+    int nchict_org=0;
+    int nvert_org = 0;
+    int nprimi_org = 0;
+    
+    for (reco::VertexCollection::const_iterator vert=primaryVertices->begin(); vert<primaryVertices->end(); vert++) {
+      nvert_org++;
+      if (vert->isValid() && !vert->isFake()) {
+	if (vert->ndof() > 4 && fabs(vert->position().z()) <= 24 && fabs(vert->position().Rho()) <= 2) {
+	  nprimi_org++;
+	}
+	if (vert->ndof()>7) {
+	  ndofct_org++;
+	  if (vert->normalizedChi2()<5) nchict_org++;
+	}
+      }
+    }
+    nprim = min(999,nvert_org) + 1000*min(999,ndofct_org) + 1000000*min(999,nchict_org);
+    //nvert = nvert_org;
+    //nchict = nchict_org;
+    //ndofct = ndofct_org;
+    nprimi = nprimi_org;
+    
+  } else { 
+    nprim = 0;
+    nprimi = 0;
+    //nvert = nchict = ndofct = 0;
+  }
+  
+  reco::TrackBase::Point beamPoint(0,0, 0);
+  edm::Handle<reco::BeamSpot> beamSpotH;
+  
+  iEvent.getByToken(tok_beamspot_, beamSpotH);  //Label("offlineBeamSpot",beamSpotH);
+  if (beamSpotH.isValid()){
+    beamPoint = beamSpotH->position();
+  }
+  
+  npu_vert = 0;
+  
+  edm::Handle<reco::VertexCompositePtrCandidateCollection> svin;
+  iEvent.getByToken(tok_sv,svin);
+  
+  if (isMC) {
+    
+    edm::Handle<std::vector<PileupSummaryInfo> > PupInfo;
+    iEvent.getByToken(pileup_, PupInfo);
+    int npu = -1;
+    if (PupInfo.isValid()) {
+      std::vector<PileupSummaryInfo>::const_iterator PVI;
+      for(PVI = PupInfo->begin(); PVI != PupInfo->end(); ++PVI) {
+	if (PVI->getBunchCrossing()==0) {
+	  npu = PVI->getPU_NumInteractions();
+	  break;
+	}
+      }
+    }
+    
+    npu_vert = npu;
+    
+  }//isMC
+  
+  edm::Handle<double> Rho_PF;
+  
+  iEvent.getByToken(tok_Rho_,Rho_PF);
+  Rho = *Rho_PF;
+  
+  const char* variab1;
+  
+  edm::Handle<edm::TriggerResults> trigRes;
+  iEvent.getByToken(triggerBits_, trigRes);
+  
+  const edm::TriggerNames &names = iEvent.triggerNames(*trigRes);
+  
+  edm::Handle<pat::TriggerObjectStandAloneCollection> triggerObjects;
+  iEvent.getByToken(triggerObjects_, triggerObjects);
+  
+  edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
+  iEvent.getByToken(triggerPrescales_, triggerPrescales);
+  
+  int ihlttrg[nHLTmx+1]= {0};
+  bool booltrg[nHLTmx]= {false};
+  int iprescale[nHLTmx]= {0};
+  
+  for (int jk=0; jk<nHLTmx; jk++) {
+    for(unsigned ij = 0; ij<trigRes->size(); ++ij) {
+      std::string name = names.triggerName(ij);
+      variab1 = name.c_str(); 
+      if (strstr(variab1,hlt_name[jk]) && ((strlen(variab1)-strlen(hlt_name[jk]))<5))
+	{
+	  if ((trigRes->accept(ij))){   //||(isMC)) {
+	    ihlttrg[jk] = ihlttrg[nHLTmx] = 1;
+	    booltrg[jk] = true;
+	    iprescale[jk] = hltPrescaleProvider_.prescaleValue(iEvent,pset,name);
+	  }
+	}
+    }//ij     
+  }//jk
+  
+  trig_value = 1; //In meeting
+  
+  for (int jk=1; jk<(nHLTmx+1); jk++) {
+    if(ihlttrg[nHLTmx-jk]>0) {
+      trig_value+=(1<<jk);
+    }
+  }
+  
+  vector<triggervar> alltrgobj;
+  if (trigRes.isValid()) { 
+    
+    const char* variab2 ;
+    
+    alltrgobj.clear(); 
+    
+    // const edm::TriggerNames &names = iEvent.triggerNames(*trigRes);
+    for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+      
+      obj.unpackPathNames(names);
+      std::vector<std::string> pathNamesAll  = obj.pathNames(false);
+      
+      for (unsigned ih = 0, n = pathNamesAll.size(); ih < n; ih++) {
+	
+	variab2 = pathNamesAll[ih].c_str(); 
+	
+	for (int jk=0; jk<nHLTmx; jk++) {
+	  if (strstr(variab2,hlt_name[jk]) && (strlen(variab2)-strlen(hlt_name[jk])<5)) {
+	    
+	    if(obj.pt()>20 && fabs(obj.eta())<3.0) {
+	      
+	      triggervar tmpvec1;
+	      
+	      tmpvec1.both = obj.hasPathName( pathNamesAll[ih], true, true );
+	      tmpvec1.highl  = obj.hasPathName( pathNamesAll[ih], false, true );
+	      tmpvec1.level1 = obj.hasPathName( pathNamesAll[ih], true, false );
+	      tmpvec1.trg4v = HepLorentzVector(obj.px(), obj.py(), obj.pz(), obj.energy());
+	      tmpvec1.prescl = 1;    //triggerPrescales->getPrescaleForIndex(ij);
+	      tmpvec1.ihlt = jk;
+	      alltrgobj.push_back(tmpvec1);
+	    }
+	  }
+	}//jk 
+      }//ih
+    }
+  }
+  
+  ntrigobjs = alltrgobj.size();
+  if(ntrigobjs>njetmx) { ntrigobjs = njetmx; }
+  if(alltrgobj.size()>0){
     for(unsigned int iht=0; iht<(alltrgobj.size()); iht++){
       trigobjpt[iht] = alltrgobj[iht].trg4v.perp();
       trigobjeta[iht] = alltrgobj[iht].trg4v.eta();
@@ -1470,7 +1476,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
   
   if(pfmet_.isValid()){
     const pat::MET &met = pfmet_->front();
-
+    
     miset = met.corPt(); //met.pt();
     misphi = met.corPhi();//met.phi();
     misetsig = met.significance();
@@ -1499,7 +1505,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
   edm::Handle<std::vector<reco::GenParticle>> genparticles;
   edm::Handle<pat::PackedCandidateCollection> pfs;
   iEvent.getByToken(tok_pfcands_, pfs);
-
+  
   npfjetAK8 = 0;
   
   iEvent.getByToken(tok_pfjetAK8s_, pfjetAK8s);	
@@ -1507,12 +1513,18 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     iEvent.getByToken(tok_genjetAK8s_, genjetAK8s);
   }
   if(pfjetAK8s.isValid()){
-	  
+    
     for (unsigned jet = 0; jet< pfjetAK8s->size(); jet++) {
       
-      HepLorentzVector pfjetAK84v((*pfjetAK8s)[jet].correctedP4("Uncorrected").px(),(*pfjetAK8s)[jet].correctedP4("Uncorrected").py(),(*pfjetAK8s)[jet].correctedP4("Uncorrected").pz(), (*pfjetAK8s)[jet].correctedP4("Uncorrected").energy());
-      HepLorentzVector tmpjetAK84v((*pfjetAK8s)[jet].px(),(*pfjetAK8s)[jet].py(),(*pfjetAK8s)[jet].pz(), (*pfjetAK8s)[jet].energy());
-      
+      const auto &ak8jet = (*pfjetAK8s)[jet];
+      /*
+	HepLorentzVector pfjetAK84v((*pfjetAK8s)[jet].correctedP4("Uncorrected").px(),(*pfjetAK8s)[jet].correctedP4("Uncorrected").py(),(*pfjetAK8s)[jet].correctedP4("Uncorrected").pz(), (*pfjetAK8s)[jet].correctedP4("Uncorrected").energy());
+	HepLorentzVector tmpjetAK84v((*pfjetAK8s)[jet].px(),(*pfjetAK8s)[jet].py(),(*pfjetAK8s)[jet].pz(), (*pfjetAK8s)[jet].energy());
+      */
+
+      HepLorentzVector pfjetAK84v(ak8jet.correctedP4("Uncorrected").px(),ak8jet.correctedP4("Uncorrected").py(),ak8jet.correctedP4("Uncorrected").pz(), ak8jet.correctedP4("Uncorrected").energy());
+      HepLorentzVector tmpjetAK84v(ak8jet.px(),ak8jet.py(),ak8jet.pz(), ak8jet.energy());
+
       double tmprecpt = pfjetAK84v.perp();
       if(tmprecpt<AK8PtCut) continue;
       if(tmpjetAK84v.perp()<AK8PtCut) continue;
@@ -1522,22 +1534,21 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       pfjetAK8y[npfjetAK8] = pfjetAK84v.rapidity();
       pfjetAK8eta[npfjetAK8] = pfjetAK84v.eta();
       pfjetAK8phi[npfjetAK8] = pfjetAK84v.phi();
-      pfjetAK8mass[npfjetAK8] = (*pfjetAK8s)[jet].correctedP4("Uncorrected").mass();
-      
-      pfjetAK8btag_CMVA[npfjetAK8] = (*pfjetAK8s)[jet].bDiscriminator(btag_CMVA_name);
-      pfjetAK8btag_CSV[npfjetAK8] = (*pfjetAK8s)[jet].bDiscriminator(btag_CSV_name);
-      pfjetAK8btag_DeepCSV[npfjetAK8] = (*pfjetAK8s)[jet].bDiscriminator("pfDeepCSVJetTags:probb")+(*pfjetAK8s)[jet].bDiscriminator("pfDeepCSVJetTags:probbb");
-      pfjetAK8btag_DeepFlav[npfjetAK8] = (*pfjetAK8s)[jet].bDiscriminator("pfDeepFlavourJetTags:probb") + (*pfjetAK8s)[jet].bDiscriminator("pfDeepFlavourJetTags:probbb")+(*pfjetAK8s)[jet].bDiscriminator("pfDeepFlavourJetTags:problepb");
-      
-      pfjetAK8DeepTag_TvsQCD[npfjetAK8] = (*pfjetAK8s)[jet].bDiscriminator(toptagger);
-      pfjetAK8DeepTag_WvsQCD[npfjetAK8] = (*pfjetAK8s)[jet].bDiscriminator(Wtagger);
-      pfjetAK8DeepTag_ZvsQCD[npfjetAK8] = (*pfjetAK8s)[jet].bDiscriminator(Ztagger);
-      pfjetAK8DeepTag_BBvsQCD[npfjetAK8] = (*pfjetAK8s)[jet].bDiscriminator(BBtagger);
-      pfjetAK8DeepTag_CCvsQCD[npfjetAK8] = (*pfjetAK8s)[jet].bDiscriminator(CCtagger);
+
+      pfjetAK8mass[npfjetAK8] = ak8jet.correctedP4("Uncorrected").mass();
+      pfjetAK8btag_CMVA[npfjetAK8] = ak8jet.bDiscriminator(btag_CMVA_name);
+      pfjetAK8btag_CSV[npfjetAK8] = ak8jet.bDiscriminator(btag_CSV_name);
+      pfjetAK8btag_DeepCSV[npfjetAK8] = ak8jet.bDiscriminator("pfDeepCSVJetTags:probb")+ak8jet.bDiscriminator("pfDeepCSVJetTags:probbb");
+      pfjetAK8btag_DeepFlav[npfjetAK8] = ak8jet.bDiscriminator("pfDeepFlavourJetTags:probb") + ak8jet.bDiscriminator("pfDeepFlavourJetTags:probbb")+ ak8jet.bDiscriminator("pfDeepFlavourJetTags:problepb");
+      pfjetAK8DeepTag_TvsQCD[npfjetAK8] = ak8jet.bDiscriminator(toptagger);
+      pfjetAK8DeepTag_WvsQCD[npfjetAK8] = ak8jet.bDiscriminator(Wtagger);
+      pfjetAK8DeepTag_ZvsQCD[npfjetAK8] = ak8jet.bDiscriminator(Ztagger);
+      pfjetAK8DeepTag_BBvsQCD[npfjetAK8] = ak8jet.bDiscriminator(BBtagger);
+      pfjetAK8DeepTag_CCvsQCD[npfjetAK8] = ak8jet.bDiscriminator(CCtagger);
       
       double total_cor =1;
       
-      jecL1FastAK8->setJetPt(tmprecpt); jecL1FastAK8->setJetA((*pfjetAK8s)[jet].jetArea()); jecL1FastAK8->setRho(*Rho_PF);jecL1FastAK8->setJetEta(pfjetAK84v.eta());
+      jecL1FastAK8->setJetPt(tmprecpt); jecL1FastAK8->setJetA(ak8jet.jetArea()); jecL1FastAK8->setRho(*Rho_PF);jecL1FastAK8->setJetEta(pfjetAK84v.eta());
       double corFactorL1Fast = jecL1FastAK8->getCorrection();
       total_cor *= corFactorL1Fast;
       tmprecpt = tmprecpt * corFactorL1Fast;
@@ -1558,10 +1569,10 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       double corFactorL2L3Residual=1.;
       
       if(isData){
-		jecL2L3ResidualAK8->setJetPt(tmprecpt); jecL2L3ResidualAK8->setJetEta(pfjetAK84v.eta());
-		corFactorL2L3Residual = jecL2L3ResidualAK8->getCorrection();
-		total_cor*= corFactorL2L3Residual;
-		tmprecpt *=corFactorL2L3Residual;
+	jecL2L3ResidualAK8->setJetPt(tmprecpt); jecL2L3ResidualAK8->setJetEta(pfjetAK84v.eta());
+	corFactorL2L3Residual = jecL2L3ResidualAK8->getCorrection();
+	total_cor*= corFactorL2L3Residual;
+	tmprecpt *=corFactorL2L3Residual;
       }
       
       pfjetAK8JECL2L3[npfjetAK8] = corFactorL2L3Residual;
@@ -1569,97 +1580,97 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       
       if(isMC){
 	
-		JME::JetResolution resolution_AK8;
-		resolution_AK8 = JME::JetResolution(mPtResoFileAK8.c_str());
-		JME::JetResolutionScaleFactor res_sf_AK8;
-		res_sf_AK8 = JME::JetResolutionScaleFactor(mPtSFFileAK8.c_str());
+	JME::JetResolution resolution_AK8;
+	resolution_AK8 = JME::JetResolution(mPtResoFileAK8.c_str());
+	JME::JetResolutionScaleFactor res_sf_AK8;
+	res_sf_AK8 = JME::JetResolutionScaleFactor(mPtSFFileAK8.c_str());
 	
-		JME::JetParameters parameters_5 = {{JME::Binning::JetPt, tmprecpt}, {JME::Binning::JetEta, pfjetAK84v.eta()}, {JME::Binning::Rho, *Rho_PF}};
-		double rp_AK8 = resolution_AK8.getResolution(parameters_5);
-		double gaus_rp_AK8 = gRandom->Gaus(0.,rp_AK8);
-		double sf_AK8 = res_sf_AK8.getScaleFactor(parameters_5, Variation::NOMINAL);
-		double sf_up_AK8= res_sf_AK8.getScaleFactor(parameters_5, Variation::UP);
-		double sf_dn_AK8= res_sf_AK8.getScaleFactor(parameters_5, Variation::DOWN);
+	JME::JetParameters parameters_5 = {{JME::Binning::JetPt, tmprecpt}, {JME::Binning::JetEta, pfjetAK84v.eta()}, {JME::Binning::Rho, *Rho_PF}};
+	double rp_AK8 = resolution_AK8.getResolution(parameters_5);
+	double gaus_rp_AK8 = gRandom->Gaus(0.,rp_AK8);
+	double sf_AK8 = res_sf_AK8.getScaleFactor(parameters_5, Variation::NOMINAL);
+	double sf_up_AK8= res_sf_AK8.getScaleFactor(parameters_5, Variation::UP);
+	double sf_dn_AK8= res_sf_AK8.getScaleFactor(parameters_5, Variation::DOWN);
 	
-		bool match_AK8 = false;
-		int match_gen_AK8 = -1;
+	bool match_AK8 = false;
+	int match_gen_AK8 = -1;
 	
-		for (unsigned get = 0; get<(genjetAK8s->size()); get++) {
-			HepLorentzVector genjet8v((*genjetAK8s)[get].px(),(*genjetAK8s)[get].py(),(*genjetAK8s)[get].pz(), (*genjetAK8s)[get].energy());
-			if((delta2R(pfjetAK84v.rapidity(),pfjetAK84v.phi(),genjet8v.rapidity(),genjet8v.phi()) < (0.5*0.8)) &&(fabs(tmprecpt-genjet8v.perp())<(3*fabs(rp_AK8)*tmprecpt))){
-				match_AK8 = true;
-				match_gen_AK8 = get;
-				break;
-			}
-		}
+	for (unsigned get = 0; get<(genjetAK8s->size()); get++) {
+	  HepLorentzVector genjet8v((*genjetAK8s)[get].px(),(*genjetAK8s)[get].py(),(*genjetAK8s)[get].pz(), (*genjetAK8s)[get].energy());
+	  if((delta2R(pfjetAK84v.rapidity(),pfjetAK84v.phi(),genjet8v.rapidity(),genjet8v.phi()) < (0.5*0.8)) &&(fabs(tmprecpt-genjet8v.perp())<(3*fabs(rp_AK8)*tmprecpt))){
+	    match_AK8 = true;
+	    match_gen_AK8 = get;
+	    break;
+	  }
+	}
 	
-		if(match_AK8&&(match_gen_AK8>=0)){
-			
-			pfjetAK8reso[npfjetAK8] = (sf_AK8-1.)*(tmprecpt-(*genjetAK8s)[match_gen_AK8].pt())*1./tmprecpt;
-			pfjetAK8resoup[npfjetAK8] = (sf_up_AK8-1.)*(tmprecpt-(*genjetAK8s)[match_gen_AK8].pt())*1./tmprecpt;
-			pfjetAK8resodn[npfjetAK8] = (sf_dn_AK8-1.)*(tmprecpt-(*genjetAK8s)[match_gen_AK8].pt())*1./tmprecpt;
-			
-		}else{
+	if(match_AK8&&(match_gen_AK8>=0)){
 	  
-			pfjetAK8reso[npfjetAK8] = sqrt(max(0.,(sf_AK8*sf_AK8-1))) * gaus_rp_AK8;
-			pfjetAK8resoup[npfjetAK8] = sqrt(max(0.,(sf_up_AK8*sf_up_AK8-1))) * gaus_rp_AK8;
-			pfjetAK8resodn[npfjetAK8] = sqrt(max(0.,(sf_dn_AK8*sf_dn_AK8-1))) * gaus_rp_AK8;
-		}
+	  pfjetAK8reso[npfjetAK8] = (sf_AK8-1.)*(tmprecpt-(*genjetAK8s)[match_gen_AK8].pt())*1./tmprecpt;
+	  pfjetAK8resoup[npfjetAK8] = (sf_up_AK8-1.)*(tmprecpt-(*genjetAK8s)[match_gen_AK8].pt())*1./tmprecpt;
+	  pfjetAK8resodn[npfjetAK8] = (sf_dn_AK8-1.)*(tmprecpt-(*genjetAK8s)[match_gen_AK8].pt())*1./tmprecpt;
+	  
+	}else{
+	  
+	  pfjetAK8reso[npfjetAK8] = sqrt(max(0.,(sf_AK8*sf_AK8-1))) * gaus_rp_AK8;
+	  pfjetAK8resoup[npfjetAK8] = sqrt(max(0.,(sf_up_AK8*sf_up_AK8-1))) * gaus_rp_AK8;
+	  pfjetAK8resodn[npfjetAK8] = sqrt(max(0.,(sf_dn_AK8*sf_dn_AK8-1))) * gaus_rp_AK8;
+	}
 	
       }//isMC
       
       for(int isrc =0 ; isrc<njecmcmx; isrc++){
-		  
+	
         double sup = 1.0 ;
 	
 		if((isrc>0)&&(isrc<=nsrc)){
-			
-			JetCorrectionUncertainty *jecUnc = vsrcAK8[isrc-1];
-			jecUnc->setJetEta((*pfjetAK8s)[jet].eta());
-			jecUnc->setJetPt(tmprecpt);
-	  
-			sup += jecUnc->getUncertainty(true);         
-			if(isrc==1){ pfjetAK8jesup_pu[npfjetAK8] = sup; }
-			if(isrc==2){ pfjetAK8jesup_rel[npfjetAK8] = sup; }
-			if(isrc==4){ pfjetAK8jesup_scale[npfjetAK8] = sup; }
-			if(isrc==7){ pfjetAK8jesup_total[npfjetAK8] = sup; }
+		  
+		  JetCorrectionUncertainty *jecUnc = vsrcAK8[isrc-1];
+		  jecUnc->setJetEta(ak8jet.eta());
+		  jecUnc->setJetPt(tmprecpt);
+		  
+		  sup += jecUnc->getUncertainty(true);         
+		  if(isrc==1){ pfjetAK8jesup_pu[npfjetAK8] = sup; }
+		  if(isrc==2){ pfjetAK8jesup_rel[npfjetAK8] = sup; }
+		  if(isrc==4){ pfjetAK8jesup_scale[npfjetAK8] = sup; }
+		  if(isrc==7){ pfjetAK8jesup_total[npfjetAK8] = sup; }
 		}
 		else if(isrc>nsrc){
-			
-			JetCorrectionUncertainty *jecUnc = vsrcAK8[isrc-1-nsrc];
-			jecUnc->setJetEta((*pfjetAK8s)[jet].eta());
-			jecUnc->setJetPt(tmprecpt);
-	  
-			sup -= jecUnc->getUncertainty(false);
-			if(isrc==8){ pfjetAK8jesdn_pu[npfjetAK8] = sup; }
-			if(isrc==9){ pfjetAK8jesdn_rel[npfjetAK8] = sup; }
-			if(isrc==11){ pfjetAK8jesdn_scale[npfjetAK8] = sup; }
-			if(isrc==14){ pfjetAK8jesdn_total[npfjetAK8] = sup; }
+		  
+		  JetCorrectionUncertainty *jecUnc = vsrcAK8[isrc-1-nsrc];
+		  jecUnc->setJetEta(ak8jet.eta());
+		  jecUnc->setJetPt(tmprecpt);
+		  
+		  sup -= jecUnc->getUncertainty(false);
+		  if(isrc==8){ pfjetAK8jesdn_pu[npfjetAK8] = sup; }
+		  if(isrc==9){ pfjetAK8jesdn_rel[npfjetAK8] = sup; }
+		  if(isrc==11){ pfjetAK8jesdn_scale[npfjetAK8] = sup; }
+		  if(isrc==14){ pfjetAK8jesdn_total[npfjetAK8] = sup; }
 		}
-	
+		
       }
       
-      pfjetAK8CHF[npfjetAK8] = (*pfjetAK8s)[jet].chargedHadronEnergyFraction();
-      pfjetAK8NHF[npfjetAK8] = (*pfjetAK8s)[jet].neutralHadronEnergyFraction();
-      pfjetAK8CEMF[npfjetAK8] = (*pfjetAK8s)[jet].chargedEmEnergyFraction();
-      pfjetAK8NEMF[npfjetAK8] = (*pfjetAK8s)[jet].neutralEmEnergyFraction();
-      pfjetAK8MUF[npfjetAK8] = (*pfjetAK8s)[jet].muonEnergyFraction();
-      pfjetAK8PHF[npfjetAK8] = (*pfjetAK8s)[jet].photonEnergyFraction();
-      pfjetAK8EEF[npfjetAK8] = (*pfjetAK8s)[jet].electronEnergyFraction();
-      pfjetAK8HFHF[npfjetAK8] = (*pfjetAK8s)[jet].HFHadronEnergyFraction();
-      pfjetAK8HFEMF[npfjetAK8] = (*pfjetAK8s)[jet].HFEMEnergyFraction();
-      pfjetAK8HOF[npfjetAK8] = (*pfjetAK8s)[jet].hoEnergyFraction();
+      pfjetAK8CHF[npfjetAK8] = ak8jet.chargedHadronEnergyFraction();
+      pfjetAK8NHF[npfjetAK8] = ak8jet.neutralHadronEnergyFraction();
+      pfjetAK8CEMF[npfjetAK8] = ak8jet.chargedEmEnergyFraction();
+      pfjetAK8NEMF[npfjetAK8] = ak8jet.neutralEmEnergyFraction();
+      pfjetAK8MUF[npfjetAK8] = ak8jet.muonEnergyFraction();
+      pfjetAK8PHF[npfjetAK8] = ak8jet.photonEnergyFraction();
+      pfjetAK8EEF[npfjetAK8] = ak8jet.electronEnergyFraction();
+      pfjetAK8HFHF[npfjetAK8] = ak8jet.HFHadronEnergyFraction();
+      pfjetAK8HFEMF[npfjetAK8] = ak8jet.HFEMEnergyFraction();
+      pfjetAK8HOF[npfjetAK8] = ak8jet.hoEnergyFraction();
       
-      pfjetAK8CHM[npfjetAK8] = (*pfjetAK8s)[jet].chargedHadronMultiplicity();
-      pfjetAK8NHM[npfjetAK8] = (*pfjetAK8s)[jet].neutralHadronMultiplicity();
-      pfjetAK8MUM[npfjetAK8] = (*pfjetAK8s)[jet].muonMultiplicity();
-      pfjetAK8PHM[npfjetAK8] = (*pfjetAK8s)[jet].photonMultiplicity();
-      pfjetAK8EEM[npfjetAK8] = (*pfjetAK8s)[jet].electronMultiplicity();
-      pfjetAK8HFHM[npfjetAK8] = (*pfjetAK8s)[jet].HFHadronMultiplicity();
-      pfjetAK8HFEMM[npfjetAK8] = (*pfjetAK8s)[jet].HFEMMultiplicity();
+      pfjetAK8CHM[npfjetAK8] = ak8jet.chargedHadronMultiplicity();
+      pfjetAK8NHM[npfjetAK8] = ak8jet.neutralHadronMultiplicity();
+      pfjetAK8MUM[npfjetAK8] = ak8jet.muonMultiplicity();
+      pfjetAK8PHM[npfjetAK8] = ak8jet.photonMultiplicity();
+      pfjetAK8EEM[npfjetAK8] = ak8jet.electronMultiplicity();
+      pfjetAK8HFHM[npfjetAK8] = ak8jet.HFHadronMultiplicity();
+      pfjetAK8HFEMM[npfjetAK8] = ak8jet.HFEMMultiplicity();
       
-      pfjetAK8Chcons[npfjetAK8] = (*pfjetAK8s)[jet].chargedMultiplicity();
-      pfjetAK8Neucons[npfjetAK8] = (*pfjetAK8s)[jet].neutralMultiplicity();
+      pfjetAK8Chcons[npfjetAK8] = ak8jet.chargedMultiplicity();
+      pfjetAK8Neucons[npfjetAK8] = ak8jet.neutralMultiplicity();
       pfjetAK8chrad[npfjetAK8] = 0;
       
       JetIDVars idvars; 
@@ -1674,34 +1685,36 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       
       pfjetAK8jetID[npfjetAK8] = getJetID(idvars,"PUPPI",year,pfjetAK8eta[npfjetAK8],isUltraLegacy);
       pfjetAK8jetID_tightlepveto[npfjetAK8] = getJetID(idvars,"PUPPI",2018,pfjetAK8eta[npfjetAK8],false);
-    
+      
       float sumpt = 0, sumpt2 = 0;
       float leadjtrackpt = -100; //int leadjtrackid = -1;
       
-      std::vector<reco::CandidatePtr> daught((*pfjetAK8s)[jet].daughterPtrVector());
+      std::vector<reco::CandidatePtr> daught(ak8jet.daughterPtrVector());
       float el_maxpt(-100);
       int el_indx(-100);
       for (unsigned int i3 = 0; i3< daught.size(); ++i3) {
-		if (abs((*daught[i3]).pdgId()) == 11){
-			if ((*daught[i3]).pt() > el_maxpt) {
-				el_maxpt = (*daught[i3]).pt();
-				el_indx = i3;
-			}
-		}
+	if (abs((*daught[i3]).pdgId()) == 11){
+	  if ((*daught[i3]).pt() > el_maxpt) {
+	    el_maxpt = (*daught[i3]).pt();
+	    el_indx = i3;
+	  }
+	}
       }
       if (el_indx >= 0) {
-		TLorentzVector elInjet;
-		elInjet.SetPtEtaPhiE((*daught[el_indx]).pt(),(*daught[el_indx]).eta(),(*daught[el_indx]).phi(),(*daught[el_indx]).energy());
-		pfjetAK8elinpt[npfjetAK8] =  elInjet.Pt();
-		pfjetAK8elineta[npfjetAK8] =  elInjet.Eta();
-		pfjetAK8elinphi[npfjetAK8] =  elInjet.Phi();
-		pfjetAK8eline[npfjetAK8] =  elInjet.E();
+	TLorentzVector elInjet;
+	elInjet.SetPtEtaPhiE((*daught[el_indx]).pt(),(*daught[el_indx]).eta(),(*daught[el_indx]).phi(),(*daught[el_indx]).energy());
+	pfjetAK8elinpt[npfjetAK8] =  elInjet.Pt();
+	pfjetAK8elineta[npfjetAK8] =  elInjet.Eta();
+	pfjetAK8elinphi[npfjetAK8] =  elInjet.Phi();
+	//pfjetAK8eline[npfjetAK8] =  elInjet.E();
+	pfjetAK8elinmass[npfjetAK8] = elInjet.M();
       }
       else {
-		pfjetAK8elinpt[npfjetAK8] = -100;
+	pfjetAK8elinpt[npfjetAK8] = -100;
         pfjetAK8elineta[npfjetAK8] = -100;
         pfjetAK8elinphi[npfjetAK8] = -100; 
-        pfjetAK8eline[npfjetAK8] = -100;
+        //pfjetAK8eline[npfjetAK8] = -100;
+	pfjetAK8elinmass[npfjetAK8] = -100;
       }
       float mu_maxpt(-100);
       int mu_indx(-100);
@@ -1714,18 +1727,20 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
         }
       }
       if (mu_indx >= 0) {
-		TLorentzVector muInjet;
-        muInjet.SetPtEtaPhiE((*daught[mu_indx]).pt(),(*daught[mu_indx]).eta(),(*daught[mu_indx]).phi(),(*daught[mu_indx]).energy());
-		pfjetAK8muinpt[npfjetAK8] =  muInjet.Pt();
-        pfjetAK8muineta[npfjetAK8] =  muInjet.Eta();
+	TLorentzVector muInjet;
+	muInjet.SetPtEtaPhiE((*daught[mu_indx]).pt(),(*daught[mu_indx]).eta(),(*daught[mu_indx]).phi(),(*daught[mu_indx]).energy());
+	pfjetAK8muinpt[npfjetAK8] =  muInjet.Pt();
+	pfjetAK8muineta[npfjetAK8] =  muInjet.Eta();
         pfjetAK8muinphi[npfjetAK8] =  muInjet.Phi();
-        pfjetAK8muine[npfjetAK8] =  muInjet.E();
+        //pfjetAK8muine[npfjetAK8] =  muInjet.E();
+	pfjetAK8muinmass[npfjetAK8] =  muInjet.M();
       }
       else {
-		pfjetAK8muinpt[npfjetAK8] = -100;
+	pfjetAK8muinpt[npfjetAK8] = -100;
         pfjetAK8muineta[npfjetAK8] = -100;
-		pfjetAK8muinphi[npfjetAK8] = -100;
-        pfjetAK8muine[npfjetAK8] = -100;
+	pfjetAK8muinphi[npfjetAK8] = -100;
+        //pfjetAK8muine[npfjetAK8] = -100;
+	pfjetAK8muinmass[npfjetAK8] =  -100;
       }
       
       std::sort(daught.begin(), daught.end(), [](const reco::CandidatePtr &p1, const reco::CandidatePtr &p2)
@@ -1733,17 +1748,17 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       
       for (unsigned int i2 = 0; i2< daught.size(); ++i2) {
 	
-		float pt2 = ((daught[i2])->pt()) * ((daught[i2])->pt());
-		float delR = delta2R((*daught[i2]).rapidity(), (*daught[i2]).phi(),pfjetAK8y[npfjetAK8],pfjetAK8phi[npfjetAK8]);
+	float pt2 = ((daught[i2])->pt()) * ((daught[i2])->pt());
+	float delR = delta2R((*daught[i2]).rapidity(), (*daught[i2]).phi(),pfjetAK8y[npfjetAK8],pfjetAK8phi[npfjetAK8]);
 	
-		sumpt2 += pt2;
-		sumpt += daught[i2]->pt();
+	sumpt2 += pt2;
+	sumpt += daught[i2]->pt();
 	
-		pfjetAK8chrad[npfjetAK8] +=  (*daught[i2]).charge() * (daught[i2])->pt() * delR;
+	pfjetAK8chrad[npfjetAK8] +=  (*daught[i2]).charge() * (daught[i2])->pt() * delR;
 	
-		if(fabs((*daught[i2]).charge())>0 && (daught[i2])->pt()>leadjtrackpt){
-			leadjtrackpt = (daught[i2])->pt();
-		}
+	if(fabs((*daught[i2]).charge())>0 && (daught[i2])->pt()>leadjtrackpt){
+	  leadjtrackpt = (daught[i2])->pt();
+	}
       }
       
       daught.clear();
@@ -1754,34 +1769,63 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       pfjetAK8leadtrackpt[npfjetAK8] = leadjtrackpt;
       
       pfjetAK8pTD[npfjetAK8] = (sumpt2>0) ? sqrt(sumpt2)*1./sumpt : 0;
+    
       
+      pfjetAK8sub1pt[npfjetAK8] = pfjetAK8sub1eta[npfjetAK8] = pfjetAK8sub1phi[npfjetAK8] = pfjetAK8sub1mass[npfjetAK8] = pfjetAK8sub1btag[npfjetAK8] = pfjetAK8sub1chhadfrac[npfjetAK8] = pfjetAK8sub1neuhadfrac[npfjetAK8] =pfjetAK8sub1emfrac[npfjetAK8] = pfjetAK8sub1neuemfrac[npfjetAK8] = pfjetAK8sub1phofrac[npfjetAK8] = pfjetAK8sub1mufrac[npfjetAK8] = -100;                                                                                           
+      pfjetAK8sub2pt[npfjetAK8] = pfjetAK8sub2eta[npfjetAK8] = pfjetAK8sub2phi[npfjetAK8] = pfjetAK8sub2mass[npfjetAK8] = pfjetAK8sub2btag[npfjetAK8] = pfjetAK8sub2chhadfrac[npfjetAK8] = pfjetAK8sub2neuhadfrac[npfjetAK8] = pfjetAK8sub2emfrac[npfjetAK8] = pfjetAK8sub2neuemfrac[npfjetAK8] = pfjetAK8sub2phofrac[npfjetAK8] = pfjetAK8sub2mufrac[npfjetAK8] = -100;                                                                                           
+      pfjetAK8sdmass[npfjetAK8] = -100;                                                                      
+      pfjetAK8elinsubpt[npfjetAK8] = -100;                                                                   
+      pfjetAK8elinsubeta[npfjetAK8] = -100;                                                                  
+      pfjetAK8elinsubphi[npfjetAK8] = -100;                                                                  
+      //pfjetAK8elinsube[npfjetAK8] =  -100;                                                                   
+      pfjetAK8elinsubmass[npfjetAK8] = -100;                                                                 
+      pfjetAK8elinsubjpt[npfjetAK8] = -100;                                                                  
+      pfjetAK8elinsubjeta[npfjetAK8] = -100;                                                                 
+      pfjetAK8elinsubjphi[npfjetAK8] = -100;                                                                 
+      //pfjetAK8elinsubje[npfjetAK8] =  -100;                                                                  
+      pfjetAK8elinsubjmass[npfjetAK8] = -100;                                                                
+      pfjetAK8muinsubpt[npfjetAK8] = -100;
+      pfjetAK8muinsubeta[npfjetAK8] = -100;
+      pfjetAK8muinsubphi[npfjetAK8] = -100;
+      //pfjetAK8muinsube[npfjetAK8] =  -100;                                                               
+      pfjetAK8muinsubmass[npfjetAK8] = -100;
+      pfjetAK8muinsubjpt[npfjetAK8] = -100;
+      pfjetAK8muinsubjeta[npfjetAK8] = -100;
+      pfjetAK8muinsubjphi[npfjetAK8] = -100;
+      //pfjetAK8muinsubje[npfjetAK8] = -100;                                                               
+      pfjetAK8muinsubjmass[npfjetAK8] = -100;
+
+      pfjetAK8_bpt[npfjetAK8] = pfjetAK8_beta[npfjetAK8] = pfjetAK8_bphi[npfjetAK8] = pfjetAK8_be[npfjetAK8] = -100;                                                                                                           
+      pfjetAK8_leppt[npfjetAK8] = pfjetAK8_lepeta[npfjetAK8] = pfjetAK8_lepphi[npfjetAK8] = pfjetAK8_lepe[npfjetAK8] = -100;
+      
+
       if(isSoftDrop){
 	
-		pfjetAK8tau1[npfjetAK8] = (*pfjetAK8s)[jet].userFloat(tau1);
-		pfjetAK8tau2[npfjetAK8] = (*pfjetAK8s)[jet].userFloat(tau2);
-		pfjetAK8tau3[npfjetAK8] = (*pfjetAK8s)[jet].userFloat(tau3);
+	pfjetAK8tau1[npfjetAK8] = ak8jet.userFloat(tau1);
+	pfjetAK8tau2[npfjetAK8] = ak8jet.userFloat(tau2);
+	pfjetAK8tau3[npfjetAK8] = ak8jet.userFloat(tau3);
 	
-		if(((*pfjetAK8s)[jet].subjets(subjets)).size()>1){   ////subjets = "SoftDropPuppi"
+	if((ak8jet.subjets(subjets)).size()>1){   ////subjets = "SoftDropPuppi"
 	  
-			pfjetAK8sdmass[npfjetAK8] = ((*pfjetAK8s)[jet].groomedMass(subjets) > 0)? (*pfjetAK8s)[jet].groomedMass(subjets) : 0;
+	  pfjetAK8sdmass[npfjetAK8] = (ak8jet.groomedMass(subjets) > 0)? ak8jet.groomedMass(subjets) : 0;
 	  
-			TLorentzVector elInsubjet1, elInsubjet2, subjet1_wel, subjet2_wel;
-			TLorentzVector muInsubjet1, muInsubjet2, subjet1_wmu, subjet2_wmu;
-
-			std::vector<TLorentzVector> elInsubjet1vec, elInsubjet2vec;
-			std::vector<TLorentzVector> muInsubjet1vec, muInsubjet2vec;
-
-	  //std::cout << " subjet size " << (((*pfjetAK8s)[jet].subjets(subjets)).size()) << std::endl;
-	  if ((((*pfjetAK8s)[jet].subjets(subjets)).size()) >= 2) {
-	    //std::cout << " pt 1 " << (*pfjetAK8s)[jet].subjets(subjets)[0]->pt() << std::endl;
-	    //std::cout << " pt 2 " << (*pfjetAK8s)[jet].subjets(subjets)[1]->pt() << std::endl;
-	    if ((((*pfjetAK8s)[jet].subjets(subjets)).size())>2) {
-	      //std::cout << " pt 3 " << (*pfjetAK8s)[jet].subjets(subjets)[2]->pt() << std::endl;
+	  TLorentzVector elInsubjet1, elInsubjet2, subjet1_wel, subjet2_wel;
+	  TLorentzVector muInsubjet1, muInsubjet2, subjet1_wmu, subjet2_wmu;
+	  
+	  std::vector<TLorentzVector> elInsubjet1vec, elInsubjet2vec;
+	  std::vector<TLorentzVector> muInsubjet1vec, muInsubjet2vec;
+	  
+	  //std::cout << " subjet size " << ((ak8jet.subjets(subjets)).size()) << std::endl;
+	  if (((ak8jet.subjets(subjets)).size()) >= 2) {
+	    //std::cout << " pt 1 " << ak8jet.subjets(subjets)[0]->pt() << std::endl;
+	    //std::cout << " pt 2 " << ak8jet.subjets(subjets)[1]->pt() << std::endl;
+	    if (((ak8jet.subjets(subjets)).size())>2) {
+	      //std::cout << " pt 3 " << ak8jet.subjets(subjets)[2]->pt() << std::endl;
 	    }
 	  }
-
-	    for(unsigned int isub=0; isub<(((*pfjetAK8s)[jet].subjets(subjets)).size()); isub++){
-	    std::vector<reco::CandidatePtr> subdaught(((*pfjetAK8s)[jet].subjets(subjets))[isub]->daughterPtrVector());
+	  
+	  for(unsigned int isub=0; isub<((ak8jet.subjets(subjets)).size()); isub++){
+	    std::vector<reco::CandidatePtr> subdaught((ak8jet.subjets(subjets))[isub]->daughterPtrVector());
 	    if (isub==0 || isub==1) {
 	      float el_maxpt(-100);
 	      int el_indx(-100);
@@ -1803,22 +1847,22 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	      }
 	      if (el_indx >= 0 && isub==0) {
 		elInsubjet1.SetPtEtaPhiE((*subdaught[el_indx]).pt(),(*subdaught[el_indx]).eta(),(*subdaught[el_indx]).phi(),(*subdaught[el_indx]).energy());
-		subjet1_wel.SetPtEtaPhiM(((*pfjetAK8s)[jet].subjets(subjets))[isub]->pt(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->eta(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->phi(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->mass());
+		subjet1_wel.SetPtEtaPhiM((ak8jet.subjets(subjets))[isub]->pt(),(ak8jet.subjets(subjets))[isub]->eta(),(ak8jet.subjets(subjets))[isub]->phi(),(ak8jet.subjets(subjets))[isub]->mass());
 		elInsubjet1vec.push_back(elInsubjet1);
 	      }
 	      if (el_indx >= 0 && isub==1) {
 		elInsubjet2.SetPtEtaPhiM((*subdaught[el_indx]).pt(),(*subdaught[el_indx]).eta(),(*subdaught[el_indx]).phi(),(*subdaught[el_indx]).energy());
-		subjet2_wel.SetPtEtaPhiM(((*pfjetAK8s)[jet].subjets(subjets))[isub]->pt(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->eta(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->phi(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->mass());
+		subjet2_wel.SetPtEtaPhiM((ak8jet.subjets(subjets))[isub]->pt(),(ak8jet.subjets(subjets))[isub]->eta(),(ak8jet.subjets(subjets))[isub]->phi(),(ak8jet.subjets(subjets))[isub]->mass());
 		elInsubjet2vec.push_back(elInsubjet2);
 	      }
 	      if (mu_indx >= 0 && isub==0) {
 		muInsubjet1.SetPtEtaPhiE((*subdaught[mu_indx]).pt(),(*subdaught[mu_indx]).eta(),(*subdaught[mu_indx]).phi(),(*subdaught[mu_indx]).energy());
-                subjet1_wmu.SetPtEtaPhiM(((*pfjetAK8s)[jet].subjets(subjets))[isub]->pt(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->eta(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->phi(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->mass());
+                subjet1_wmu.SetPtEtaPhiM((ak8jet.subjets(subjets))[isub]->pt(),(ak8jet.subjets(subjets))[isub]->eta(),(ak8jet.subjets(subjets))[isub]->phi(),(ak8jet.subjets(subjets))[isub]->mass());
                 muInsubjet1vec.push_back(muInsubjet1);
               }
 	      if (mu_indx >= 0 && isub==1) {
 		muInsubjet2.SetPtEtaPhiE((*subdaught[mu_indx]).pt(),(*subdaught[mu_indx]).eta(),(*subdaught[mu_indx]).phi(),(*subdaught[mu_indx]).energy());
-		subjet2_wmu.SetPtEtaPhiM(((*pfjetAK8s)[jet].subjets(subjets))[isub]->pt(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->eta(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->phi(),((*pfjetAK8s)[jet].subjets(subjets))[isub]->mass());
+		subjet2_wmu.SetPtEtaPhiM((ak8jet.subjets(subjets))[isub]->pt(),(ak8jet.subjets(subjets))[isub]->eta(),(ak8jet.subjets(subjets))[isub]->phi(),(ak8jet.subjets(subjets))[isub]->mass());
 		muInsubjet2vec.push_back(muInsubjet2);
 	      }
 	    }
@@ -1844,128 +1888,133 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	    }
 	    
 	    if(isub==0){
-	      pfjetAK8sub1pt[npfjetAK8] = ((*pfjetAK8s)[jet].subjets(subjets))[isub]->pt();
-	      pfjetAK8sub1eta[npfjetAK8] = ((*pfjetAK8s)[jet].subjets(subjets))[isub]->eta();
-	      pfjetAK8sub1phi[npfjetAK8] = ((*pfjetAK8s)[jet].subjets(subjets))[isub]->phi();
-	      pfjetAK8sub1mass[npfjetAK8] = ((*pfjetAK8s)[jet].subjets(subjets))[isub]->mass();	 
-	      pfjetAK8sub1btag[npfjetAK8] = ((*pfjetAK8s)[jet].subjets(subjets))[isub]->bDiscriminator("pfDeepCSVJetTags:probb")+((*pfjetAK8s)[jet].subjets(subjets))[isub]->bDiscriminator("pfDeepCSVJetTags:probbb");
-	      pfjetAK8sub1emfrac[npfjetAK8] = emsub*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
-	      pfjetAK8sub1mufrac[npfjetAK8] = musub*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
-	      pfjetAK8sub1phofrac[npfjetAK8] = phosub*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
-	      pfjetAK8sub1chhadfrac[npfjetAK8] = chhad*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
-	      pfjetAK8sub1neuhadfrac[npfjetAK8] = neuhad*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
-	      pfjetAK8sub1hadfrac[npfjetAK8] = (chhad+neuhad)*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
+	      
+	      const auto ak8subjet = (ak8jet.subjets(subjets))[isub];
+
+	      pfjetAK8sub1pt[npfjetAK8] = ak8subjet->pt();
+	      pfjetAK8sub1eta[npfjetAK8] = ak8subjet->eta();
+	      pfjetAK8sub1phi[npfjetAK8] = ak8subjet->phi();
+	      pfjetAK8sub1mass[npfjetAK8] = ak8subjet->mass();	 
+	      pfjetAK8sub1btag[npfjetAK8] = ak8subjet->bDiscriminator("pfDeepCSVJetTags:probb")+ak8subjet->bDiscriminator("pfDeepCSVJetTags:probbb");
+	      pfjetAK8sub1emfrac[npfjetAK8] = emsub*1./ak8subjet->energy();
+	      pfjetAK8sub1mufrac[npfjetAK8] = musub*1./ak8subjet->energy();
+	      pfjetAK8sub1phofrac[npfjetAK8] = phosub*1./ak8subjet->energy();
+	      pfjetAK8sub1chhadfrac[npfjetAK8] = chhad*1./ak8subjet->energy();
+	      pfjetAK8sub1neuhadfrac[npfjetAK8] = neuhad*1./ak8subjet->energy();
+	      pfjetAK8sub1hadfrac[npfjetAK8] = (chhad+neuhad)*1./ak8subjet->energy();
 	    }
-	    else{
-	      if(isub==1){
-		pfjetAK8sub2pt[npfjetAK8] = ((*pfjetAK8s)[jet].subjets(subjets))[isub]->pt();
-		pfjetAK8sub2eta[npfjetAK8] = ((*pfjetAK8s)[jet].subjets(subjets))[isub]->eta();
-		pfjetAK8sub2phi[npfjetAK8] = ((*pfjetAK8s)[jet].subjets(subjets))[isub]->phi();
-		pfjetAK8sub2mass[npfjetAK8] = ((*pfjetAK8s)[jet].subjets(subjets))[isub]->mass();	 
-		pfjetAK8sub2btag[npfjetAK8] = ((*pfjetAK8s)[jet].subjets(subjets))[isub]->bDiscriminator("pfDeepCSVJetTags:probb")+((*pfjetAK8s)[jet].subjets(subjets))[isub]->bDiscriminator("pfDeepCSVJetTags:probbb");
-		pfjetAK8sub2emfrac[npfjetAK8] = emsub*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
-		pfjetAK8sub2mufrac[npfjetAK8] = musub*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
-		pfjetAK8sub2phofrac[npfjetAK8] = phosub*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
-		pfjetAK8sub2chhadfrac[npfjetAK8] = chhad*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
-		pfjetAK8sub2neuhadfrac[npfjetAK8] = neuhad*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
-		pfjetAK8sub2hadfrac[npfjetAK8] = (chhad+neuhad)*1./((*pfjetAK8s)[jet].subjets(subjets))[isub]->energy();
-	      }
+	    else if(isub==1){
+
+	      const auto ak8subjet = (ak8jet.subjets(subjets))[isub];
+
+	      pfjetAK8sub2pt[npfjetAK8] = ak8subjet->pt();
+	      pfjetAK8sub2eta[npfjetAK8] = ak8subjet->eta();
+	      pfjetAK8sub2phi[npfjetAK8] = ak8subjet->phi();
+	      pfjetAK8sub2mass[npfjetAK8] = ak8subjet->mass();	 
+	      pfjetAK8sub2btag[npfjetAK8] = ak8subjet->bDiscriminator("pfDeepCSVJetTags:probb")+ak8subjet->bDiscriminator("pfDeepCSVJetTags:probbb");
+	      pfjetAK8sub2emfrac[npfjetAK8] = emsub*1./ak8subjet->energy();
+	      pfjetAK8sub2mufrac[npfjetAK8] = musub*1./ak8subjet->energy();
+	      pfjetAK8sub2phofrac[npfjetAK8] = phosub*1./ak8subjet->energy();
+	      pfjetAK8sub2chhadfrac[npfjetAK8] = chhad*1./ak8subjet->energy();
+	      pfjetAK8sub2neuhadfrac[npfjetAK8] = neuhad*1./ak8subjet->energy();
+	      pfjetAK8sub2hadfrac[npfjetAK8] = (chhad+neuhad)*1./ak8subjet->energy();
 	    }	  
-	    }
-	    if (pfjetAK8sub1hadfrac[npfjetAK8] >= 0 && pfjetAK8sub2hadfrac[npfjetAK8] >= 0) {
-	      if (pfjetAK8sub1hadfrac[npfjetAK8] < pfjetAK8sub2hadfrac[npfjetAK8]) {
-		if (elInsubjet1vec.size() > 0) {
-		  pfjetAK8elinsubpt[npfjetAK8] =  elInsubjet1.Pt();
-		  pfjetAK8elinsubeta[npfjetAK8] =  elInsubjet1.Eta();
-		  pfjetAK8elinsubphi[npfjetAK8] =  elInsubjet1.Phi();
-		  pfjetAK8elinsube[npfjetAK8] =  elInsubjet1.E();
-		  pfjetAK8elinsubmass[npfjetAK8] =  elInsubjet1.M();
-		  pfjetAK8elinsubjpt[npfjetAK8] =  subjet1_wel.Pt();
-		  pfjetAK8elinsubjeta[npfjetAK8] = subjet1_wel.Eta();
-		  pfjetAK8elinsubjphi[npfjetAK8] = subjet1_wel.Phi();
-		  pfjetAK8elinsubje[npfjetAK8] =   subjet1_wel.E();
-		  pfjetAK8elinsubjmass[npfjetAK8] =  subjet1_wel.M();
-		}
-		if (muInsubjet1vec.size() > 0) {
-		  pfjetAK8muinsubpt[npfjetAK8] =  muInsubjet1.Pt();
-		  pfjetAK8muinsubeta[npfjetAK8] =  muInsubjet1.Eta();
-		  pfjetAK8muinsubphi[npfjetAK8] =  muInsubjet1.Phi();
-		  pfjetAK8muinsube[npfjetAK8] =  muInsubjet1.E();
-		  pfjetAK8muinsubmass[npfjetAK8] =  muInsubjet1.M();
-		  pfjetAK8muinsubjpt[npfjetAK8] =  subjet1_wmu.Pt();
-		  pfjetAK8muinsubjeta[npfjetAK8] = subjet1_wmu.Eta();
-		  pfjetAK8muinsubjphi[npfjetAK8] = subjet1_wmu.Phi();
-		  pfjetAK8muinsubje[npfjetAK8] =   subjet1_wmu.E();
-		  pfjetAK8muinsubjmass[npfjetAK8] =  subjet1_wmu.M();
-		}
+	  }
+	  if (pfjetAK8sub1hadfrac[npfjetAK8] >= 0 && pfjetAK8sub2hadfrac[npfjetAK8] >= 0) {
+	    if (pfjetAK8sub1hadfrac[npfjetAK8] < pfjetAK8sub2hadfrac[npfjetAK8]) {
+	      if (elInsubjet1vec.size() > 0) {
+		pfjetAK8elinsubpt[npfjetAK8] =  elInsubjet1.Pt();
+		pfjetAK8elinsubeta[npfjetAK8] =  elInsubjet1.Eta();
+		pfjetAK8elinsubphi[npfjetAK8] =  elInsubjet1.Phi();
+		//pfjetAK8elinsube[npfjetAK8] =  elInsubjet1.E();
+		pfjetAK8elinsubmass[npfjetAK8] =  elInsubjet1.M();
+		pfjetAK8elinsubjpt[npfjetAK8] =  subjet1_wel.Pt();
+		pfjetAK8elinsubjeta[npfjetAK8] = subjet1_wel.Eta();
+		pfjetAK8elinsubjphi[npfjetAK8] = subjet1_wel.Phi();
+		//pfjetAK8elinsubje[npfjetAK8] =   subjet1_wel.E();
+		pfjetAK8elinsubjmass[npfjetAK8] =  subjet1_wel.M();
 	      }
-	      else if (pfjetAK8sub1hadfrac[npfjetAK8] > pfjetAK8sub2hadfrac[npfjetAK8]){
-		if (elInsubjet2vec.size() > 0) {
-		  pfjetAK8elinsubpt[npfjetAK8] =  elInsubjet2.Pt();
-		  pfjetAK8elinsubeta[npfjetAK8] =  elInsubjet2.Eta();
-		  pfjetAK8elinsubphi[npfjetAK8] =  elInsubjet2.Phi();
-		  pfjetAK8elinsube[npfjetAK8] =  elInsubjet2.E();
-		  pfjetAK8elinsubmass[npfjetAK8] =  elInsubjet2.M();
-		  
-		  pfjetAK8elinsubjpt[npfjetAK8] =  subjet2_wel.Pt();
-		  pfjetAK8elinsubjeta[npfjetAK8] = subjet2_wel.Eta();
-		  pfjetAK8elinsubjphi[npfjetAK8] = subjet2_wel.Phi();
-		  pfjetAK8elinsubje[npfjetAK8] =   subjet2_wel.E();
-		  pfjetAK8elinsubjmass[npfjetAK8] =  subjet2_wel.M();
-		}
-		if (muInsubjet2vec.size() > 0) {
-		  pfjetAK8muinsubpt[npfjetAK8] =  muInsubjet2.Pt();
-		  pfjetAK8muinsubeta[npfjetAK8] =  muInsubjet2.Eta();
-		  pfjetAK8muinsubphi[npfjetAK8] =  muInsubjet2.Phi();
-		  pfjetAK8muinsube[npfjetAK8] =  muInsubjet2.E();
-		  pfjetAK8muinsubmass[npfjetAK8] =  muInsubjet2.M();
-		  
-		  pfjetAK8muinsubjpt[npfjetAK8] =  subjet2_wmu.Pt();
-		  pfjetAK8muinsubjeta[npfjetAK8] = subjet2_wmu.Eta();
-		  pfjetAK8muinsubjphi[npfjetAK8] = subjet2_wmu.Phi();
-		  pfjetAK8muinsubje[npfjetAK8] =   subjet2_wmu.E();
-		  pfjetAK8muinsubjmass[npfjetAK8] =  subjet2_wmu.M();
-		}
-	      }
-	      else {
-		pfjetAK8elinsubpt[npfjetAK8] = -100; 
-		pfjetAK8elinsubeta[npfjetAK8] = -100;
-		pfjetAK8elinsubphi[npfjetAK8] = -100;
-		pfjetAK8elinsube[npfjetAK8] =  -100;
-		pfjetAK8elinsubmass[npfjetAK8] = -100;
-		pfjetAK8elinsubjpt[npfjetAK8] = -100; 
-		pfjetAK8elinsubjeta[npfjetAK8] = -100;
-		pfjetAK8elinsubjphi[npfjetAK8] = -100;
-		pfjetAK8elinsubje[npfjetAK8] = -100;  
-		pfjetAK8elinsubjmass[npfjetAK8] = -100;
-		pfjetAK8muinsubpt[npfjetAK8] = -100;
-		pfjetAK8muinsubeta[npfjetAK8] = -100;
-		pfjetAK8muinsubphi[npfjetAK8] = -100;
-		pfjetAK8muinsube[npfjetAK8] =  -100;
-		pfjetAK8muinsubmass[npfjetAK8] = -100;
-		pfjetAK8muinsubjpt[npfjetAK8] = -100;
-		pfjetAK8muinsubjeta[npfjetAK8] = -100;
-		pfjetAK8muinsubjphi[npfjetAK8] = -100;
-		pfjetAK8muinsubje[npfjetAK8] = -100;
-		pfjetAK8muinsubjmass[npfjetAK8] = -100;
+	      if (muInsubjet1vec.size() > 0) {
+		pfjetAK8muinsubpt[npfjetAK8] =  muInsubjet1.Pt();
+		pfjetAK8muinsubeta[npfjetAK8] =  muInsubjet1.Eta();
+		pfjetAK8muinsubphi[npfjetAK8] =  muInsubjet1.Phi();
+		//pfjetAK8muinsube[npfjetAK8] =  muInsubjet1.E();
+		pfjetAK8muinsubmass[npfjetAK8] =  muInsubjet1.M();
+		pfjetAK8muinsubjpt[npfjetAK8] =  subjet1_wmu.Pt();
+		pfjetAK8muinsubjeta[npfjetAK8] = subjet1_wmu.Eta();
+		pfjetAK8muinsubjphi[npfjetAK8] = subjet1_wmu.Phi();
+		//pfjetAK8muinsubje[npfjetAK8] =   subjet1_wmu.E();
+		pfjetAK8muinsubjmass[npfjetAK8] =  subjet1_wmu.M();
 	      }
 	    }
-	    if (pfjetAK8elinsubpt[npfjetAK8] != -100 && pfjetAK8elinsubeta[npfjetAK8] != -100) {
-	      float elIfar(0.), elInear(0.), elI0(0.);
-	      for (unsigned int i = 0, n = pfs->size(); i < n; ++i) {
-		const pat::PackedCandidate &pf = (*pfs)[i];
-		float dR;
-		if (delta2R(pfjetAK8elinsubeta[npfjetAK8],pfjetAK8elinsubphi[npfjetAK8],pf.eta(),pf.phi()) < 0.4 && delta2R(pfjetAK8elinsubeta[npfjetAK8],pfjetAK8elinsubphi[npfjetAK8],pf.eta(),pf.phi()) > 0.00001) {
-		  dR = delta2R(pfjetAK8elinsubeta[npfjetAK8],pfjetAK8elinsubphi[npfjetAK8],pf.eta(),pf.phi());
-		  elIfar = elIfar + pf.pt()*(pow(dR,2.0));
-		  elInear = elInear + pf.pt()*(pow(dR,-2.0));
-		  elI0 = elI0 + pf.pt();
-		}
+	    else if (pfjetAK8sub1hadfrac[npfjetAK8] > pfjetAK8sub2hadfrac[npfjetAK8]){
+	      if (elInsubjet2vec.size() > 0) {
+		pfjetAK8elinsubpt[npfjetAK8] =  elInsubjet2.Pt();
+		pfjetAK8elinsubeta[npfjetAK8] =  elInsubjet2.Eta();
+		pfjetAK8elinsubphi[npfjetAK8] =  elInsubjet2.Phi();
+		//pfjetAK8elinsube[npfjetAK8] =  elInsubjet2.E();
+		pfjetAK8elinsubmass[npfjetAK8] =  elInsubjet2.M();
+		
+		pfjetAK8elinsubjpt[npfjetAK8] =  subjet2_wel.Pt();
+		pfjetAK8elinsubjeta[npfjetAK8] = subjet2_wel.Eta();
+		pfjetAK8elinsubjphi[npfjetAK8] = subjet2_wel.Phi();
+		//pfjetAK8elinsubje[npfjetAK8] =   subjet2_wel.E();
+		pfjetAK8elinsubjmass[npfjetAK8] =  subjet2_wel.M();
 	      }
-	      pfjetAK8elinsubIfar[npfjetAK8] = elIfar;
-	      pfjetAK8elinsubInear[npfjetAK8] = elInear;
-	      pfjetAK8elinsubI0[npfjetAK8] = elI0;
+	      if (muInsubjet2vec.size() > 0) {
+		pfjetAK8muinsubpt[npfjetAK8] =  muInsubjet2.Pt();
+		pfjetAK8muinsubeta[npfjetAK8] =  muInsubjet2.Eta();
+		pfjetAK8muinsubphi[npfjetAK8] =  muInsubjet2.Phi();
+		//pfjetAK8muinsube[npfjetAK8] =  muInsubjet2.E();
+		pfjetAK8muinsubmass[npfjetAK8] =  muInsubjet2.M();
+		
+		pfjetAK8muinsubjpt[npfjetAK8] =  subjet2_wmu.Pt();
+		pfjetAK8muinsubjeta[npfjetAK8] = subjet2_wmu.Eta();
+		pfjetAK8muinsubjphi[npfjetAK8] = subjet2_wmu.Phi();
+		//pfjetAK8muinsubje[npfjetAK8] =   subjet2_wmu.E();
+		pfjetAK8muinsubjmass[npfjetAK8] =  subjet2_wmu.M();
+	      }
 	    }
+	      /* 
+		 } else {
+		 pfjetAK8elinsubpt[npfjetAK8] = -100; 
+		 pfjetAK8elinsubeta[npfjetAK8] = -100;
+		 pfjetAK8elinsubphi[npfjetAK8] = -100;
+		 //pfjetAK8elinsube[npfjetAK8] =  -100;
+		 pfjetAK8elinsubmass[npfjetAK8] = -100;
+		 pfjetAK8elinsubjpt[npfjetAK8] = -100; 
+		 pfjetAK8elinsubjeta[npfjetAK8] = -100;
+		 pfjetAK8elinsubjphi[npfjetAK8] = -100;
+		 //pfjetAK8elinsubje[npfjetAK8] = -100;  
+		 pfjetAK8elinsubjmass[npfjetAK8] = -100;
+		 pfjetAK8muinsubpt[npfjetAK8] = -100;
+		 pfjetAK8muinsubeta[npfjetAK8] = -100;
+		 pfjetAK8muinsubphi[npfjetAK8] = -100;
+		 //pfjetAK8muinsube[npfjetAK8] =  -100;
+		 pfjetAK8muinsubmass[npfjetAK8] = -100;
+		 pfjetAK8muinsubjpt[npfjetAK8] = -100;
+		 pfjetAK8muinsubjeta[npfjetAK8] = -100;
+		 pfjetAK8muinsubjphi[npfjetAK8] = -100;
+		 //pfjetAK8muinsubje[npfjetAK8] = -100;
+		 pfjetAK8muinsubjmass[npfjetAK8] = -100;
+		 }*/
+	  }
+	  if (pfjetAK8elinsubpt[npfjetAK8] != -100 && pfjetAK8elinsubeta[npfjetAK8] != -100) {
+	    float elIfar(0.), elInear(0.), elI0(0.);
+	    for (unsigned int i = 0, n = pfs->size(); i < n; ++i) {
+	      const pat::PackedCandidate &pf = (*pfs)[i];
+	      float dR;
+	      if (delta2R(pfjetAK8elinsubeta[npfjetAK8],pfjetAK8elinsubphi[npfjetAK8],pf.eta(),pf.phi()) < 0.4 && delta2R(pfjetAK8elinsubeta[npfjetAK8],pfjetAK8elinsubphi[npfjetAK8],pf.eta(),pf.phi()) > 0.00001) {
+		dR = delta2R(pfjetAK8elinsubeta[npfjetAK8],pfjetAK8elinsubphi[npfjetAK8],pf.eta(),pf.phi());
+		elIfar = elIfar + pf.pt()*(pow(dR,2.0));
+		elInear = elInear + pf.pt()*(pow(dR,-2.0));
+		elI0 = elI0 + pf.pt();
+	      }
+	    }
+	    pfjetAK8elinsubIfar[npfjetAK8] = elIfar;
+	    pfjetAK8elinsubInear[npfjetAK8] = elInear;
+	    pfjetAK8elinsubI0[npfjetAK8] = elI0;
+	  }
 	  if (pfjetAK8muinsubpt[npfjetAK8] != -100 && pfjetAK8muinsubeta[npfjetAK8] != -100) {
 	    float Ifar(0.), Inear(0.), I0(0.);
 	    for (unsigned int i = 0, n = pfs->size(); i < n; ++i) {
@@ -1991,7 +2040,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	  int leadtrackid = -1;
 	  float leadtrackpt = -1;
 	  
-	  std::vector<reco::CandidatePtr> subdaught(((*pfjetAK8s)[jet].subjets(subjets))[isubtag]->daughterPtrVector());
+	  std::vector<reco::CandidatePtr> subdaught((ak8jet.subjets(subjets))[isubtag]->daughterPtrVector());
 	  for(unsigned int i2=0; i2 < subdaught.size(); i2++){
 	    PseudoJet psjet ;
 	    psjet = PseudoJet( (*subdaught[i2]).px(),(*subdaught[i2]).py(),(*subdaught[i2]).pz(),(*subdaught[i2]).energy() );
@@ -2103,7 +2152,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	  
 	  if(ilms>=0){
 	    
-	    std::vector<reco::CandidatePtr> daught2((*pfjetAK8s)[jet].daughterPtrVector());
+	    std::vector<reco::CandidatePtr> daught2(ak8jet.daughterPtrVector());
 	    std::sort(daught2.begin(), daught2.end(), [](const reco::CandidatePtr &p1, const reco::CandidatePtr &p2)
 		      { return p1->pt() > p2->pt(); });
 	    
@@ -2138,28 +2187,26 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	    
 	  }
 	  
+	  //} else {
+	  //pfjetAK8sub1pt[npfjetAK8] = pfjetAK8sub1eta[npfjetAK8] = pfjetAK8sub1phi[npfjetAK8] = pfjetAK8sub1mass[npfjetAK8] = pfjetAK8sub1btag[npfjetAK8] = pfjetAK8sub1chhadfrac[npfjetAK8] = pfjetAK8sub1neuhadfrac[npfjetAK8] = pfjetAK8sub1emfrac[npfjetAK8] = pfjetAK8sub1neuemfrac[npfjetAK8] = pfjetAK8sub1phofrac[npfjetAK8] = pfjetAK8sub1mufrac[npfjetAK8] = -100;
+	  //pfjetAK8sub2pt[npfjetAK8] = pfjetAK8sub2eta[npfjetAK8] = pfjetAK8sub2phi[npfjetAK8] = pfjetAK8sub2mass[npfjetAK8] = pfjetAK8sub2btag[npfjetAK8] = pfjetAK8sub2chhadfrac[npfjetAK8] = pfjetAK8sub2neuhadfrac[npfjetAK8] = pfjetAK8sub2emfrac[npfjetAK8] = pfjetAK8sub2neuemfrac[npfjetAK8] = pfjetAK8sub2phofrac[npfjetAK8] = pfjetAK8sub2mufrac[npfjetAK8] = -100;
+	  //pfjetAK8sdmass[npfjetAK8] = -100;
+	  //pfjetAK8elinsubpt[npfjetAK8] = -100;
+	  //pfjetAK8elinsubeta[npfjetAK8] = -100;
+	  //pfjetAK8elinsubphi[npfjetAK8] = -100;
+	  //pfjetAK8elinsube[npfjetAK8] =  -100;
+	  //pfjetAK8elinsubmass[npfjetAK8] = -100; 
+	  
+	  //pfjetAK8elinsubjpt[npfjetAK8] = -100;
+	  //pfjetAK8elinsubjeta[npfjetAK8] = -100;
+	  //pfjetAK8elinsubjphi[npfjetAK8] = -100;
+	  //pfjetAK8elinsubje[npfjetAK8] =  -100;
+	  //pfjetAK8elinsubjmass[npfjetAK8] = -100;
+	  
+	  //pfjetAK8_bpt[npfjetAK8] = pfjetAK8_beta[npfjetAK8] = pfjetAK8_bphi[npfjetAK8] = pfjetAK8_be[npfjetAK8] = -100;
+	  //pfjetAK8_leppt[npfjetAK8] = pfjetAK8_lepeta[npfjetAK8] = pfjetAK8_lepphi[npfjetAK8] = pfjetAK8_lepe[npfjetAK8] = -100;
+	  //}
 	}
-	else{
-	  pfjetAK8sub1pt[npfjetAK8] = pfjetAK8sub1eta[npfjetAK8] = pfjetAK8sub1phi[npfjetAK8] = pfjetAK8sub1mass[npfjetAK8] = pfjetAK8sub1btag[npfjetAK8] = pfjetAK8sub1chhadfrac[npfjetAK8] = pfjetAK8sub1neuhadfrac[npfjetAK8] = pfjetAK8sub1emfrac[npfjetAK8] = pfjetAK8sub1neuemfrac[npfjetAK8] = pfjetAK8sub1phofrac[npfjetAK8] = pfjetAK8sub1mufrac[npfjetAK8] = -100;
-	  pfjetAK8sub2pt[npfjetAK8] = pfjetAK8sub2eta[npfjetAK8] = pfjetAK8sub2phi[npfjetAK8] = pfjetAK8sub2mass[npfjetAK8] = pfjetAK8sub2btag[npfjetAK8] = pfjetAK8sub2chhadfrac[npfjetAK8] = pfjetAK8sub2neuhadfrac[npfjetAK8] = pfjetAK8sub2emfrac[npfjetAK8] = pfjetAK8sub2neuemfrac[npfjetAK8] = pfjetAK8sub2phofrac[npfjetAK8] = pfjetAK8sub2mufrac[npfjetAK8] = -100;
-	    pfjetAK8sdmass[npfjetAK8] = -100;
-	    
-	    pfjetAK8elinsubpt[npfjetAK8] = -100;
-	    pfjetAK8elinsubeta[npfjetAK8] = -100;
-	    pfjetAK8elinsubphi[npfjetAK8] = -100;
-	    pfjetAK8elinsube[npfjetAK8] =  -100;
-	    pfjetAK8elinsubmass[npfjetAK8] = -100; 
-	    
-	    pfjetAK8elinsubjpt[npfjetAK8] = -100;
-            pfjetAK8elinsubjeta[npfjetAK8] = -100;
-            pfjetAK8elinsubjphi[npfjetAK8] = -100;
-            pfjetAK8elinsubje[npfjetAK8] =  -100;
-            pfjetAK8elinsubjmass[npfjetAK8] = -100;
-	    
-	    pfjetAK8_bpt[npfjetAK8] = pfjetAK8_beta[npfjetAK8] = pfjetAK8_bphi[npfjetAK8] = pfjetAK8_be[npfjetAK8] = -100;
-	    pfjetAK8_leppt[npfjetAK8] = pfjetAK8_lepeta[npfjetAK8] = pfjetAK8_lepphi[npfjetAK8] = pfjetAK8_lepe[npfjetAK8] = -100;
-	}
-	
       }//isSoftDrop
       
       npfjetAK8++;	
@@ -2167,7 +2214,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       
     }
   }
-
+  
   npfjetAK4 = 0;
   iEvent.getByToken(tok_pfjetAK4s_, pfjetAK4s);
   if(isMC){
@@ -2176,8 +2223,11 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
   
   for (unsigned jet = 0; jet< pfjetAK4s->size(); jet++) {
     
-    HepLorentzVector pfjetAK44v((*pfjetAK4s)[jet].correctedP4("Uncorrected").px(),(*pfjetAK4s)[jet].correctedP4("Uncorrected").py(),(*pfjetAK4s)[jet].correctedP4("Uncorrected").pz(), (*pfjetAK4s)[jet].correctedP4("Uncorrected").energy());
-      
+    const auto &ak4jet = (*pfjetAK4s)[jet];
+
+    //HepLorentzVector pfjetAK44v((*pfjetAK4s)[jet].correctedP4("Uncorrected").px(),(*pfjetAK4s)[jet].correctedP4("Uncorrected").py(),(*pfjetAK4s)[jet].correctedP4("Uncorrected").pz(), (*pfjetAK4s)[jet].correctedP4("Uncorrected").energy());
+    
+    HepLorentzVector pfjetAK44v(ak4jet.correctedP4("Uncorrected").px(),ak4jet.correctedP4("Uncorrected").py(),ak4jet.correctedP4("Uncorrected").pz(), ak4jet.correctedP4("Uncorrected").energy());
     double tmprecpt = pfjetAK44v.perp();
     
     if(tmprecpt<minPt) continue;
@@ -2187,18 +2237,18 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     pfjetAK4eta[npfjetAK4] = 	pfjetAK44v.eta();
     pfjetAK4y[npfjetAK4] = pfjetAK44v.rapidity();
     pfjetAK4phi[npfjetAK4] = pfjetAK44v.phi();
-    pfjetAK4mass[npfjetAK4] = (*pfjetAK4s)[jet].correctedP4("Uncorrected").mass();
+    pfjetAK4mass[npfjetAK4] = ak4jet.correctedP4("Uncorrected").mass();
     
-    pfjetAK4btag_CMVA[npfjetAK4] = (*pfjetAK4s)[jet].bDiscriminator(btag_CMVA_name);
-    pfjetAK4btag_CSV[npfjetAK4] = (*pfjetAK4s)[jet].bDiscriminator(btag_CSV_name);
-    pfjetAK4btag_DeepCSV[npfjetAK4] = (*pfjetAK4s)[jet].bDiscriminator("pfDeepCSVJetTags:probb")+(*pfjetAK4s)[jet].bDiscriminator("pfDeepCSVJetTags:probbb");
-    pfjetAK4btag_DeepCSV2[npfjetAK4] = (*pfjetAK4s)[jet].bDiscriminator("pfDeepCSVDiscriminatorsJetTags:BvsAll");
-    pfjetAK4btag_DeepFlav[npfjetAK4] = (*pfjetAK4s)[jet].bDiscriminator("pfDeepFlavourJetTags:probb") + (*pfjetAK4s)[jet].bDiscriminator("pfDeepFlavourJetTags:probbb")+(*pfjetAK4s)[jet].bDiscriminator("pfDeepFlavourJetTags:problepb");
-    pfjetAK4btag_DeepQCD[npfjetAK4] = (*pfjetAK4s)[jet].bDiscriminator("pfDeepBoostedJetTags:probQCDbb")+(*pfjetAK4s)[jet].bDiscriminator("pfDeepBoostedJetTags:probQCDcc")+(*pfjetAK4s)[jet].bDiscriminator("pfDeepBoostedJetTags:probQCDb")+(*pfjetAK4s)[jet].bDiscriminator("pfDeepBoostedJetTags:probQCDc")+(*pfjetAK4s)[jet].bDiscriminator("pfDeepBoostedJetTags:probQCDothers") ;
+    pfjetAK4btag_CMVA[npfjetAK4] = ak4jet.bDiscriminator(btag_CMVA_name);
+    pfjetAK4btag_CSV[npfjetAK4] = ak4jet.bDiscriminator(btag_CSV_name);
+    pfjetAK4btag_DeepCSV[npfjetAK4] = ak4jet.bDiscriminator("pfDeepCSVJetTags:probb")+ak4jet.bDiscriminator("pfDeepCSVJetTags:probbb");
+    pfjetAK4btag_DeepCSV2[npfjetAK4] = ak4jet.bDiscriminator("pfDeepCSVDiscriminatorsJetTags:BvsAll");
+    pfjetAK4btag_DeepFlav[npfjetAK4] = ak4jet.bDiscriminator("pfDeepFlavourJetTags:probb") + ak4jet.bDiscriminator("pfDeepFlavourJetTags:probbb")+ak4jet.bDiscriminator("pfDeepFlavourJetTags:problepb");
+    pfjetAK4btag_DeepQCD[npfjetAK4] = ak4jet.bDiscriminator("pfDeepBoostedJetTags:probQCDbb")+ak4jet.bDiscriminator("pfDeepBoostedJetTags:probQCDcc")+ak4jet.bDiscriminator("pfDeepBoostedJetTags:probQCDb")+ak4jet.bDiscriminator("pfDeepBoostedJetTags:probQCDc")+ak4jet.bDiscriminator("pfDeepBoostedJetTags:probQCDothers") ;
     
     double total_cor =1;
     
-    jecL1FastAK4->setJetPt(tmprecpt); jecL1FastAK4->setJetA((*pfjetAK4s)[jet].jetArea()); jecL1FastAK4->setRho(*Rho_PF);jecL1FastAK4->setJetEta(pfjetAK44v.eta());
+    jecL1FastAK4->setJetPt(tmprecpt); jecL1FastAK4->setJetA(ak4jet.jetArea()); jecL1FastAK4->setRho(*Rho_PF);jecL1FastAK4->setJetEta(pfjetAK44v.eta());
     double corFactorL1Fast = jecL1FastAK4->getCorrection();
     total_cor*= corFactorL1Fast;
     tmprecpt = tmprecpt * corFactorL1Fast;
@@ -2223,7 +2273,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       total_cor*= corFactorL2L3Residual;
       tmprecpt *=corFactorL2L3Residual;
     }
-		
+    
     pfjetAK4JEC[npfjetAK4] = total_cor;
     
     pfjetAK4JECL1[npfjetAK4] = corFactorL1Fast;
@@ -2249,24 +2299,24 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       int match_gen_AK4 = -1;
       
       for (unsigned get = 0; get<(genjetAK4s->size()); get++) {
-		HepLorentzVector genjet4v((*genjetAK4s)[get].px(),(*genjetAK4s)[get].py(),(*genjetAK4s)[get].pz(), (*genjetAK4s)[get].energy());
-		if((delta2R(pfjetAK44v.rapidity(),pfjetAK44v.phi(),genjet4v.rapidity(),genjet4v.phi()) < (0.5*0.4)) &&(fabs(tmprecpt-genjet4v.perp())<(3*fabs(rp_AK4)*tmprecpt))){
-			match_AK4 = true;
-			match_gen_AK4 = get;
-			break;
-		}
+	HepLorentzVector genjet4v((*genjetAK4s)[get].px(),(*genjetAK4s)[get].py(),(*genjetAK4s)[get].pz(), (*genjetAK4s)[get].energy());
+	if((delta2R(pfjetAK44v.rapidity(),pfjetAK44v.phi(),genjet4v.rapidity(),genjet4v.phi()) < (0.5*0.4)) &&(fabs(tmprecpt-genjet4v.perp())<(3*fabs(rp_AK4)*tmprecpt))){
+	  match_AK4 = true;
+	  match_gen_AK4 = get;
+	  break;
+	}
       }
       
       pfjetAK4GenMatch[npfjetAK4] = match_gen_AK4;
       
       if(match_AK4&&(match_gen_AK4>=0)){
-		pfjetAK4reso[npfjetAK4] = (sf_AK4-1.)*(tmprecpt-(*genjetAK4s)[match_gen_AK4].pt())*1./tmprecpt;
-		pfjetAK4resoup[npfjetAK4] = (sf_up_AK4-1.)*(tmprecpt-(*genjetAK4s)[match_gen_AK4].pt())*1./tmprecpt;
-		pfjetAK4resodn[npfjetAK4] = (sf_dn_AK4-1.)*(tmprecpt-(*genjetAK4s)[match_gen_AK4].pt())*1./tmprecpt;
+	pfjetAK4reso[npfjetAK4] = (sf_AK4-1.)*(tmprecpt-(*genjetAK4s)[match_gen_AK4].pt())*1./tmprecpt;
+	pfjetAK4resoup[npfjetAK4] = (sf_up_AK4-1.)*(tmprecpt-(*genjetAK4s)[match_gen_AK4].pt())*1./tmprecpt;
+	pfjetAK4resodn[npfjetAK4] = (sf_dn_AK4-1.)*(tmprecpt-(*genjetAK4s)[match_gen_AK4].pt())*1./tmprecpt;
       }else{
-		pfjetAK4reso[npfjetAK4] = sqrt(max(0.,(sf_AK4*sf_AK4-1))) * gaus_rp_AK4;
-		pfjetAK4resoup[npfjetAK4] = sqrt(max(0.,(sf_up_AK4*sf_up_AK4-1))) * gaus_rp_AK4;
-		pfjetAK4resodn[npfjetAK4] = sqrt(max(0.,(sf_dn_AK4*sf_dn_AK4-1))) * gaus_rp_AK4;
+	pfjetAK4reso[npfjetAK4] = sqrt(max(0.,(sf_AK4*sf_AK4-1))) * gaus_rp_AK4;
+	pfjetAK4resoup[npfjetAK4] = sqrt(max(0.,(sf_up_AK4*sf_up_AK4-1))) * gaus_rp_AK4;
+	pfjetAK4resodn[npfjetAK4] = sqrt(max(0.,(sf_dn_AK4*sf_dn_AK4-1))) * gaus_rp_AK4;
       }
     }//isMC
     
@@ -2278,57 +2328,57 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       
       if((isrc>0)&&(isrc<=nsrc)){
 	
-		JetCorrectionUncertainty *jecUnc = vsrc[isrc-1];
-		jecUnc->setJetEta((*pfjetAK4s)[jet].eta());
-		jecUnc->setJetPt(tmprecpt);
+	JetCorrectionUncertainty *jecUnc = vsrc[isrc-1];
+	jecUnc->setJetEta(ak4jet.eta());
+	jecUnc->setJetPt(tmprecpt);
 	
-		sup += jecUnc->getUncertainty(true);         
-		if(isrc==1){ pfjetAK4jesup_pu[npfjetAK4] = sup; }
-		if(isrc==2){  pfjetAK4jesup_rel[npfjetAK4] = sup; }
-		if(isrc==4){ pfjetAK4jesup_scale[npfjetAK4] = sup; }
-		if(isrc==7){ pfjetAK4jesup_total[npfjetAK4] = sup; }
+	sup += jecUnc->getUncertainty(true);         
+	if(isrc==1){ pfjetAK4jesup_pu[npfjetAK4] = sup; }
+	if(isrc==2){  pfjetAK4jesup_rel[npfjetAK4] = sup; }
+	if(isrc==4){ pfjetAK4jesup_scale[npfjetAK4] = sup; }
+	if(isrc==7){ pfjetAK4jesup_total[npfjetAK4] = sup; }
       }
       
       else if(isrc>nsrc){
 	
-		JetCorrectionUncertainty *jecUnc = vsrc[isrc-1-nsrc];
-		jecUnc->setJetEta((*pfjetAK4s)[jet].eta());
-		jecUnc->setJetPt(tmprecpt);
+	JetCorrectionUncertainty *jecUnc = vsrc[isrc-1-nsrc];
+	jecUnc->setJetEta(ak4jet.eta());
+	jecUnc->setJetPt(tmprecpt);
 	
-		sup -= jecUnc->getUncertainty(false);
-		if(isrc==8){ pfjetAK4jesdn_pu[npfjetAK4] = sup; }
-		if(isrc==9){ pfjetAK4jesdn_rel[npfjetAK4] = sup; }
-		if(isrc==11){ pfjetAK4jesdn_scale[npfjetAK4] = sup; }
-		if(isrc==14){ pfjetAK4jesdn_total[npfjetAK4] = sup; }
+	sup -= jecUnc->getUncertainty(false);
+	if(isrc==8){ pfjetAK4jesdn_pu[npfjetAK4] = sup; }
+	if(isrc==9){ pfjetAK4jesdn_rel[npfjetAK4] = sup; }
+	if(isrc==11){ pfjetAK4jesdn_scale[npfjetAK4] = sup; }
+	if(isrc==14){ pfjetAK4jesdn_total[npfjetAK4] = sup; }
       }
       
     }
-  
+    
     // JES Uncertainty Ends //
     
-    pfjetAK4CHF[npfjetAK4] = (*pfjetAK4s)[jet].chargedHadronEnergyFraction();
-    pfjetAK4NHF[npfjetAK4] = (*pfjetAK4s)[jet].neutralHadronEnergyFraction();
-    pfjetAK4CEMF[npfjetAK4] = (*pfjetAK4s)[jet].chargedEmEnergyFraction();
-    pfjetAK4NEMF[npfjetAK4] = (*pfjetAK4s)[jet].neutralEmEnergyFraction();
-    pfjetAK4MUF[npfjetAK4] = (*pfjetAK4s)[jet].muonEnergyFraction();
+    pfjetAK4CHF[npfjetAK4] = ak4jet.chargedHadronEnergyFraction();
+    pfjetAK4NHF[npfjetAK4] = ak4jet.neutralHadronEnergyFraction();
+    pfjetAK4CEMF[npfjetAK4] = ak4jet.chargedEmEnergyFraction();
+    pfjetAK4NEMF[npfjetAK4] = ak4jet.neutralEmEnergyFraction();
+    pfjetAK4MUF[npfjetAK4] = ak4jet.muonEnergyFraction();
     
-    pfjetAK4PHF[npfjetAK4] = (*pfjetAK4s)[jet].photonEnergyFraction();
-    pfjetAK4EEF[npfjetAK4] = (*pfjetAK4s)[jet].electronEnergyFraction();
-    pfjetAK4HFHF[npfjetAK4] = (*pfjetAK4s)[jet].HFHadronEnergyFraction();
-    pfjetAK4HFEMF[npfjetAK4] = (*pfjetAK4s)[jet].HFEMEnergyFraction();
-    pfjetAK4HOF[npfjetAK4] = (*pfjetAK4s)[jet].hoEnergyFraction();
+    pfjetAK4PHF[npfjetAK4] = ak4jet.photonEnergyFraction();
+    pfjetAK4EEF[npfjetAK4] = ak4jet.electronEnergyFraction();
+    pfjetAK4HFHF[npfjetAK4] = ak4jet.HFHadronEnergyFraction();
+    pfjetAK4HFEMF[npfjetAK4] = ak4jet.HFEMEnergyFraction();
+    pfjetAK4HOF[npfjetAK4] = ak4jet.hoEnergyFraction();
     
-    pfjetAK4CHM[npfjetAK4] = (*pfjetAK4s)[jet].chargedHadronMultiplicity();
-    pfjetAK4NHM[npfjetAK4] = (*pfjetAK4s)[jet].neutralHadronMultiplicity();
+    pfjetAK4CHM[npfjetAK4] = ak4jet.chargedHadronMultiplicity();
+    pfjetAK4NHM[npfjetAK4] = ak4jet.neutralHadronMultiplicity();
     
-    pfjetAK4MUM[npfjetAK4] = (*pfjetAK4s)[jet].muonMultiplicity();
-    pfjetAK4PHM[npfjetAK4] = (*pfjetAK4s)[jet].photonMultiplicity();
-    pfjetAK4EEM[npfjetAK4] = (*pfjetAK4s)[jet].electronMultiplicity();
-    pfjetAK4HFHM[npfjetAK4] = (*pfjetAK4s)[jet].HFHadronMultiplicity();
-    pfjetAK4HFEMM[npfjetAK4] = (*pfjetAK4s)[jet].HFEMMultiplicity();
+    pfjetAK4MUM[npfjetAK4] = ak4jet.muonMultiplicity();
+    pfjetAK4PHM[npfjetAK4] = ak4jet.photonMultiplicity();
+    pfjetAK4EEM[npfjetAK4] = ak4jet.electronMultiplicity();
+    pfjetAK4HFHM[npfjetAK4] = ak4jet.HFHadronMultiplicity();
+    pfjetAK4HFEMM[npfjetAK4] = ak4jet.HFEMMultiplicity();
     
-    pfjetAK4Chcons[npfjetAK4] = (*pfjetAK4s)[jet].chargedMultiplicity();
-    pfjetAK4Neucons[npfjetAK4] = (*pfjetAK4s)[jet].neutralMultiplicity();
+    pfjetAK4Chcons[npfjetAK4] = ak4jet.chargedMultiplicity();
+    pfjetAK4Neucons[npfjetAK4] = ak4jet.neutralMultiplicity();
     
     JetIDVars AK4idvars;
     
@@ -2352,7 +2402,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     vector <fastjet::PseudoJet> fjInputs;
     fjInputs.resize(0);
     
-    std::vector<reco::CandidatePtr> daught((*pfjetAK4s)[jet].daughterPtrVector());
+    std::vector<reco::CandidatePtr> daught(ak4jet.daughterPtrVector());
     std::sort(daught.begin(), daught.end(), [](const reco::CandidatePtr &p1, const reco::CandidatePtr &p2)
 	      { return p1->pt() > p2->pt(); });
     
@@ -2387,12 +2437,12 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     }
     sortedJets.clear();
     
-    pfjetAK4hadronflav[npfjetAK4] = (*pfjetAK4s)[jet].hadronFlavour();
-    pfjetAK4partonflav[npfjetAK4] = (*pfjetAK4s)[jet].partonFlavour();
-    //    pfjetAK4partonpdg[npfjetAK4] = (*pfjetAK4s)[jet].genParton()->pdgId();
+    pfjetAK4hadronflav[npfjetAK4] = ak4jet.hadronFlavour();
+    pfjetAK4partonflav[npfjetAK4] = ak4jet.partonFlavour();
+    //    pfjetAK4partonpdg[npfjetAK4] = ak4jet.genParton()->pdgId();
     
-    pfjetAK4qgl[npfjetAK4] = (*pfjetAK4s)[jet].userFloat("QGTagger:qgLikelihood");
-    pfjetAK4PUID[npfjetAK4] = (*pfjetAK4s)[jet].userFloat("pileupJetId:fullDiscriminant");
+    pfjetAK4qgl[npfjetAK4] = ak4jet.userFloat("QGTagger:qgLikelihood");
+    pfjetAK4PUID[npfjetAK4] = ak4jet.userFloat("pileupJetId:fullDiscriminant");
     
     npfjetAK4++;	
     if(npfjetAK4 >= njetmx) { break;}
@@ -2402,7 +2452,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
   if(isMC){
        
     ngenjetAK8 = 0;
-        
+    
     for(unsigned gjet = 0; gjet<genjetAK8s->size(); gjet++)	{
       
       HepLorentzVector genjetAK84v((*genjetAK8s)[gjet].px(),(*genjetAK8s)[gjet].py(),(*genjetAK8s)[gjet].pz(), (*genjetAK8s)[gjet].energy());
@@ -2418,7 +2468,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       fjInputs.resize(0);
       
       std::vector<reco::CandidatePtr> daught((*genjetAK8s)[gjet].daughterPtrVector());
-          
+      
       std::sort(daught.begin(), daught.end(), [](const reco::CandidatePtr &p1, const reco::CandidatePtr &p2)
 		{ return p1->pt() > p2->pt(); }); 
       
@@ -2427,88 +2477,88 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       genjetAK8chrad[ngenjetAK8] = 0;
       
       if(daught.size()>0){    
-	  for (unsigned int i2 = 0; i2< daught.size(); ++i2) {
-	    
-	    float pt2 = ((daught[i2])->pt()) * ((daught[i2])->pt());
-	    float delR = delta2R((*daught[i2]).rapidity(), (*daught[i2]).phi(),genjetAK8y[ngenjetAK8],genjetAK8phi[ngenjetAK8]);
-	    
-	    sumpt2 += pt2;
-	    sumpt += daught[i2]->pt();
-	    
-	    genjetAK8chrad[ngenjetAK8] +=  (*daught[i2]).charge() * (daught[i2])->pt() * delR;
-	    
-	    PseudoJet psjet ;
-	    psjet = PseudoJet( (*daught[i2]).px(),(*daught[i2]).py(),(*daught[i2]).pz(),(*daught[i2]).energy() );
-	    psjet.set_user_index(i2);
-	    fjInputs.push_back(psjet);
-	  } //i2
+	for (unsigned int i2 = 0; i2< daught.size(); ++i2) {
 	  
+	  float pt2 = ((daught[i2])->pt()) * ((daught[i2])->pt());
+	  float delR = delta2R((*daught[i2]).rapidity(), (*daught[i2]).phi(),genjetAK8y[ngenjetAK8],genjetAK8phi[ngenjetAK8]);
+	  
+	  sumpt2 += pt2;
+	  sumpt += daught[i2]->pt();
+	  
+	  genjetAK8chrad[ngenjetAK8] +=  (*daught[i2]).charge() * (daught[i2])->pt() * delR;
+	  
+	  PseudoJet psjet ;
+	  psjet = PseudoJet( (*daught[i2]).px(),(*daught[i2]).py(),(*daught[i2]).pz(),(*daught[i2]).energy() );
+	  psjet.set_user_index(i2);
+	  fjInputs.push_back(psjet);
+	} //i2
+	
 	  //genjetAK8chrad[ngenjetAK8] *= 1./sumpt;
-	  genjetAK8chrad[ngenjetAK8] *= (sumpt>0) ? 1./sumpt : 0;
-	  genjetAK8pTD[ngenjetAK8] = (sumpt2>0) ? sqrt(sumpt2)*1./sumpt : 0;
+	genjetAK8chrad[ngenjetAK8] *= (sumpt>0) ? 1./sumpt : 0;
+	genjetAK8pTD[ngenjetAK8] = (sumpt2>0) ? sqrt(sumpt2)*1./sumpt : 0;
+	
+	vector <fastjet::PseudoJet> sortedJets;
+	fastjet::ClusterSequence clustSeq(fjInputs, pfjetAK8Def);
+	fjInputs.clear();
+	sortedJets    = sorted_by_pt(clustSeq.inclusive_jets());
+	
+	if(sortedJets.size()>0){
+	  PseudoJet sd_jet = sd(sortedJets[0]);
+	  genjetAK8sdmass[ngenjetAK8] = sd_jet.m();
+	  Nsubjettiness nsub1_beta1(1,OnePass_WTA_KT_Axes(), UnnormalizedMeasure(1.));
+	  genjetAK8tau1[ngenjetAK8] = nsub1_beta1(sd_jet);
+	  Nsubjettiness nsub2_beta1(2,OnePass_WTA_KT_Axes(), UnnormalizedMeasure(1.));
+	  genjetAK8tau2[ngenjetAK8] = nsub2_beta1(sd_jet);
+	  Nsubjettiness nsub3_beta1(3,OnePass_WTA_KT_Axes(), UnnormalizedMeasure(1.));
+	  genjetAK8tau3[ngenjetAK8] = nsub3_beta1(sd_jet);
 	  
-	  vector <fastjet::PseudoJet> sortedJets;
-	  fastjet::ClusterSequence clustSeq(fjInputs, pfjetAK8Def);
-	  fjInputs.clear();
-	  sortedJets    = sorted_by_pt(clustSeq.inclusive_jets());
+	  vector<PseudoJet> pieces;
+	  pieces = sd_jet.pieces();
 	  
-	  if(sortedJets.size()>0){
-	    PseudoJet sd_jet = sd(sortedJets[0]);
-	    genjetAK8sdmass[ngenjetAK8] = sd_jet.m();
-	    Nsubjettiness nsub1_beta1(1,OnePass_WTA_KT_Axes(), UnnormalizedMeasure(1.));
-	    genjetAK8tau1[ngenjetAK8] = nsub1_beta1(sd_jet);
-	    Nsubjettiness nsub2_beta1(2,OnePass_WTA_KT_Axes(), UnnormalizedMeasure(1.));
-	    genjetAK8tau2[ngenjetAK8] = nsub2_beta1(sd_jet);
-	    Nsubjettiness nsub3_beta1(3,OnePass_WTA_KT_Axes(), UnnormalizedMeasure(1.));
-	    genjetAK8tau3[ngenjetAK8] = nsub3_beta1(sd_jet);
+	  if(pieces.size()>0){
+	    genjetAK8sub1pt[ngenjetAK8] = pieces[0].pt();
+	    genjetAK8sub1y[ngenjetAK8] = pieces[0].rapidity();
+	    genjetAK8sub1phi[ngenjetAK8] = pieces[0].phi();
+	    genjetAK8sub1mass[ngenjetAK8] = pieces[0].m();
 	    
-	    vector<PseudoJet> pieces;
-	    pieces = sd_jet.pieces();
-	    
-	    if(pieces.size()>0){
-	      genjetAK8sub1pt[ngenjetAK8] = pieces[0].pt();
-	      genjetAK8sub1y[ngenjetAK8] = pieces[0].rapidity();
-	      genjetAK8sub1phi[ngenjetAK8] = pieces[0].phi();
-	      genjetAK8sub1mass[ngenjetAK8] = pieces[0].m();
+	    for(unsigned isub=0; isub<(pieces.size()); isub++){
 	      
-	      for(unsigned isub=0; isub<(pieces.size()); isub++){
-		
-		float emsub=0, hadsub=0;
-		for(unsigned id2=0; id2<pieces[isub].constituents().size(); id2++){
-		  int id = (pieces[isub].constituents()[id2].user_index()); 
-		  if(abs((*daught[id]).pdgId())==11 || abs((*daught[id]).pdgId())==22){
-		    emsub += pieces[isub].constituents()[id2].e();
-		  }
-		  if(!(abs((*daught[id]).pdgId())==11 || abs((*daught[id]).pdgId())==22 || abs((*daught[id]).pdgId())==13)){
-		    hadsub += pieces[isub].constituents()[id2].e();
-		  }	
+	      float emsub=0, hadsub=0;
+	      for(unsigned id2=0; id2<pieces[isub].constituents().size(); id2++){
+		int id = (pieces[isub].constituents()[id2].user_index()); 
+		if(abs((*daught[id]).pdgId())==11 || abs((*daught[id]).pdgId())==22){
+		  emsub += pieces[isub].constituents()[id2].e();
 		}
-		
-		if(isub==0){
-		  genjetAK8sub1hadfrac[ngenjetAK8] = hadsub*1./pieces[isub].e();
-		  genjetAK8sub1emfrac[ngenjetAK8] = emsub*1./pieces[isub].e();
-		}
-		if(isub==1){
-		  genjetAK8sub2hadfrac[ngenjetAK8] = hadsub*1./pieces[isub].e();
-		  genjetAK8sub2emfrac[ngenjetAK8] = emsub*1./pieces[isub].e();
+		if(!(abs((*daught[id]).pdgId())==11 || abs((*daught[id]).pdgId())==22 || abs((*daught[id]).pdgId())==13)){
+		  hadsub += pieces[isub].constituents()[id2].e();
 		}	
 	      }
 	      
-	      genjetAK8sub2pt[ngenjetAK8] = pieces[1].pt();
-	      genjetAK8sub2y[ngenjetAK8] = pieces[1].rapidity();
-	      genjetAK8sub2phi[ngenjetAK8] = pieces[1].phi();
-	      genjetAK8sub2mass[ngenjetAK8] = pieces[1].m();
-	    }
-	    else{ 
-	      genjetAK8sub1pt[ngenjetAK8] = genjetAK8sub1y[ngenjetAK8] = genjetAK8sub1phi[ngenjetAK8] =  genjetAK8sub1mass[ngenjetAK8] = -100;
-	      genjetAK8sub2pt[ngenjetAK8] = genjetAK8sub2y[ngenjetAK8] = genjetAK8sub2phi[ngenjetAK8] =  genjetAK8sub2mass[ngenjetAK8] = -100;
+	      if(isub==0){
+		genjetAK8sub1hadfrac[ngenjetAK8] = hadsub*1./pieces[isub].e();
+		genjetAK8sub1emfrac[ngenjetAK8] = emsub*1./pieces[isub].e();
+	      }
+	      if(isub==1){
+		genjetAK8sub2hadfrac[ngenjetAK8] = hadsub*1./pieces[isub].e();
+		genjetAK8sub2emfrac[ngenjetAK8] = emsub*1./pieces[isub].e();
+	      }	
 	    }
 	    
+	    genjetAK8sub2pt[ngenjetAK8] = pieces[1].pt();
+	    genjetAK8sub2y[ngenjetAK8] = pieces[1].rapidity();
+	    genjetAK8sub2phi[ngenjetAK8] = pieces[1].phi();
+	    genjetAK8sub2mass[ngenjetAK8] = pieces[1].m();
 	  }
-	  sortedJets.clear();
+	  else{ 
+	    genjetAK8sub1pt[ngenjetAK8] = genjetAK8sub1y[ngenjetAK8] = genjetAK8sub1phi[ngenjetAK8] =  genjetAK8sub1mass[ngenjetAK8] = -100;
+	    genjetAK8sub2pt[ngenjetAK8] = genjetAK8sub2y[ngenjetAK8] = genjetAK8sub2phi[ngenjetAK8] =  genjetAK8sub2mass[ngenjetAK8] = -100;
+	  }
 	  
-      } 
+	}
+	sortedJets.clear();
 	
+      } 
+      
       //if(daught.size() == 1) { genjetAK8sdmass[ngenjetAK8] =0; }
       
       if (++ngenjetAK8>=njetmx) break;
@@ -2516,13 +2566,13 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     }
     
     ngenjetAK4 = 0;
-        
+    
     for(unsigned gjet = 0; gjet<genjetAK4s->size(); gjet++)	{
       
       HepLorentzVector genjetAK44v((*genjetAK4s)[gjet].px(),(*genjetAK4s)[gjet].py(),(*genjetAK4s)[gjet].pz(), (*genjetAK4s)[gjet].energy());
       if(genjetAK44v.perp()<minPt) continue;
       if(abs(genjetAK44v.rapidity())>maxgenEta) continue;
-
+      
       genjetAK4pt[ngenjetAK4] = genjetAK44v.perp();
       genjetAK4y[ngenjetAK4] = genjetAK44v.rapidity();
       genjetAK4phi[ngenjetAK4] = genjetAK44v.phi();
@@ -2562,7 +2612,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     }
     
   }//isMC
-
+  
   nmuons = 0; 
   edm::Handle<edm::View<pat::Muon>> muons;
   iEvent.getByToken(tok_muons_, muons);
@@ -2624,8 +2674,8 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	float pho = muiso.photonIso();
 	
 	muonchiso[nmuons] = chg;
-    muonnhiso[nmuons] = neu;                                                                     
-    muonphiso[nmuons] = pho;
+	muonnhiso[nmuons] = neu;                                                                     
+	muonphiso[nmuons] = pho;
 		
 	float coneta = muon1->eta(); 
 	float ea = ea_miniiso_->getEffectiveArea(fabs(coneta));
@@ -2664,8 +2714,8 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	muoneta[nmuons] = muon1->eta();                                                                
 	muonphi[nmuons] = muon1->phi();
 	muonposmatch[nmuons] = muon1->combinedQuality().chi2LocalPosition;         
-    muontrkink[nmuons] = muon1->combinedQuality().trkKink;                                         
-    muonsegcom[nmuons] = muon::segmentCompatibility(*muon1);
+	muontrkink[nmuons] = muon1->combinedQuality().trkKink;                                         
+	muonsegcom[nmuons] = muon::segmentCompatibility(*muon1);
 	muondrbm[nmuons] = trktrk->dxy(beamPoint);
 	muontrkvtx[nmuons] = muon1->muonBestTrack()->dxy(vertex.position());                           
 	muondz[nmuons] = muon1->muonBestTrack()->dz(vertex.position());
@@ -2693,17 +2743,17 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	  }                                                                                            
         }
         muonchi[nmuons] = trkglb->normalizedChi2();
-		muonndf[nmuons] = (int)trkglb->ndof();                                                        
-		muonhit[nmuons] = trkglb->hitPattern().numberOfValidMuonHits();                                
+	muonndf[nmuons] = (int)trkglb->ndof();                                                        
+	muonhit[nmuons] = trkglb->hitPattern().numberOfValidMuonHits();                                
         muonmst[nmuons] = muon1->numberOfMatchedStations();                                            
         muonpixhit[nmuons] = trktrk->hitPattern().numberOfValidPixelHits();                            
         muontrklay[nmuons] = trktrk->hitPattern().trackerLayersWithMeasurement();                      
         muonvalfrac[nmuons] = trktrk->validFraction();
-		muonpfiso[nmuons] = (muon1->pfIsolationR04().sumChargedHadronPt + max(0., muon1->pfIsolationR04().sumNeutralHadronEt + muon1->pfIsolationR04().sumPhotonEt - 0.5*muon1->pfIsolationR04().sumPUPt))/muon1->pt();
-		muonemiso[nmuons] = (muon1->isolationR03()).emEt;                                              
-        muonhadiso[nmuons] = (muon1->isolationR03()).hadEt;                                            
-        muontkpt03[nmuons] = (muon1->isolationR03()).sumPt;                                            
-        muontkpt05[nmuons] = (muon1->isolationR05()).sumPt;
+	muonpfiso[nmuons] = (muon1->pfIsolationR04().sumChargedHadronPt + max(0., muon1->pfIsolationR04().sumNeutralHadronEt + muon1->pfIsolationR04().sumPhotonEt - 0.5*muon1->pfIsolationR04().sumPUPt))/muon1->pt();
+	muonemiso[nmuons] = (muon1->isolationR03()).emEt;                                              
+	muonhadiso[nmuons] = (muon1->isolationR03()).hadEt;                                            
+	muontkpt03[nmuons] = (muon1->isolationR03()).sumPt;                                            
+	muontkpt05[nmuons] = (muon1->isolationR05()).sumPt;
 	
 	if (++nmuons>=njetmx) break;
       }
@@ -2714,9 +2764,14 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
   int iE1 = 0;
   for(const auto& electron1 : iEvent.get(tok_electrons_) ) {
     
-    bool isPassMVAiso90 = electron1.electronID("mvaEleID-Fall17-iso-V2-wp90");
-    bool isPassMVAnoiso90 = electron1.electronID("mvaEleID-Fall17-noIso-V2-wp90");
+    //bool isPassMVAiso90_org = electron1.electronID("mvaEleID-Fall17-iso-V2-wp90");
+    //bool isPassMVAnoiso90_org = electron1.electronID("mvaEleID-Fall17-noIso-V2-wp90");
     
+    bool isPassMVAiso90 = electron1.electronID(melectronID_isowp90);
+    bool isPassMVAnoiso90 = electron1.electronID(melectronID_noisowp90);
+
+    std::cout << " " << isPassMVAiso90 << " org " << isPassMVAiso90_org << " " << isPassMVAnoiso90 << " nosio org " << isPassMVAnoiso90_org << std::endl;
+
     elmvaid[nelecs] = isPassMVAiso90;                                                                  
     elmvaid_noIso[nelecs] = isPassMVAnoiso90;
     
@@ -2755,7 +2810,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     /*
       std::cout << " full5x5_sigmaIetaIeta " << electron1.full5x5_sigmaIetaIeta() << " " << " full5x5_sigmaIphiIphi " << electron1.full5x5_sigmaIphiIphi() << " " << " full5x5_r9 " << electron1.full5x5_r9() << " " << " superCluster.etaWidth " << electron1.superCluster()->etaWidth() << " superCluster.phiWidth " << electron1.superCluster()->phiWidth() << " full5x5_hcalOverEcal " << " " << electron1.full5x5_hcalOverEcal() << " " << " closestCtfTrackNLayers " << electron1.closestCtfTrackNLayers() << " " << " closestCtfTrackNormChi2 " << electron1.closestCtfTrackNormChi2() << " " << " 1.-full5x5_e1x5/full5x5_e5x5 " << 1.-electron1.full5x5_e1x5()/electron1.full5x5_e5x5() << " " << " normalizedChi2 " << electron1.gsfTrack()->normalizedChi2() << " " << " hitPattern.trackerLayersWithMeasurement " << " " << electron1.gsfTrack()->hitPattern().trackerLayersWithMeasurement() << " hitPattern.numberOfLostHits('MISSING_INNER_HITS') " << " " << electron1.gsfTrack()->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS) << " convVtxFitProb  " << " " << electron1.convVtxFitProb() << " eEleClusterOverPout " << " " << electron1.eEleClusterOverPout() << " " << " 1.0/ecalEnergy-1.0/trackMomentumAtVtx.R" << 1.0/(electron1.ecalEnergy())-1.0/(electron1.trackMomentumAtVtx().R()) << " deltaEtaSeedClusterTrackAtCalo" << " " << electron1.deltaEtaSeedClusterTrackAtCalo()<< " superCluster.preshowerEnergy/superCluster.rawEnergy " << (electron1.superCluster()->preshowerEnergy()/electron1.superCluster()->rawEnergy()) << " pfIsolationVariables.sumPhotonEt " << electron1.pfIsolationVariables().sumPhotonEt << " pfIsolationVariables.sumChargedHadronPt " << electron1.pfIsolationVariables().sumChargedHadronPt << " pfIsolationVariables.sumNeutralHadronEt " << electron1.pfIsolationVariables().sumNeutralHadronEt <<  " Rho_PF " << Rho << " " << " myRho " << (*Rho_PF.product()) << std::endl;
     */
-
+    
     eleoverp[nelecs] = electron1.eSuperClusterOverP();
     elhovere[nelecs] = electron1.hadronicOverEm();
     elhadisodepth03[nelecs] = electron1.dr03HcalDepth1TowerSumEt() + electron1.dr03HcalDepth2TowerSumEt();
@@ -2793,12 +2848,12 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     float dxymin = 1000;
     if(svin.isValid()){
       for(unsigned int isv=0; isv<(svin->size()); isv++){
-		const auto &sv = (*svin)[isv];
-		reco::TrackBase::Point svpoint(sv.vx(),sv.vy(),sv.vz());
-		if(fabs(gsftrk1->dz(svpoint)) < dzmin){
-			dzmin = fabs(gsftrk1->dz(svpoint));
-			dxymin = gsftrk1->dxy(svpoint);
-		}
+	const auto &sv = (*svin)[isv];
+	reco::TrackBase::Point svpoint(sv.vx(),sv.vy(),sv.vz());
+	if(fabs(gsftrk1->dz(svpoint)) < dzmin){
+	  dzmin = fabs(gsftrk1->dz(svpoint));
+	  dxymin = gsftrk1->dxy(svpoint);
+	}
       }
     }
     
@@ -2924,17 +2979,17 @@ Leptop::beginJob()
 {
   
   Nevt = 0;
-/* 
-   for(int ij=0; ij<nomassbins; ij++){
-  massbins[ij] = 10*ij ;
-  }
-  
-  rhobins[0] = 0.005;
-  
-  for(int ij=1; ij<norhobins; ij++){
-  rhobins[ij] = width*rhobins[ij-1] ;
-  }
-*/
+  /* 
+     for(int ij=0; ij<nomassbins; ij++){
+     massbins[ij] = 10*ij ;
+     }
+     
+     rhobins[0] = 0.005;
+     
+     for(int ij=1; ij<norhobins; ij++){
+     rhobins[ij] = width*rhobins[ij-1] ;
+     }
+  */
   ////JEC /////
   L1FastAK4       = new JetCorrectorParameters(mJECL1FastFileAK4.c_str());
   L2RelativeAK4   = new JetCorrectorParameters(mJECL2RelativeFileAK4.c_str());

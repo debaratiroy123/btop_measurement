@@ -242,13 +242,15 @@ process.mcjets =  cms.EDAnalyzer('Leptop',
                                  
         #label_mvaEleIDSpring16GeneralPurposeV1wploose_noIso_reco = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V2-wp90"),
 	 #label_mvaEleIDSpring16GeneralPurposeV1wploose_reco = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wp90"),
-        label_mvaPhoIDSpring16GeneralPurposeV1wploose_reco = cms.InputTag("egmPhotonIDs:mvaPhoID-RunIIFall17-v1p1-wp90"),
-
+        #label_mvaPhoIDSpring16GeneralPurposeV1wploose_reco = cms.InputTag("egmPhotonIDs:mvaPhoID-RunIIFall17-v1p1-wp90"),
+                                 
 	 btag_CMVA_name = cms.untracked.string("pfCombinedMVAV2BJetTags"),
 	 btag_CSV_name = cms.untracked.string("pfCombinedInclusiveSecondaryVertexV2BJetTags"),
 
    	 HistFill = cms.untracked.bool(True),
 
+         electronID_isowp90        = cms.string('mvaEleID-Fall17-iso-V2-wp90'),
+         electronID_noisowp90      = cms.string('mvaEleID-Fall17-noIso-V2-wp90'),                        
 	 jecL1FastFileAK4          = cms.string('Autumn18_V19_MC/Autumn18_V19_MC_L1FastJet_AK4PFchs.txt'),
          jecL1FastFileAK8          = cms.string('Autumn18_V19_MC/Autumn18_V19_MC_L1FastJet_AK8PFPuppi.txt'),
          jecL2RelativeFileAK4      = cms.string('Autumn18_V19_MC/Autumn18_V19_MC_L2Relative_AK4PFchs.txt'),
