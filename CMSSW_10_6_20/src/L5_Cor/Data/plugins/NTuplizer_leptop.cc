@@ -170,11 +170,12 @@ double width = 1.2;
 
 struct triggervar{
   HepLorentzVector trg4v;
-  bool		       both;
+  bool		  both;
   bool            level1;
   bool            highl;
   int             ihlt;
   int             prescl;
+  int             pdgId;
 };
 
 int getbinid(double val, int nbmx, double* array) {
@@ -553,7 +554,7 @@ private:
   float genjetAK4pt[njetmx], genjetAK4y[njetmx], genjetAK4phi[njetmx], genjetAK4btag[njetmx], genjetAK4mass[njetmx], genjetAK4sdmass[njetmx]; 
   
   int ngenparticles;
-  int genpartstatus[npartmx], genpartpdg[npartmx], genpartmompdg[npartmx], genpartmomid[npartmx], genpartdaugno[npartmx];
+  int genpartstatus[npartmx], genpartpdg[npartmx], genpartmompdg[npartmx], genpartgrmompdg[npartmx], genpartmomid[npartmx], genpartdaugno[npartmx];
   float genpartpt[npartmx], genparteta[npartmx], genpartphi[npartmx], genpartm[npartmx], genpartq[npartmx];
   bool genpartfromhard[npartmx], genpartfromhardbFSR[npartmx], genpartisPromptFinalState[npartmx], genpartisLastCopyBeforeFSR[npartmx];
   
@@ -573,7 +574,9 @@ private:
   
   int nelecs;
   bool elmvaid[njetmx], elmvaid_noIso[njetmx];
-  bool elmvaid_Fallv2WP90[njetmx], elmvaid_Fallv2WP90_noIso[njetmx];
+  bool elmvaid_Fallv2WP80[njetmx], elmvaid_Fallv2WP80_noIso[njetmx];
+  
+
   float elcharge[njetmx], elpt[njetmx], eleta[njetmx], elphi[njetmx], ele[njetmx], elp[njetmx], eldxy[njetmx], eldxytrk[njetmx], eldxy_sv[njetmx], eldz[njetmx], eldztrk[njetmx],elhovere[njetmx], elqovrper[njetmx], elchi[njetmx], elemiso03[njetmx], elhadiso03[njetmx], elemiso04[njetmx], elhadiso04[njetmx], elhadisodepth03[njetmx], eltkpt03[njetmx], eltkpt04[njetmx], eleoverp[njetmx], elietaieta[njetmx], eletain[njetmx], elphiin[njetmx], elfbrem[njetmx], elchhadiso03[njetmx], elchhadiso04[njetmx], elnohits[njetmx], elmisshits[njetmx] ;
   float elchhadiso[njetmx], elneuhadiso[njetmx], elphoiso[njetmx], elpuchhadiso[njetmx], elpfiso[njetmx], elconvdist[njetmx], elconvdoct[njetmx];
   int elndf[njetmx];
@@ -611,7 +614,7 @@ private:
   int ntrigobjs;
   float trigobjpt[njetmx], trigobjeta[njetmx],trigobjphi[njetmx], trigobje[njetmx];
   bool trigobjHLT[njetmx], trigobjL1[njetmx],  trigobjBoth[njetmx];
-  int  trigobjIhlt[njetmx];
+  int  trigobjIhlt[njetmx], trigobjpdgId[njetmx];
   
   unsigned int mypow_2[32];
   
@@ -653,7 +656,8 @@ private:
   FactorizedJetCorrector *jecL1FastAK8, *jecL2RelativeAK8, *jecL3AbsoluteAK8, *jecL2L3ResidualAK8;
   
   std::string melectronID_isowp90, melectronID_noisowp90;
-  
+  std::string melectronID_isowp80, melectronID_noisowp80;
+
   // std::string mFileName,mPuFileName,mPuTrigName;
   std::string mJECL1FastFileAK4, mJECL2RelativeFileAK4, mJECL3AbsoluteFileAK4, mJECL2L3ResidualFileAK4, mJECL1FastFileAK8, mJECL2RelativeFileAK8, mJECL3AbsoluteFileAK8, mJECL2L3ResidualFileAK8;
   std::string mPtResoFileAK4, mPtResoFileAK8, mPtSFFileAK4, mPtSFFileAK8;
@@ -757,6 +761,8 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   
   melectronID_isowp90       = pset.getParameter<std::string>("electronID_isowp90");
   melectronID_noisowp90     = pset.getParameter<std::string>("electronID_noisowp90");
+  melectronID_isowp80       = pset.getParameter<std::string>("electronID_isowp80");
+  melectronID_noisowp80     = pset.getParameter<std::string>("electronID_noisowp80");
 
   mJECL1FastFileAK4         = pset.getParameter<std::string>("jecL1FastFileAK4");
   mJECL1FastFileAK8         = pset.getParameter<std::string>("jecL1FastFileAK8");
@@ -853,7 +859,7 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("trigobjL1",trigobjL1,"trigobjL1[ntrigobjs]/O");
   T1->Branch("trigobjBoth",trigobjBoth,"trigobjBoth[ntrigobjs]/O");
   T1->Branch("trigobjIhlt",trigobjIhlt,"trigobjIhlt[ntrigobjs]/I");
-  
+  T1->Branch("trigobjpdgId",trigobjpdgId,"trigobjpdgId[ntrigobjs]/I");
   // MET info //
   
   T1->Branch("PFMET",&miset,"miset/F") ;
@@ -1109,6 +1115,7 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("genpartstatus",genpartstatus,"genpartstatus[ngenparticles]/I");
   T1->Branch("genpartpdg",genpartpdg,"genpartpdg[ngenparticles]/I");
   T1->Branch("genpartmompdg",genpartmompdg,"genpartmompdg[ngenparticles]/I");
+  T1->Branch("genpartgrmompdg",genpartgrmompdg,"genpartgrmompdg[ngenparticles]/I");
   //  T1->Branch("genpartmomid",genpartmomid,"genpartmomid[ngenparticles]/I");
   T1->Branch("genpartdaugno",genpartdaugno,"genpartdaugno[ngenparticles]/I");
   T1->Branch("genpartfromhard",genpartfromhard,"genpartfromhard[ngenparticles]/O");
@@ -1210,8 +1217,8 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("ele",ele,"ele[nelecs]/F");
   T1->Branch("elmvaid",elmvaid,"elmvaid[nelecs]/O");
   T1->Branch("elmvaid_noIso",elmvaid_noIso,"elmvaid_noIso[nelecs]/O");
-  T1->Branch("elmvaid_Fallv2WP90",elmvaid_Fallv2WP90,"elmvaid_Fallv2WP90[nelecs]/O");
-  T1->Branch("elmvaid_Fallv2WP90_noIso",elmvaid_Fallv2WP90_noIso,"elmvaid_Fallv2WP90_noIso[nelecs]/O");
+  T1->Branch("elmvaid_Fallv2WP80",elmvaid_Fallv2WP80,"elmvaid_Fallv2WP80[nelecs]/O");
+  T1->Branch("elmvaid_Fallv2WP80_noIso",elmvaid_Fallv2WP80_noIso,"elmvaid_Fallv2WP80_noIso[nelecs]/O");
   T1->Branch("eldxy",eldxy,"eldxy[nelecs]/F");
   T1->Branch("eldxytrk",eldxytrk,"eldxytrk[nelecs]/F");
   T1->Branch("eldxy_sv",eldxy_sv,"eldxy_sv[nelecs]/F");
@@ -1442,6 +1449,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	      tmpvec1.highl  = obj.hasPathName( pathNamesAll[ih], false, true );
 	      tmpvec1.level1 = obj.hasPathName( pathNamesAll[ih], true, false );
 	      tmpvec1.trg4v = HepLorentzVector(obj.px(), obj.py(), obj.pz(), obj.energy());
+	      tmpvec1.pdgId = obj.pdgId();
 	      tmpvec1.prescl = 1;    //triggerPrescales->getPrescaleForIndex(ij);
 	      tmpvec1.ihlt = jk;
 	      alltrgobj.push_back(tmpvec1);
@@ -1464,6 +1472,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       trigobjL1[iht] = alltrgobj[iht].level1;
       trigobjBoth[iht] = alltrgobj[iht].both;
       trigobjIhlt[iht] = alltrgobj[iht].ihlt;
+      trigobjpdgId[iht] = alltrgobj[iht].pdgId;
       if(iht == (njetmx-1)) break;
     }
   }
@@ -2606,6 +2615,14 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	genpartm[ngenparticles] = (*genparticles)[ig].mass();
 	genpartq[ngenparticles] = (*genparticles)[ig].charge();
 	
+	if(mom->numberOfMothers()>0){
+	  const Candidate * grmom  = mom->mother();
+	  genpartgrmompdg[ngenparticles]  = grmom->pdgId();
+	}
+	else{
+	  genpartgrmompdg[ngenparticles]  = -10000000;
+	}
+
 	ngenparticles++;
 	if(ngenparticles>=npartmx) break;
       }
@@ -2770,13 +2787,16 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     bool isPassMVAiso90 = electron1.electronID(melectronID_isowp90);
     bool isPassMVAnoiso90 = electron1.electronID(melectronID_noisowp90);
 
-    std::cout << " " << isPassMVAiso90 << " org " << isPassMVAiso90_org << " " << isPassMVAnoiso90 << " nosio org " << isPassMVAnoiso90_org << std::endl;
+    bool isPassMVAiso80 = electron1.electronID(melectronID_isowp80);
+    bool isPassMVAnoiso80 = electron1.electronID(melectronID_noisowp80);
+
+    //std::cout << " " << isPassMVAiso90 << " org " << isPassMVAiso90_org << " " << isPassMVAnoiso90 << " nosio org " << isPassMVAnoiso90_org << std::endl;
 
     elmvaid[nelecs] = isPassMVAiso90;                                                                  
     elmvaid_noIso[nelecs] = isPassMVAnoiso90;
     
-    elmvaid_Fallv2WP90[nelecs] = isPassMVAiso90;
-    elmvaid_Fallv2WP90_noIso[nelecs] = isPassMVAnoiso90;
+    elmvaid_Fallv2WP80[nelecs] = isPassMVAiso80;
+    elmvaid_Fallv2WP80_noIso[nelecs] = isPassMVAnoiso80;
     
     GsfTrackRef gsftrk1 = electron1.gsfTrack();
     if (gsftrk1.isNull()) continue;
