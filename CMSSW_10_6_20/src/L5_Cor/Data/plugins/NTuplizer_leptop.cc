@@ -427,7 +427,6 @@ private:
   edm::EDGetTokenT<pat::PackedCandidateCollection>tok_pfcands_;
   edm::EDGetTokenT<reco::GenMETCollection>tok_genmets_;
   edm::EDGetTokenT<edm::View<pat::Jet>>tok_pfjetAK8s_;
-  edm::EDGetTokenT<edm::View<pat::Jet>>tok_pfsubjetAK8s_;
   bool relative_;
   std::unique_ptr<EffectiveAreas> ea_miniiso_;
   edm::EDGetTokenT<reco::GenJetCollection>tok_genjetAK8s_;
@@ -721,7 +720,6 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   //tok_photons_ = consumes<edm::View<pat::Photon>>  ( pset.getParameter<edm::InputTag>("Photons"));
   
   tok_pfjetAK8s_= consumes<edm::View<pat::Jet>>( pset.getParameter<edm::InputTag>("PFJetsAK8"));
-  tok_pfsubjetAK8s_= consumes<edm::View<pat::Jet>>( pset.getParameter<edm::InputTag>("PFSubJetsAK8"));
   tok_pfjetAK4s_= consumes<edm::View<pat::Jet>>( pset.getParameter<edm::InputTag>("PFJetsAK4"));
   if(isMC){
     tok_genjetAK8s_= consumes<reco::GenJetCollection>( pset.getParameter<edm::InputTag>("GENJetAK8"));
@@ -1619,6 +1617,14 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       pfjetAK8muinsubjmass[npfjetAK8] = -100;
 
     
+      pfjetAK8muinsubIfar[npfjetAK8] = -100;
+      pfjetAK8muinsubI0[npfjetAK8] = -100;
+      pfjetAK8muinsubInear[npfjetAK8] = -100;
+
+      pfjetAK8elinsubIfar[npfjetAK8] = -100;
+      pfjetAK8elinsubI0[npfjetAK8] = -100;
+      pfjetAK8elinsubInear[npfjetAK8] = -100;
+
       if(isSoftDrop){
 	
 	pfjetAK8tau1[npfjetAK8] = ak8jet.userFloat(tau1);
