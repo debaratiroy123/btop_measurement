@@ -118,12 +118,9 @@ for iModule in pho_id_modules:
 
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
 deep_discriminators = ["pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:TvsQCD",
-                        "pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:bbvsLight",
-                        "pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:ccvsLight",
-                        "pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:ZHccvsQCD",
-                        "pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:WvsQCD",
-			"pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:ZvsQCD",
-                        "pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:ZHbbvsQCD"
+                       "pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:WvsQCD",
+                       "pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:ZvsQCD",
+                       
 ]
 updateJetCollection(
    process,
@@ -157,34 +154,27 @@ process.mcjets =  cms.EDAnalyzer('Leptop',
 	 toptagger = cms.untracked.string("pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:TvsQCD"),
 	 Wtagger = cms.untracked.string("pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:WvsQCD"),
 	 Ztagger = cms.untracked.string("pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags:ZvsQCD"),
-	 #BBtagger = cms.untracked.string("pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags::bbvsLight"),
-	 #CCtagger = cms.untracked.string("pfMassDecorrelatedDeepBoostedDiscriminatorsJetTags::ccvsLight"),
-
+	 
 	 minPt = cms.untracked.double(25.),
          minGenPt = cms.untracked.double(15.),                        
 	 maxEta = cms.untracked.double(3.),
          maxGenEta = cms.untracked.double(5.),
 	 AK8PtCut = cms.untracked.double(200.),
          AK8GenPtCut = cms.untracked.double(150.),                        
-	 nkTsub = cms.untracked.int32(2),
+	 
 
-        Beamspot = cms.InputTag("offlineBeamSpot"),
-  	PrimaryVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
-        SecondaryVertices = cms.InputTag("slimmedSecondaryVertices"),
-	slimmedAddPileupInfo = cms.InputTag("slimmedAddPileupInfo"),
-	PFMet = cms.InputTag("slimmedMETs"),
-    	GENMet  = cms.InputTag("genMetTrue","","SIM"),
-        Generator = cms.InputTag("generator"),
-  	HistWeight = cms.untracked.double(1.0),#0.53273),
+         Beamspot = cms.InputTag("offlineBeamSpot"),
+         PrimaryVertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
+         SecondaryVertices = cms.InputTag("slimmedSecondaryVertices"),
+	 slimmedAddPileupInfo = cms.InputTag("slimmedAddPileupInfo"),
+	 PFMet = cms.InputTag("slimmedMETs"),
+    	 GENMet  = cms.InputTag("genMetTrue","","SIM"),
+         Generator = cms.InputTag("generator"),
+  	
+         PFRho = cms.InputTag("fixedGridRhoFastjetAll"),
 
-	## rho #######################################
-	#srcPFRho        = cms.InputTag('fixedGridRhoFastjetAll'),
-	## jec services ##############################
-       	
-        PFRho = cms.InputTag("fixedGridRhoFastjetAll"),
-
-        LHEEventProductInputTag = cms.InputTag('externalLHEProducer'),
-        GenEventProductInputTag = cms.InputTag('generator'),
+         LHEEventProductInputTag = cms.InputTag('externalLHEProducer'),
+         GenEventProductInputTag = cms.InputTag('generator'),
 
 #	 PFJetsAK8 = cms.InputTag("slimmedJetsAK8"),
 #	 PFJetsAK8 = cms.InputTag("selectedPatJetsAK8PFPuppiSoftDropPacked","SubJets","Combined"),
@@ -199,17 +189,12 @@ process.mcjets =  cms.EDAnalyzer('Leptop',
          src = cms.InputTag("slimmedMuonsUpdated"),#,"","PAT"), #need to check if properly done for UL from here : https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/PhysicsTools/NanoAOD/python/muons_cff.py#L22
          EAFile_MiniIso = cms.FileInPath("PhysicsTools/NanoAOD/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt"), 
          relative = cms.bool(True),
-         #run2_miniAOD_80XLegacy.toModify(isoForMu, EAFile_MiniIso = "PhysicsTools/NanoAOD/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt")
-        #run2_nanoAOD_94X2016.toModify(isoForMu, EAFile_MiniIso = "PhysicsTools/NanoAOD/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_80X.txt")                        
          pfCands = cms.InputTag("packedPFCandidates"),                        
          Electrons = cms.InputTag("slimmedElectrons"),#,"","PAT"),#("gsfElectrons"),
          Photons = cms.InputTag("slimmedPhotons"),#,"","PAT"),
 	 GenParticles = cms.InputTag("prunedGenParticles"),#("prunedGenParticles"),#("packedGenParticles"),
 
-	 #btag_CMVA_name = cms.untracked.string("pfCombinedMVAV2BJetTags"),
-	 #btag_CSV_name = cms.untracked.string("pfCombinedInclusiveSecondaryVertexV2BJetTags"),
-
-   	 HistFill = cms.untracked.bool(True),
+         HistFill = cms.untracked.bool(True),
          electronID_isowp90        = cms.string('mvaEleID-Fall17-iso-V2-wp90'),
          electronID_noisowp90      = cms.string('mvaEleID-Fall17-noIso-V2-wp90'),                      
          electronID_isowp80        = cms.string('mvaEleID-Fall17-iso-V2-wp80'),
@@ -228,10 +213,7 @@ process.mcjets =  cms.EDAnalyzer('Leptop',
          PtSFFileAK4 = cms.string('Summer19UL18_JRV2_MC/Summer19UL18_JRV2_MC_SF_AK4PFchs.txt'),
          PtSFFileAK8 = cms.string('Summer19UL18_JRV2_MC/Summer19UL18_JRV2_MC_SF_AK8PFPuppi.txt'),
 
-	 HBHENoiseFilterResultLabel = cms.InputTag("HBHENoiseFilterResultProducer", "HBHENoiseFilterResult"),
-         HBHENoiseFilterResultNoMinZLabel = cms.InputTag("HBHENoiseFilterResultProducerNoMinZ", "HBHENoiseFilterResult"),
-
-	 JECUncFileAK4 = cms.string("Summer19UL18_V5_MC/Summer19UL18_V5_MC_UncertaintySources_AK4PFchs.txt"),
+         JECUncFileAK4 = cms.string("Summer19UL18_V5_MC/Summer19UL18_V5_MC_UncertaintySources_AK4PFchs.txt"),
 	 JECUncFileAK8 = cms.string("Summer19UL18_V5_MC/Summer19UL18_V5_MC_UncertaintySources_AK8PFPuppi.txt"),
 
 	 bits = cms.InputTag("TriggerResults","","HLT"),
