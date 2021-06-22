@@ -498,6 +498,8 @@ private:
   
   float pfjetAK8elinsubIfar[njetmxAK8], pfjetAK8elinsubI0[njetmxAK8], pfjetAK8elinsubInear[njetmxAK8];
   
+  float pfjetAK8subhaddiff[njetmxAK8], pfjetAK8subemdiff[njetmxAK8], pfjetAK8subptdiff[njetmxAK8];
+  
   float pfjetAK8JEC[njetmxAK8];
   float pfjetAK8reso[njetmxAK8], pfjetAK8resoup[njetmxAK8], pfjetAK8resodn[njetmxAK8];
   float pfjetAK8jesup_pu[njetmx], pfjetAK8jesup_rel[njetmx], pfjetAK8jesup_scale[njetmx], pfjetAK8jesup_total[njetmx], pfjetAK8jesdn_pu[njetmx], pfjetAK8jesdn_rel[njetmx], pfjetAK8jesdn_scale[njetmx], pfjetAK8jesdn_total[njetmx];
@@ -525,10 +527,10 @@ private:
   static const int ngenjetAK8mx =10;
   
   int ngenjetAK8;
-  float genjetAK8pt[njetmxAK8], genjetAK8y[njetmxAK8], genjetAK8phi[njetmxAK8], genjetAK8mass[njetmxAK8], genjetAK8sdmass[njetmxAK8]; 
+  float genjetAK8pt[njetmxAK8], genjetAK8eta[njetmxAK8], genjetAK8phi[njetmxAK8], genjetAK8mass[njetmxAK8], genjetAK8sdmass[njetmxAK8]; 
   
   int ngenjetAK4;
-  float genjetAK4pt[njetmx], genjetAK4y[njetmx], genjetAK4phi[njetmx], genjetAK4mass[njetmx];
+  float genjetAK4pt[njetmx], genjetAK4eta[njetmx], genjetAK4phi[njetmx], genjetAK4mass[njetmx];
   
   int ngenparticles;
   int genpartstatus[npartmx], genpartpdg[npartmx], genpartmompdg[npartmx], genpartgrmompdg[npartmx], genpartmomid[npartmx], genpartdaugno[npartmx];
@@ -591,7 +593,7 @@ private:
   */
   
   int ntrigobjs;
-  float trigobjpt[njetmx], trigobjeta[njetmx],trigobjphi[njetmx], trigobje[njetmx];
+  float trigobjpt[njetmx], trigobjeta[njetmx],trigobjphi[njetmx], trigobjmass[njetmx];
   bool trigobjHLT[njetmx], trigobjL1[njetmx],  trigobjBoth[njetmx];
   int  trigobjIhlt[njetmx], trigobjpdgId[njetmx];
   
@@ -677,7 +679,7 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   minGenPt = pset.getUntrackedParameter<double>("minGenPt",15.);
   maxEta = pset.getUntrackedParameter<double>("maxEta",3.);
   maxgenEta = pset.getUntrackedParameter<double>("maxgenEta",3.);
-  AK8PtCut = pset.getUntrackedParameter<double>("AK8PtCut",200.);
+  AK8PtCut = pset.getUntrackedParameter<double>("AK8PtCut",180.);
   AK8GenPtCut = pset.getUntrackedParameter<double>("AK8GenPtCut",150.);
   beta = pset.getUntrackedParameter<double>("beta",0);
   
@@ -808,7 +810,7 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("trigobjpt",trigobjpt,"trigobjpt[ntrigobjs]/F");
   T1->Branch("trigobjeta",trigobjeta,"trigobjeta[ntrigobjs]/F");
   T1->Branch("trigobjphi",trigobjphi,"trigobjphi[ntrigobjs]/F");
-  T1->Branch("trigobje",trigobje,"trigobje[ntrigobjs]/F");
+  T1->Branch("trigobjmass",trigobjmass,"trigobjmass[ntrigobjs]/F");
   T1->Branch("trigobjHLT",trigobjHLT,"trigobjHLT[ntrigobjs]/O");
   T1->Branch("trigobjL1",trigobjL1,"trigobjL1[ntrigobjs]/O");
   T1->Branch("trigobjBoth",trigobjBoth,"trigobjBoth[ntrigobjs]/O");
@@ -933,6 +935,10 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("pfjetAK8elinsubjeta", pfjetAK8elinsubjeta, "pfjetAK8elinsubjeta[npfjetAK8]/F");
   T1->Branch("pfjetAK8elinsubjphi", pfjetAK8elinsubjphi, "pfjetAK8elinsubjphi[npfjetAK8]/F");
   T1->Branch("pfjetAK8elinsubjmass", pfjetAK8elinsubjmass, "pfjetAK8elinsubjmass[npfjetAK8]/F");
+  
+  T1->Branch("pfjetAK8subhaddiff",pfjetAK8subhaddiff,"pfjetAK8subhaddiff[npfjetAK8]/F");
+  T1->Branch("pfjetAK8subemdiff",pfjetAK8subemdiff,"pfjetAK8subemdiff[npfjetAK8]/F");
+  T1->Branch("pfjetAK8subptdiff",pfjetAK8subptdiff,"pfjetAK8subptdiff[npfjetAK8]/F");
 
   // AK4 jet info //
  
@@ -977,7 +983,7 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   // GEN AK8 jet info //  
   T1->Branch("ngenjetAK8",&ngenjetAK8, "ngenjetAK8/I");
   T1->Branch("genjetAK8pt",genjetAK8pt,"genjetAK8pt[ngenjetAK8]/F");
-  T1->Branch("genjetAK8y",genjetAK8y,"genjetAK8y[ngenjetAK8]/F");
+  T1->Branch("genjetAK8eta",genjetAK8eta,"genjetAK8eta[ngenjetAK8]/F");
   T1->Branch("genjetAK8phi",genjetAK8phi,"genjetAK8phi[ngenjetAK8]/F");
   T1->Branch("genjetAK8mass",genjetAK8mass,"genjetAK8mass[ngenjetAK8]/F"); 
   T1->Branch("genjetAK8sdmass",genjetAK8sdmass,"genjetAK8sdmass[ngenjetAK8]/F");
@@ -986,7 +992,7 @@ Leptop::Leptop(const edm::ParameterSet& pset):
  
   T1->Branch("ngenjetAK4",&ngenjetAK4, "ngenjetAK4/I");
   T1->Branch("genjetAK4pt",genjetAK4pt,"genjetAK4pt[ngenjetAK4]/F");
-  T1->Branch("genjetAK4y",genjetAK4y,"genjetAK4y[ngenjetAK4]/F");
+  T1->Branch("genjetAK4eta",genjetAK4eta,"genjetAK4eta[ngenjetAK4]/F");
   T1->Branch("genjetAK4phi",genjetAK4phi,"genjetAK4phi[ngenjetAK4]/F");
   T1->Branch("genjetAK4mass",genjetAK4mass,"genjetAK4mass[ngenjetAK4]/F");
   
@@ -1306,7 +1312,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       trigobjpt[iht] = alltrgobj[iht].trg4v.perp();
       trigobjeta[iht] = alltrgobj[iht].trg4v.eta();
       trigobjphi[iht] = alltrgobj[iht].trg4v.phi();
-      trigobje[iht] = alltrgobj[iht].trg4v.e();
+      trigobjmass[iht] = alltrgobj[iht].trg4v.m();
       trigobjHLT[iht] = alltrgobj[iht].highl;
       trigobjL1[iht] = alltrgobj[iht].level1;
       trigobjBoth[iht] = alltrgobj[iht].both;
@@ -1737,6 +1743,11 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	      pfjetAK8sub2hadfrac[npfjetAK8] = (chhad+neuhad)*1./ak8subjet->energy();
 	    }	  
 	  }
+	  
+	  pfjetAK8subhaddiff[npfjetAK8] = diff_func(pfjetAK8sub1hadfrac[npfjetAK8],pfjetAK8sub2hadfrac[npfjetAK8]);
+      pfjetAK8subemdiff[npfjetAK8] = diff_func(pfjetAK8sub1emfrac[npfjetAK8],pfjetAK8sub2emfrac[npfjetAK8]);
+      pfjetAK8subptdiff[npfjetAK8] = diff_func(pfjetAK8sub1pt[npfjetAK8],pfjetAK8sub2pt[npfjetAK8]);
+	  
 	  if (pfjetAK8sub1hadfrac[npfjetAK8] >= 0 && pfjetAK8sub2hadfrac[npfjetAK8] >= 0) {
 	    if (pfjetAK8sub1hadfrac[npfjetAK8] < pfjetAK8sub2hadfrac[npfjetAK8]) {
 	      if (elInsubjet1vec.size() > 0) {
@@ -2013,10 +2024,10 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       
       HepLorentzVector genjetAK84v((*genjetAK8s)[gjet].px(),(*genjetAK8s)[gjet].py(),(*genjetAK8s)[gjet].pz(), (*genjetAK8s)[gjet].energy());
       if(genjetAK84v.perp()<AK8GenPtCut) continue;
-      if(abs(genjetAK84v.rapidity())>maxgenEta) continue;
+      if(abs(genjetAK84v.eta())>maxgenEta) continue;
       
       genjetAK8pt[ngenjetAK8] = genjetAK84v.perp();
-      genjetAK8y[ngenjetAK8] = genjetAK84v.rapidity();
+      genjetAK8eta[ngenjetAK8] = genjetAK84v.eta();
       genjetAK8phi[ngenjetAK8] = genjetAK84v.phi();
       genjetAK8mass[ngenjetAK8] = (*genjetAK8s)[gjet].mass();
       
@@ -2053,10 +2064,10 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       
       HepLorentzVector genjetAK44v((*genjetAK4s)[gjet].px(),(*genjetAK4s)[gjet].py(),(*genjetAK4s)[gjet].pz(), (*genjetAK4s)[gjet].energy());
       if(genjetAK44v.perp()<minGenPt) continue;
-      if(abs(genjetAK44v.rapidity())>maxgenEta) continue;
+      if(abs(genjetAK44v.eta())>maxgenEta) continue;
       
       genjetAK4pt[ngenjetAK4] = genjetAK44v.perp();
-      genjetAK4y[ngenjetAK4] = genjetAK44v.rapidity();
+      genjetAK4eta[ngenjetAK4] = genjetAK44v.eta();
       genjetAK4phi[ngenjetAK4] = genjetAK44v.phi();
       genjetAK4mass[ngenjetAK4] = (*genjetAK4s)[gjet].mass();
       
@@ -2177,7 +2188,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	float R = 10.0 / std::min(std::max(muon1->pt(), 50.0), 200.0);
 	ea *= std::pow(R / 0.3, 2);
 	//float scale = relative_ ? 1.0 / muon1->pt() : 1;
-	muonminisoall[nmuons] = (chg + std::max(0.0, neu + pho - (*Rho_PF) * ea)); 
+	muonminisoall[nmuons] = (chg + std::max(0., neu + pho - (*Rho_PF) * ea)); 
 	//std::cout << " miniIsoChg " << scale * chg << " " << " miniIsoAll " << scale * (chg + std::max(0.0, neu + pho - (*Rho_PF) * ea)) << " " << std::endl;
       	//*****************************************//
       
@@ -2186,16 +2197,13 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	muonisTRK[nmuons] = muon1->isTrackerMuon();
 	muonisLoose[nmuons] = (muon::isLooseMuon(*muon1));
 	muonisMed[nmuons] = (muon::isMediumMuon(*muon1));
-	
+	muonisMedPr[nmuons] = false;
 	if(muon::isMediumMuon(*muon1)) {
 	  if ((std::abs(muon1->muonBestTrack()->dz(vertex.position())) < 0.1) && (std::abs(muon1->muonBestTrack()->dxy(vertex.position())) < 0.02)){
 	    muonisMedPr[nmuons] = true;
 	  }
-	  else {
-	    muonisMedPr[nmuons] = false;
-	  }
 	}
-	muonisGoodGL[nmuons] = (muon1->isGlobalMuon() && muon1->globalTrack()->normalizedChi2() < 3 && muon1->combinedQuality().chi2LocalPosition < 12 && muon1->combinedQuality().trkKink < 20 && (muon::segmentCompatibility(*muon1)) > 0.303);
+      	muonisGoodGL[nmuons] = (muon1->isGlobalMuon() && muon1->globalTrack()->normalizedChi2() < 3 && muon1->combinedQuality().chi2LocalPosition < 12 && muon1->combinedQuality().trkKink < 20 && (muon::segmentCompatibility(*muon1)) > 0.303);
 	muonisTight[nmuons] = (muon::isTightMuon(*muon1,vertex));
 	muonisHighPt[nmuons] = (muon::isHighPtMuon(*muon1,vertex));
 	muonisHighPttrk[nmuons] = (muon::isTrackerHighPtMuon(*muon1,vertex));
@@ -2438,7 +2446,8 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     }
   }	  
   //  cout<<"done!"<<endl;
-  T1->Fill();
+  //std::cout << " npfjetAK8 " << npfjetAK8 << std::endl;
+  if (npfjetAK8>=1) T1->Fill();
 }
 
 

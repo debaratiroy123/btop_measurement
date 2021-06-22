@@ -132,7 +132,7 @@ updateJetCollection(
    jetCorrections = ('AK8PFPuppi', cms.vstring([]), 'None' ),
    btagDiscriminators = deep_discriminators 
 )
-process.updatedPatJetsTransientCorrectedSlimmedJetsAK8.userData.userFloats.src = []
+#process.updatedPatJetsTransientCorrectedSlimmedJetsAK8.userData.userFloats.src = []
 
 process.mcjets =  cms.EDAnalyzer('Leptop',
 
@@ -159,7 +159,7 @@ process.mcjets =  cms.EDAnalyzer('Leptop',
          minGenPt = cms.untracked.double(15.),                        
 	 maxEta = cms.untracked.double(3.),
          maxGenEta = cms.untracked.double(5.),
-	 AK8PtCut = cms.untracked.double(200.),
+	 AK8PtCut = cms.untracked.double(180.),
          AK8GenPtCut = cms.untracked.double(150.),                        
 	 
 
@@ -183,10 +183,8 @@ process.mcjets =  cms.EDAnalyzer('Leptop',
 	 PFJetsAK4 = cms.InputTag("slimmedJets"),
 	 GENJetAK8 = cms.InputTag("slimmedGenJetsAK8"),
 	 GENJetAK4 = cms.InputTag("slimmedGenJets"),#,"","PAT"),
-	 PFSubJetsAK8 = cms.InputTag("slimmedJetsAK8PFPuppiSoftDropPacked","SubJets","PAT"),
-        #PFSubJetsAK8 = cms.InputTag("slimmedJetsAK8PFCHSSoftDropPacked","SubJets","PAT"), 
 	 Muons = cms.InputTag("slimmedMuons"),#,"","PAT"),
-         src = cms.InputTag("slimmedMuonsUpdated"),#,"","PAT"), #need to check if properly done for UL from here : https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/PhysicsTools/NanoAOD/python/muons_cff.py#L22
+#         src = cms.InputTag("slimmedMuonsUpdated"),#,"","PAT"), #need to check if properly done for UL from here : https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/PhysicsTools/NanoAOD/python/muons_cff.py#L22
          EAFile_MiniIso = cms.FileInPath("PhysicsTools/NanoAOD/data/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt"), 
          relative = cms.bool(True),
          pfCands = cms.InputTag("packedPFCandidates"),                        
@@ -194,7 +192,6 @@ process.mcjets =  cms.EDAnalyzer('Leptop',
          Photons = cms.InputTag("slimmedPhotons"),#,"","PAT"),
 	 GenParticles = cms.InputTag("prunedGenParticles"),#("prunedGenParticles"),#("packedGenParticles"),
 
-         HistFill = cms.untracked.bool(True),
          electronID_isowp90        = cms.string('mvaEleID-Fall17-iso-V2-wp90'),
          electronID_noisowp90      = cms.string('mvaEleID-Fall17-noIso-V2-wp90'),                      
          electronID_isowp80        = cms.string('mvaEleID-Fall17-iso-V2-wp80'),
