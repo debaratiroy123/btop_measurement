@@ -3,11 +3,11 @@
 #include <TH2.h>
 #include <TStyle.h>
 
-//#define E_MU_TTBar
+#define E_MU_TTBar
 
 //#define E_E_TTBar
 
-#define MU_MU_TTBar
+//#define MU_MU_TTBar
 
 void Anal_Leptop_PROOF::Begin(TTree * /*tree*/)
 {
@@ -26,7 +26,7 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
   
   TString option = GetOption();
   
-  OutFile = new TProofOutputFile("testcombMUMUnotSig.root");
+  OutFile = new TProofOutputFile("testcombEMUSig.root");
   
   fileOut = OutFile->OpenFile("RECREATE");
   if ( !(fileOut = OutFile->OpenFile("RECREATE")) )
@@ -462,14 +462,14 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   
   if (isMC && isTT) {
 #ifdef E_MU_TTBar
-    //if(!(DiLeptt && EMU)) return kFALSE; //for signal EMU
-    if((DiLeptt && EMU)) return kFALSE; //for non-signal EMU TTbar
+    if(!(DiLeptt && EMU)) return kFALSE; //for signal EMU
+    //if((DiLeptt && EMU)) return kFALSE; //for non-signal EMU TTbar
 #elif defined(E_E_TTBar)
-    //if(!(DiLeptt && EE)) return kFALSE; //for signal EE
-    if((DiLeptt && EE)) return kFALSE; //for non-signal EE TTbar
+    if(!(DiLeptt && EE)) return kFALSE; //for signal EE
+    //if((DiLeptt && EE)) return kFALSE; //for non-signal EE TTbar
 #elif defined(MU_MU_TTBar) 
-    //if(!(DiLeptt && MUMU)) return kFALSE; //for signal MUMU
-    if((DiLeptt && MUMU)) return kFALSE; //for non-signal MUMU TTbar
+    if(!(DiLeptt && MUMU)) return kFALSE; //for signal MUMU
+    //if((DiLeptt && MUMU)) return kFALSE; //for non-signal MUMU TTbar
 #endif
   }
   
@@ -502,7 +502,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   std::vector<TLorentzVector> bjv;
   for(int ijet=0; ijet<npfjetAK4; ijet++){
     if(!pfjetAK4looseID[ijet]) continue; //switch to tight ID in .cc for small jets as individual component is not stored in ntuple                        
-    if(fabs(pfjetAK4eta[ijet])>2.4) continue;
+    if(fabs(pfjetAK4eta[ijet])>2.5) continue;
     pfjetAK4pt[ijet] *= pfjetAK4JEC[ijet] ;
     pfjetAK4mass[ijet] *= pfjetAK4JEC[ijet];
     if(isMC){
@@ -572,7 +572,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     
     if(muonpt[mu]<25.) continue; 
     
-    if(fabs(muoneta[mu])>2.4)  continue; 
+    if(fabs(muoneta[mu])>2.5)  continue; 
     bool mu_id = Muon_TightID(muonisGL[mu],muonisPF[mu],
 			      muonchi[mu],muonthit[mu],muonmst[mu],
 			      muontrkvtx[mu],muondz[mu],muonpixhit[mu],muontrklay[mu]);
@@ -652,7 +652,8 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     }
     
     if(pfjetAK8pt[ijet] < ptcut) continue;
-    
+    //if(pfjetAK8pt[ijet] < 300.) continue; 
+
     //if (pfjetAK8elinsubpt[ijet] < 0 && pfjetAK8elinsubjpt[ijet]< 0) continue;
     //if (pfjetAK8muinsubpt[ijet] < 0 && pfjetAK8muinsubjpt[ijet]< 0) continue;
     
@@ -904,7 +905,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   int nelec1 = 0;
   for(int ie=0; ie<nelecs; ie++) {
     if (elpt[ie]<25.) continue;
-    if(fabs(eleta[ie])>2.4)  continue; 
+    if(fabs(eleta[ie])>2.5)  continue; 
 
      // if(!elmvaid[ie]) continue;
 
@@ -1224,18 +1225,15 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     
   }//ijet
   
-  int nelec2 = 0;
   std::vector<double> elptv;
   std::vector<double> eletav;
   std::vector<double> elphiv;
   std::vector<double> elev;
   std::vector<float> elchv;
   std::vector<TLorentzVector> elcandv;
-  for(int ie=0; ie<nelec1; ie++) {
+  for(int ie=0; ie<nelecs; ie++) {
     
     if(elpt[ie]<30.) continue; 
-    if(fabs(eleta[ie])>2.4)  continue; 
-    if(!elmvaid_noIso[ie]) continue;
     
     elptv.push_back(elpt[ie]);
     eletav.push_back(eleta[ie]);
@@ -1243,8 +1241,6 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     elev.push_back(ele[ie]);
     elchv.push_back(elcharge[ie]);
     
-    nelec2++;
-    if(nelec2 >= njetmx) break;
   }
   
   reOrder(elptv, eletav, elphiv, elev, elchv);
@@ -1257,32 +1253,22 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     reelchv.push_back(elchv[ivi]);
   }
   
-  int nmuon2 = 0;
-  
   std::vector<double> muptv;
   std::vector<double> muetav;
   std::vector<double> muphiv;
   std::vector<double> muev;
   std::vector<float> muchv;
   std::vector<TLorentzVector> mucandv;
-  for(int imu=0; imu<nmuon1; imu++) {
+  for(int imu=0; imu<nmuons; imu++) {
     
     if(muonpt[imu]<30.) continue;
-    if(fabs(muoneta[imu])>2.4)  continue;
-    
-    bool mu2_id = Muon_TightID(muonisGL[imu],muonisPF[imu],
-			       muonchi[imu],muonthit[imu],muonmst[imu],
-			       muontrkvtx[imu],muondz[imu],muonpixhit[imu],muontrklay[imu]);
-    if(!mu2_id) continue;
-    
+        
     muptv.push_back(muonpt[imu]);
     muetav.push_back(muoneta[imu]);
     muphiv.push_back(muonphi[imu]);
     muev.push_back(muone[imu]);
     muchv.push_back(muoncharge[imu]);
     
-    nmuon2++;
-    if( nmuon2 >= njetmx) break;
   }
   
   reOrder(muptv, muetav, muphiv, muev, muchv);
@@ -1327,7 +1313,8 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     float toppt_wt = 1;
     
     if(ngent==2){
-      toppt_wt = SF_TOP(0.0416,0.0003,TMath::Min(float(500),float(top4mom[0].Pt())),TMath::Min(float(500),float(top4mom[1].Pt())));
+      //toppt_wt = SF_TOP(0.0416,0.0003,TMath::Min(float(500),float(top4mom[0].Pt())),TMath::Min(float(500),float(top4mom[1].Pt()))); /*for NNLO prediction use 0.0416 & 0.0003 See : https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopPtReweighting#TOP_PAG_corrections_based_on_dat
+      toppt_wt = SF_TOP(0.0615,0.0005,TMath::Min(float(500),float(top4mom[0].Pt())),TMath::Min(float(500),float(top4mom[1].Pt()))); /*powheg+pythia8 prediction use 0.0615,0.0005*/
     }
     
     weight *= toppt_wt;
@@ -1370,8 +1357,10 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     
 
   if (lepcoll_kin.size()<2) return kFALSE; //at least two leptons with pT > 30 GeV at this stage
-  if (lepcoll_chgid.size()<2) return kFALSE; //kept for safety
+  if (!(lepcoll_chgid.size()==lepcoll_kin.size())) return kFALSE; //kept for safety
+
   hist_count->Fill(2,weight);
+  
   
   bool emu_ch = false;
   bool mumu_ch = false;
@@ -1455,10 +1444,6 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     
   TLorentzVector fmucand, felcand;
   
-  //TString str;                                                                                                
-  //str = TString::Format("event id %u lepcoll_chgid[0] %f lepcoll_chgid[1] %f", ievt,lepcoll_chgid[0],lepcoll_chgid[1]);
-  //if(gProofServ) gProofServ->SendAsynMessage(str);
-
   if (fabs(lepcoll_chgid[0]) == 1 && fabs(lepcoll_chgid[1]) == 2) {
     fmucand.SetPtEtaPhiM(lepcoll_kin[0].Pt(),lepcoll_kin[0].Eta(),lepcoll_kin[0].Phi(),lepcoll_kin[0].M());
     felcand.SetPtEtaPhiM(lepcoll_kin[1].Pt(),lepcoll_kin[1].Eta(),lepcoll_kin[1].Phi(),lepcoll_kin[1].M());
@@ -1523,42 +1508,36 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
 
 
   /***** invariant mass of lepton at least more than 20 GeV as resolved analysis cut****/
-#ifdef E_MU_TTBar
-  if ((fmucand + felcand).M() < 20.) return kFALSE;
-#elif defined(E_E_TTBar)
-  if ((fe1cand + fe2cand).M() < 20.) return kFALSE;
-#elif defined(MU_MU_TTBar)
-  if ((fmu1cand + fmu2cand).M() < 20.) return kFALSE;
-#endif
+  if (M_l1l2 < 20.) return kFALSE;
   hist_count->Fill(8,weight);
 
   /***no other 3rd lepton other than the selected lepton set***/ 
 #ifdef E_MU_TTBar  
-  if (nmuon1>1) return kFALSE;
+  if (nmuons>1) return kFALSE;
   hist_count->Fill(9,weight);
-  if (nelec1>1) return kFALSE;
+  if (nelecs>1) return kFALSE;
   hist_count->Fill(10,weight);
 #elif defined(E_E_TTBar)
-  if (nmuon1>=1) return kFALSE;
+  if (nmuons>=1) return kFALSE;
   hist_count->Fill(9,weight);
-  if (nelec1>2) return kFALSE;
+  if (nelecs>2) return kFALSE;
   hist_count->Fill(10,weight);
 #elif defined(MU_MU_TTBar)
-  if (nmuon1>2) return kFALSE;
+  if (nmuons>2) return kFALSE;
   hist_count->Fill(9,weight);
-  if (nelec1>=1) return kFALSE;
+  if (nelecs>=1) return kFALSE;
   hist_count->Fill(10,weight);
 #endif
-    
+  
   if (npfjetAK4<=2) return kFALSE;
   hist_count->Fill(11,weight);
-
+  
   if (nbjetAK4<1) return kFALSE;
   hist_count->Fill(12,weight);
-
+  
   if (npfjetAK8<1) return kFALSE;
   hist_count->Fill(13,weight);
-
+  
   //Computation of MET related Suman's variables//
   if (PFMET != -1000 && PFMETPhi != -1000) { 
     float metx = PFMET*std::cos(PFMETPhi);
@@ -1615,17 +1594,17 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     float mt_of_l1met = (metvector+l1).Mt();
     float mt_of_l2met =(metvector+l2).Mt();
 
-    TString str;
-    str = TString::Format("met_pt %f std::sqrt(metx*metx+ mety*mety) %f met_phi %f met_eta %f",met_pt,std::sqrt(metx*metx+ mety*mety),PFMETPhi,met_eta);            
-    if(gProofServ) gProofServ->SendAsynMessage(str);  
+    //TString str;
+    //str = TString::Format("met_pt %f std::sqrt(metx*metx+ mety*mety) %f met_phi %f met_eta %f",met_pt,std::sqrt(metx*metx+ mety*mety),PFMETPhi,met_eta);            
+    //if(gProofServ) gProofServ->SendAsynMessage(str);  
   }
 
   if (PFMET<50.) return kFALSE; //before it was 70 GeV. 100 GeV on 17th April, 50 GeV on June  
   hist_count->Fill(14,weight);
   
     
-  hist_init[0]->Fill(nmuon1,weight);
-  hist_init[1]->Fill(nelec1,weight);
+  hist_init[0]->Fill(nmuons,weight);
+  hist_init[1]->Fill(nelecs,weight);
   hist_init[2]->Fill(PFMET,weight);
   hist_init[3]->Fill(nprimi,weight);
   hist_init[4]->Fill(npfjetAK4,weight);
@@ -1664,8 +1643,8 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   hist_init[15]->Fill(bjv[0].Eta(),weight);
   hist_init[16]->Fill(bjv[0].Phi(),weight);
   
-  hist_initpuwup[0]->Fill(nmuon1,weight_puwup);
-  hist_initpuwup[1]->Fill(nelec1,weight_puwup);
+  hist_initpuwup[0]->Fill(nmuons,weight_puwup);
+  hist_initpuwup[1]->Fill(nelecs,weight_puwup);
   hist_initpuwup[2]->Fill(PFMET,weight_puwup);
   hist_initpuwup[3]->Fill(nprimi,weight_puwup);
   hist_initpuwup[4]->Fill(npfjetAK4,weight_puwup);
@@ -1704,8 +1683,8 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   hist_initpuwup[15]->Fill(bjv[0].Eta(),weight_puwup);
   hist_initpuwup[16]->Fill(bjv[0].Phi(),weight_puwup);
 
-  hist_initbtagwup[0]->Fill(nmuon1,weight_btagwup);
-  hist_initbtagwup[1]->Fill(nelec1,weight_btagwup);
+  hist_initbtagwup[0]->Fill(nmuons,weight_btagwup);
+  hist_initbtagwup[1]->Fill(nelecs,weight_btagwup);
   hist_initbtagwup[2]->Fill(PFMET,weight_btagwup);
   hist_initbtagwup[3]->Fill(nprimi,weight_btagwup);
   hist_initbtagwup[4]->Fill(npfjetAK4,weight_btagwup);
@@ -1740,8 +1719,8 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   hist_initbtagwup[15]->Fill(bjv[0].Eta(),weight_btagwup);
   hist_initbtagwup[16]->Fill(bjv[0].Phi(),weight_btagwup);
   
-  hist_initpuwdown[0]->Fill(nmuon1,weight_puwdown);
-  hist_initpuwdown[1]->Fill(nelec1,weight_puwdown);
+  hist_initpuwdown[0]->Fill(nmuons,weight_puwdown);
+  hist_initpuwdown[1]->Fill(nelecs,weight_puwdown);
   hist_initpuwdown[2]->Fill(PFMET,weight_puwdown);
   hist_initpuwdown[3]->Fill(nprimi,weight_puwdown);
   hist_initpuwdown[4]->Fill(npfjetAK4,weight_puwdown);
@@ -1776,8 +1755,8 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   hist_initpuwdown[15]->Fill(bjv[0].Eta(),weight_puwdown);
   hist_initpuwdown[16]->Fill(bjv[0].Phi(),weight_puwdown);
 
-  hist_initbtagwdown[0]->Fill(nmuon1,weight_btagwdown);
-  hist_initbtagwdown[1]->Fill(nelec1,weight_btagwdown);
+  hist_initbtagwdown[0]->Fill(nmuons,weight_btagwdown);
+  hist_initbtagwdown[1]->Fill(nelecs,weight_btagwdown);
   hist_initbtagwdown[2]->Fill(PFMET,weight_btagwdown);
   hist_initbtagwdown[3]->Fill(nprimi,weight_btagwdown);
   hist_initbtagwdown[4]->Fill(npfjetAK4,weight_btagwdown);
