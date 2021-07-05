@@ -1,0 +1,10 @@
+#!/bin/sh
+condor_submit wprime_job_2016B_PROOF.sh 
+condor_submit wprime_job_2016C_PROOF.sh
+condor_submit wprime_job_2016D_PROOF.sh
+condor_submit wprime_job_2016E_PROOF.sh
+condor_submit wprime_job_2016F_PROOF.sh
+condor_submit wprime_job_2016G_PROOF.sh
+condor_submit wprime_job_2016H_p1_PROOF.sh
+condor_submit wprime_job_2016H_p2_PROOF.sh 
+#condor_submit wprime_job_ttbar_PROOF.sh

@@ -1,0 +1,2 @@
+/var/lib/condor/execute/dir_3699/condor_exec.exe: line 11: cd: /home/deroy/t3store3/Muon_MuEl/SameWeight/Combination/ULCombination: Not a directory
+Warning in <TApplication::GetOptions>: macro runAll.C not found
