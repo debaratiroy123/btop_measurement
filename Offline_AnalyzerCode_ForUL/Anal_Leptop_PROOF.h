@@ -992,6 +992,9 @@ class Anal_Leptop_PROOF : public TSelector {
  public :
   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
   
+  //New more variables stored as ntuple//
+  float M_l1l2, rat_l1pt_l2pt, deltaPhi_l1l2, l1pt_nearjet, l2pt_nearjet, met_pt, met_eta, delta_phil1_met, delta_phil2_met, delta_phibl1_met, delta_phibl2_met, rat_metpt_ak4pt, rat_metpt_ak8pt, rat_metpt_eventHT, mt_of_l1met, mt_of_l2met, no_ak4jets, no_ak4bjets, no_ak8jets, EventHT; 
+
   static const int njetmx = 20;
   static const int njetmxAK8 = 10;
   static const int npartmx = 25;
@@ -1971,31 +1974,34 @@ class Anal_Leptop_PROOF : public TSelector {
   
   TProofOutputFile *OutFile;
   TFile *fileOut;
-   
-  TTree *Tout ;
-  TTree *Tout1 ;
-  TTree *Tout2 ;
-  TTree *Tout3 ;
-  TTree *Tout4 ;
-  TTree *Tout5 ;
-  TTree *Tout6 ;
-  
-
-  TH1D *hist_dReb;
-  TH1D *hist_dRnue;
-  TH1D *hist_dRnub;
-  TH1D *hist_dRet;
-  TH1D *hist_dRnut;
-  TH1D *hist_dRbt;
-
-  TH2D *hist2D_dReb;
-  TH2D *hist2D_dRnue;
-  TH2D *hist2D_dRnub;
-
-  TH2D *hist2D_dRet;
-  TH2D *hist2D_dRnut;
-  TH2D *hist2D_dRbt;
-  
+ 
+    TTree *Tout ;
+    TTree *Tnewvar;
+    /*
+    TTree *Tout1 ;
+    TTree *Tout2 ;
+    TTree *Tout3 ;
+    TTree *Tout4 ;
+    TTree *Tout5 ;
+    TTree *Tout6 ;
+    
+    
+    TH1D *hist_dReb;
+    TH1D *hist_dRnue;
+    TH1D *hist_dRnub;
+    TH1D *hist_dRet;
+    TH1D *hist_dRnut;
+    TH1D *hist_dRbt;
+    
+    TH2D *hist2D_dReb;
+    TH2D *hist2D_dRnue;
+    TH2D *hist2D_dRnub;
+    
+    TH2D *hist2D_dRet;
+    TH2D *hist2D_dRnut;
+    TH2D *hist2D_dRbt;
+  */
+  TH1D *hist_new_var[15];
   TH1D *hist_init[18];
   TH1D *hist_binit[6];
   TH1D *hist_dRdPhi[14];
@@ -2003,15 +2009,29 @@ class Anal_Leptop_PROOF : public TSelector {
   TH1D *hist_initpuwdown[18];
   TH1D *hist_initbtagwup[18];
   TH1D *hist_initbtagwdown[18];
+  
+  //  const char *new_var_names[9] = {"M_l1l2","rat_l1l2","deltaPhi_l1l2","l1pt_wrtjet","l2pt_wrtjet","MET","MET_{#eta}","delta_phil1_met","delta_phil2_met"};
 
-  const char *initnames[18] = {
-    "nmu","nel","PFMET","N_PV_sel","NJets_AK4","NBJets_AK4","NJets_AK8","mll","l1pt","l1eta","l1phi","l2pt","l2eta","l2phi","bjetpt","bjeteta","bjetphi","NJets_balAK8"};//,"dRmuelcand","dPhimuelcand","Mmuelcand","Ptmuelcand","njets_AK4_out"};
+  //"MET","phi(lep1)","phi(lep2)","phi(MET)","pT(lep1)","pT(lep2)","pT(jet)", "pT(bjet)","deltaPhi(MET,lep)","deltaPhi(MET,lep2)","deltaPhi(MET,jet)","deltaPhi(MET,bjet)","mT(lep1)","mT(lep2)","R_(m)"};
+
+  //const char *new_var_title[9] = {"M_{l1,l2}","rat_{l1,l2}","#delta#phi_{l1,l2}","l1p_{T}wrtj","l2p_{T}wrtj","MET","MET_{#eta}","#delta#phi_{l1,MET}","#delta#phi_{l2,MET}"};
+
+  //"MET","#phi of leading lep","#phi of second leading lep","#phi(E^{mis}_{T})","#p_{T} of leading lep","#p_{T} of second leading lep","#p_{T} of leading jet", "#p_{T} of leading b-tag jet","#delta#phi between MET and leading lep","#delta#phi between MET and second leading lep","#delta#phi between MET and leading jet","#delta#phi between MET and leading b-tag jet","m^{leading lep}_{T}","m^{second leading lep}_{T}","R_{m}"};
+  
+  const char *initnames[18] = {"nmu","nel","PFMET","N_PV_sel","NJets_AK4","NBJets_AK4","NJets_AK8","mll","l1pt","l1eta","l1phi","l2pt","l2eta","l2phi","bjetpt","bjeteta","bjetphi","NJets_balAK8"};//,"dRmuelcand","dPhimuelcand","Mmuelcand","Ptmuelcand","njets_AK4_out"};
 
   const char *titlenames[18] = {"nmu","nel","PFMET","# of Primary Vertices","# of AK4 jets","# of b tagged AK4 jets","# of AK8 jets","mll","l1pt","l1eta","l1phi","l2pt","l2eta","l2phi","bjet pT","bjet eta","bjet phi","# of bal.AK8 jets wrt mu"};//"dR between top candidates","dPhi between top candidates","Invariant mass of top candidates","pT of top candidates","# of AK4 jets outside top candidates"}; 
 
+  //double new_var_low[9] = {0.0,0.0,-5.0,0.0,0.0,0.0,-2.5,-5.0,-5.0};//,0.0,0.0,0.0,0.0,0.0,0.0,0.0,300.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+  //double new_var_up[9] = {500.0,2.0,5.0,1000.0,1000.0,500.0,2.5,5.0,5.0};//1000,3.15,3.15,3.15,500,500,3000,500,3.15,3.15,3.15,3.15,500,500,5.};
+  //int new_var_nbins[9] = {25,25,50,50,50,25,25,50,50};//30,25,25,25,25,25,30,25,25,25,25,25,25,25,25};
+  
+
   double ini_low[18] = {0.5,0.5,0.0,-0.1,0.5,0.5,0.5,0.0,25.0,-2.5,-5.0,25.0,-2.5,-5.0,25.0,-2.5,-5.0,0.5};//0.0,-3.0,0.0,400.0,-0.5};
   double ini_up[18] = {10.5,10.5,500,99.9,10.5,10.5,10.5,500.0,1000.0,2.5,5.0,1000.0,2.5,5.0,1000.0,2.5,5.0,10.5};//5.0,3.0,1500.0,3100.0,10.5};
+
   int ini_nbins[18] = {10,10,25,100,10,10,10,25,50,25,50,50,25,50,50,25,50,10};//,50,50,50,25,10};
+
   const char *binitnames[6] = {"bNJets_AK4","bNBJets_AK4","jet1pt","jet2pt","bjet1pt","bjet2pt"}; 
   const char *btitlenames[6] = {"# of AK4 jets with boost", "# of b tagged AK4 jets with boost", "Leading AK4 jet pT with boost", "Subleading AK4 jet pT with boost", "Leading bjet pT with boost", "Subleading bjet pT with boost"};
 

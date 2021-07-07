@@ -6,9 +6,9 @@
 
 //#define E_MU_TTBar
 
-#define E_E_TTBar
+//#define E_E_TTBar
 
-//#define MU_MU_TTBar
+#define MU_MU_TTBar
 
 void Anal_Leptop_PROOF::Begin(TTree * /*tree*/)
 {
@@ -47,7 +47,31 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
   Tout = new TTree("leptop","leptop");
   Tout->Branch("event_pt_weight",&event_pt_weight,"event_pt_weight/F");
   Tout->Branch("weight",&weight,"weight/F");
+
+  Tnewvar = new TTree("newvars","newvars");
+  Tnewvar->Branch("M_l1l2",&M_l1l2,"M_l1l2/F");
+  Tnewvar->Branch("rat_l1pt_l2pt",&rat_l1pt_l2pt,"rat_l1pt_l2pt/F");
+  Tnewvar->Branch("deltaPhi_l1l2",&deltaPhi_l1l2,"deltaPhi_l1l2/F");
+  Tnewvar->Branch("l1pt_nearjet",&l1pt_nearjet,"l1pt_nearjet/F");
+  Tnewvar->Branch("met_pt",&met_pt,"met_pt/F");
+  Tnewvar->Branch("met_eta",&met_eta,"met_eta/F");
+  Tnewvar->Branch("delta_phil1_met",&delta_phil1_met,"delta_phil1_met/F");
+  Tnewvar->Branch("delta_phil2_met",&delta_phil2_met,"delta_phil2_met/F");
+  Tnewvar->Branch("delta_phibl1_met",&delta_phibl1_met,"delta_phibl1_met/F"); 
+  Tnewvar->Branch("delta_phibl2_met",&delta_phibl2_met,"delta_phibl2_met/F");
+  Tnewvar->Branch("rat_metpt_ak4pt",&rat_metpt_ak4pt,"rat_metpt_ak4pt/F");
+  Tnewvar->Branch("rat_metpt_ak8pt",&rat_metpt_ak8pt,"rat_metpt_ak8pt/F");
+  Tnewvar->Branch("rat_metpt_eventHT",&rat_metpt_eventHT,"rat_metpt_eventHT/F");
+  Tnewvar->Branch("mt_of_l1met",&mt_of_l1met,"mt_of_l1met/F");
+  Tnewvar->Branch("mt_of_l2met",&mt_of_l2met,"mt_of_l2met/F");
+  Tnewvar->Branch("no_ak4jets",&no_ak4jets,"no_ak4jets/F");
+  Tnewvar->Branch("no_ak4bjets",&no_ak4bjets,"no_ak4bjets/F");
+  Tnewvar->Branch("no_ak8jets",&no_ak8jets,"no_ak8jets/F");
+  Tnewvar->Branch("EventHT",&EventHT,"EventHT/F");
   
+  //ak8pt1, ak8y1, ak8mass1, ak8sdmass1, ak8pt2, ak8y2, ak8mass2,ak8sdmass2;
+
+
   char name[1000];
   
   for(int binit=0; binit<6; binit++){
@@ -101,7 +125,17 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
       hist_initbtagwdown[init]->Sumw2();
     }
   }
-  
+  /*
+    for(int nvar=0; nvar<15; nvar++){
+    char namein_nvar[1000], 
+    char titlein_nvar[1000];
+    
+    sprintf(namein_nvar,"hist_%s",new_var_names[nvar]);
+    sprintf(titlein_nvar,"%s",new_var_title[nvar]);
+    hist_new_var[nvar] = new TH1D(namein_nvar,titlein_nvar,new_var_nbins[nvar],new_var_low[nvar],new_var_up[nvar]);
+    hist_new_var[nvar]->Sumw2();
+    }*/
+
   char title[1000];
   sprintf(name,"N_PV");
   sprintf(title,"# of Primary Vertices");
@@ -1554,42 +1588,83 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   l2 = fmu2cand;
 #endif
 
-  float rat_l1pt_l2pt = (l1.Pt()>l2.Pt()) ? l1.Pt()/l2.Pt() : l2.Pt()/l1.Pt();
-  float delta_l1l2 = PhiInRange(l1.Phi() - l2.Phi());
-  float M_l1l2 = (l1+l2).M();
-
-
-  /***** invariant mass of lepton at least more than 20 GeV as resolved analysis cut****/
-  if (M_l1l2 < 20.) return kFALSE;
-  hist_count->Fill(8,weight);
-
   /***no other 3rd lepton other than the selected lepton set***/ 
 #ifdef E_MU_TTBar  
   if (nmuons>1) return kFALSE;
-  hist_count->Fill(9,weight);
+  hist_count->Fill(8,weight);
   if (nelecs>1) return kFALSE;
-  hist_count->Fill(10,weight);
+  hist_count->Fill(9,weight);
 #elif defined(E_E_TTBar)
   if (nmuons>=1) return kFALSE;
-  hist_count->Fill(9,weight);
+  hist_count->Fill(8,weight);
   if (nelecs>2) return kFALSE;
-  hist_count->Fill(10,weight);
+  hist_count->Fill(9,weight);
 #elif defined(MU_MU_TTBar)
   if (nmuons>2) return kFALSE;
-  hist_count->Fill(9,weight);
+  hist_count->Fill(8,weight);
   if (nelecs>=1) return kFALSE;
-  hist_count->Fill(10,weight);
+  hist_count->Fill(9,weight);
 #endif
+  no_ak4jets = npfjetAK4;
+  if (npfjetAK4<2) return kFALSE;
+  hist_count->Fill(10,weight);
   
-  if (npfjetAK4<=2) return kFALSE;
+  no_ak4bjets = nbjetAK4;
+  if (nbjetAK4<1) return kFALSE;
   hist_count->Fill(11,weight);
   
-  if (nbjetAK4<1) return kFALSE;
+  no_ak8jets = npfjetAK8;
+  if (npfjetAK8<1) return kFALSE;
   hist_count->Fill(12,weight);
   
-  if (npfjetAK8<1) return kFALSE;
+  M_l1l2 = (l1+l2).M();
+  //hist_new_var[0]->Fill(M_l1l2,weight);
+
+  /***** invariant mass of lepton at least more than 20 GeV as resolved analysis cut****/
+  if (M_l1l2 < 20.) return kFALSE;
   hist_count->Fill(13,weight);
-  
+
+  //Computation of selected lepton related variables (Suman's proposal)
+  rat_l1pt_l2pt = (l1.Pt()>l2.Pt()) ? l1.Pt()/l2.Pt() : l2.Pt()/l1.Pt();
+  //hist_new_var[1]->Fill(rat_l1pt_l2pt,weight);
+
+  deltaPhi_l1l2 = PhiInRange(l1.Phi() - l2.Phi());
+  //hist_new_var[2]->Fill(deltaPhi_l1l2,weight);
+
+  //2d iso variables for l1 and l2//                                                          
+         
+  float dRl1_min(1000), dRl2_min(1000);
+  int nearjet_l1(-1), nearjet_l2(-1);
+
+  for(int kjet=0; kjet<npfjetAK4; kjet++){
+    if(delta2R(pfjetAK4y[kjet],pfjetAK4phi[kjet],l1.Eta(),l1.Phi()) < dRl1_min){
+      dRl1_min = delta2R(pfjetAK4y[kjet],pfjetAK4phi[kjet],l1.Eta(),l1.Phi());
+      nearjet_l1 = kjet;
+    }
+  }
+
+  l1pt_nearjet = -999;
+  if(nearjet_l1>=0){
+    TLorentzVector j_mom; j_mom.SetPtEtaPhiM(pfjetAK4pt[nearjet_l1],pfjetAK4eta[nearjet_l1],pfjetAK4phi[nearjet_l1],pfjetAK4mass[nearjet_l1]);
+    l1pt_nearjet = ((l1.Vect()).Perp(j_mom.Vect()));
+  }
+  //hist_new_var[3]->Fill(l1pt_nearjet,weight);
+
+
+  for(int kjet=0; kjet<npfjetAK4; kjet++){
+    if(delta2R(pfjetAK4y[kjet],pfjetAK4phi[kjet],l2.Eta(),l2.Phi()) < dRl2_min){
+      dRl2_min = delta2R(pfjetAK4y[kjet],pfjetAK4phi[kjet],l2.Eta(),l2.Phi());
+      nearjet_l2 = kjet;
+    }
+  }
+
+  l2pt_nearjet = -999;
+  if(nearjet_l2>=0){
+    TLorentzVector j_mom; j_mom.SetPtEtaPhiM(pfjetAK4pt[nearjet_l2],pfjetAK4eta[nearjet_l2],pfjetAK4phi[nearjet_l2],pfjetAK4mass[nearjet_l2]);
+    l2pt_nearjet = ((l2.Vect()).Perp(j_mom.Vect()));
+  }
+  //hist_new_var[4]->Fill(l2pt_nearjet,weight);
+
   //Computation of MET related Suman's proposed variables//
   if (PFMET != -1000 && PFMETPhi != -1000) { 
     float metx = PFMET*std::cos(PFMETPhi);
@@ -1597,12 +1672,18 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     TLorentzVector metvector;
     
     metvector.SetPxPyPzE(metx,mety,0,PFMET); //as mass and Pz components are 0, thus E = Pt  
-    float met_pt = PFMET;
-    float met_eta = metvector.Eta(); //always be 0.
-    
-    float delta_phil1_met = PhiInRange(l1.Phi() - metvector.Phi());
-    float delta_phil2_met = PhiInRange(l2.Phi() - metvector.Phi());
-    
+    met_pt = PFMET;
+    //hist_new_var[5]->Fill(met_pt,weight);
+
+    met_eta = metvector.Eta(); //always be 0.
+    //hist_new_var[6]->Fill(met_eta,weight);
+
+    delta_phil1_met = PhiInRange(l1.Phi() - metvector.Phi());
+    //hist_new_var[7]->Fill(delta_phil1_met,weight);
+
+    delta_phil2_met = PhiInRange(l2.Phi() - metvector.Phi());
+    //hist_new_var[8]->Fill(delta_phil2_met,weight);
+
     //nearest bjet of l1//
     float dRbl1_min = 1000;
     int nearbl1jet = -1;
@@ -1619,7 +1700,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     nearbl1.SetPtEtaPhiM(pfjetAK4pt[nearbl1jet],pfjetAK4eta[nearbl1jet],pfjetAK4phi[nearbl1jet],pfjetAK4mass[nearbl1jet]);
     TLorentzVector bl1_syst;
     bl1_syst = nearbl1 + l1;
-    float delta_phibl1_met = PhiInRange(bl1_syst.Phi() - metvector.Phi());
+    delta_phibl1_met = PhiInRange(bl1_syst.Phi() - metvector.Phi());
     
     //Similarly do it for l2 and nearest bjet//
     float dRbl2_min = 1000;
@@ -1635,22 +1716,26 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     }
     TLorentzVector nearbl2;
     nearbl2.SetPtEtaPhiM(pfjetAK4pt[nearbl2jet],pfjetAK4eta[nearbl2jet],pfjetAK4phi[nearbl2jet],pfjetAK4mass[nearbl2jet]);
+    
     TLorentzVector bl2_syst;
     bl2_syst = nearbl2 + l2;
-    float delta_phibl2_met = PhiInRange(bl2_syst.Phi() - metvector.Phi());
+    delta_phibl2_met = PhiInRange(bl2_syst.Phi() - metvector.Phi());
 
-    float rat_metpt_ak4pt = metvector.Pt()/pfjetAK4pt[0];
-    float rat_metpt_ak8pt = metvector.Pt()/pfjetAK8pt[0];
-    float rat_metpt_eventHT = metvector.Pt()/(Event_HT+l1.Pt()+l2.Pt());
+    rat_metpt_ak4pt = metvector.Pt()/pfjetAK4pt[0];
+    rat_metpt_ak8pt = metvector.Pt()/pfjetAK8pt[0];
+    rat_metpt_eventHT = metvector.Pt()/(Event_HT+l1.Pt()+l2.Pt());
 
-    float mt_of_l1met = (metvector+l1).Mt();
-    float mt_of_l2met =(metvector+l2).Mt();
+    mt_of_l1met = (metvector+l1).Mt();
+    mt_of_l2met = (metvector+l2).Mt();
 
     //TString str;
     //str = TString::Format("met_pt %f std::sqrt(metx*metx+ mety*mety) %f met_phi %f met_eta %f",met_pt,std::sqrt(metx*metx+ mety*mety),PFMETPhi,met_eta);            
     //if(gProofServ) gProofServ->SendAsynMessage(str);  
   }
 
+  EventHT = Event_HT+l1.Pt()+l2.Pt();
+  Tnewvar->Fill();
+  
   if (PFMET<50.) return kFALSE; //before it was 70 GeV. 100 GeV on 17th April, 50 GeV on June  
   hist_count->Fill(14,weight);
   
