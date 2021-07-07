@@ -1529,7 +1529,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   hist_count->Fill(10,weight);
 #endif
   
-  if (npfjetAK4<=2) return kFALSE;
+  if (npfjetAK4<2) return kFALSE;
   hist_count->Fill(11,weight);
   
   if (nbjetAK4<1) return kFALSE;
