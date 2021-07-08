@@ -956,25 +956,25 @@ double SF_TOP(double alpha, double beta, double pt0, double pt1)
         return sfwt;
 }
 
-void reOrder(std::vector<double>& pt, std::vector<double>& eta, std::vector<double>& phi, std::vector<float>& ch) { //std::vector<TLorentzVector>& jetcorr) {
+void reOrder(std::vector<double>& pt, std::vector<double>& eta, std::vector<double>& phi, std::vector<double>& ch) { //std::vector<TLorentzVector>& jetcorr) {
   for (unsigned int i=0; i<pt.size(); i++) {
     for(unsigned int j=i+1; j<pt.size(); j++) {
       if (pt[i]<pt[j]) {
         swap<double>(pt[i], pt[j]);
         swap<double>(eta[i], eta[j]);
         swap<double>(phi[i], phi[j]);
-	swap<float>(ch[i], ch[j]);
+	swap<double>(ch[i], ch[j]);
         //swap<math::XYZTLorentzVector>(jetcorr[i], jetcorr[j]);
       }
     }
   }
 }
 
-void reOrderCollection(std::vector<float>& ch, std::vector<TLorentzVector>& kin){
+void reOrderCollection(std::vector<double>& ch, std::vector<TLorentzVector>& kin){
   for (unsigned int k=0; k<kin.size(); k++) {
     for (unsigned int l=k+1; l<kin.size(); l++) {
       if (kin[k].Pt()<kin[l].Pt()) {
-	swap<float>(ch[k], ch[l]);
+	swap<double>(ch[k], ch[l]);
 	swap<TLorentzVector>(kin[k], kin[l]); 
       }
     }
@@ -993,7 +993,7 @@ class Anal_Leptop_PROOF : public TSelector {
   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
   
   //New more variables stored as ntuple//
-  float M_l1l2, rat_l1pt_l2pt, deltaPhi_l1l2, l1pt_nearjet, l2pt_nearjet, met_pt, met_eta, delta_phil1_met, delta_phil2_met, delta_phibl1_met, delta_phibl2_met, rat_metpt_ak4pt, rat_metpt_ak8pt, rat_metpt_eventHT, mt_of_l1met, mt_of_l2met, no_ak4jets, no_ak4bjets, no_ak8jets, EventHT; 
+  float M_l1l2, rat_l1pt_l2pt, deltaPhi_l1l2, l1pt_nearjet, l2pt_nearjet, met_pt, met_eta, delta_phil1_met, delta_phil2_met, delta_phibl1_met, delta_phibl2_met, rat_metpt_ak4pt, rat_metpt_ak8pt, rat_metpt_eventHT, mt_of_l1met, mt_of_l2met, no_ak4jets, no_ak4bjets, no_ak8jets, EventHT, extra_ak4j, ptsum_extra_ak4, extra_ak4jqgl, extra_ak4jdeepb, rat_extra_ak4jpt_lpt, ak81pt, ak81y, ak81mass, ak81sdmass, ak81deep_tvsqcd, ak81deep_wvsqcd, ak82pt, ak82y, ak82mass, ak82sdmass, ak82deep_tvsqcd, ak82deep_wvsqcd, M_bl1, M_bl2, M_jl1, M_jl2, delta_phibl1bl2, delta_phijl1jl2, deltaR_l1l2, deltaR_l1b1, deltaR_l2b1, deltaR_l1b2, deltaR_l2b2, deltaR_l1j1, deltaR_l2j1, deltaR_l1j2, deltaR_l2j2; 
 
   static const int njetmx = 20;
   static const int njetmxAK8 = 10;
@@ -1048,7 +1048,8 @@ class Anal_Leptop_PROOF : public TSelector {
   Float_t         trigobjpt[20];   //[ntrigobjs]
   Float_t         trigobjeta[20];   //[ntrigobjs]
   Float_t         trigobjphi[20];   //[ntrigobjs]
-  Float_t         trigobjmass[20];   //[ntrigobjs]                                                              
+  Float_t         trigobjmass[20];   //[ntrigobjs]                                             
+                 
   Int_t           trigobjpdgId[20];   //[ntrigobjs]
   Bool_t          trigobjHLT[20];   //[ntrigobjs]
   Bool_t          trigobjL1[20];   //[ntrigobjs]
