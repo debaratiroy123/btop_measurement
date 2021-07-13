@@ -955,7 +955,7 @@ double SF_TOP(double alpha, double beta, double pt0, double pt1)
         double sfwt = sqrt(exp(alpha-beta*pt0) * exp(alpha-beta*pt1));
         return sfwt;
 }
-
+/*
 void reOrder(std::vector<double>& pt, std::vector<double>& eta, std::vector<double>& phi, std::vector<double>& ch) { //std::vector<TLorentzVector>& jetcorr) {
   for (unsigned int i=0; i<pt.size(); i++) {
     for(unsigned int j=i+1; j<pt.size(); j++) {
@@ -980,13 +980,14 @@ void reOrderCollection(std::vector<double>& ch, std::vector<TLorentzVector>& kin
     }
   }
 }
+*/
 
-template <class Type>
-void swap(Type &a, Type &b){
-  Type tmp = a;
-  a=b;
-  b=tmp;
-}
+//template <class Type>
+//void swap(Type &a, Type &b){
+//  Type tmp = a;
+//  a=b;
+//  b=tmp;
+//}
 
 class Anal_Leptop_PROOF : public TSelector {
  public :
@@ -1061,9 +1062,10 @@ class Anal_Leptop_PROOF : public TSelector {
   Float_t         sumEt;
   Int_t           npfjetAK8;
   Bool_t          pfjetAK8jetID[njetmxAK8];
-  Bool_t          pfjetAK8jetID_tightlepveto [njetmxAK8];
+  Bool_t          pfjetAK8jetID_tightlepveto[njetmxAK8];
   Float_t         pfjetAK8pt[njetmxAK8];
   Float_t         pfjetAK8y[njetmxAK8];
+  Float_t         pfjetAK8eta[njetmxAK8];
   Float_t         pfjetAK8phi[njetmxAK8];
   Float_t         pfjetAK8mass[njetmxAK8];
   Float_t         pfjetAK8JEC[njetmxAK8];
@@ -1110,8 +1112,8 @@ class Anal_Leptop_PROOF : public TSelector {
   Float_t         pfjetAK8sdmass[njetmxAK8];
   bool		  pfjetAK8haspfelectron[njetmxAK8];
   bool		  pfjetAK8haspfmuon[njetmxAK8];
-  Int_t		  pfjetAK8muon[njetmxAK8];
-  Int_t           pfjetAK8ele[njetmxAK8];
+  //Int_t	  pfjetAK8muon[njetmxAK8];
+  //Int_t         pfjetAK8ele[njetmxAK8];
 
   Float_t         pfjetAK8tau1[njetmxAK8];
   Float_t         pfjetAK8tau2[njetmxAK8];
@@ -1214,8 +1216,9 @@ class Anal_Leptop_PROOF : public TSelector {
   Int_t           pfjetAK4hadronflav[njetmx];
   Int_t           pfjetAK4partonflav[njetmx];
   Float_t         pfjetAK4qgl[njetmx];
-   Float_t         pfjetAK4PUID[njetmx];
-   Int_t           pfjetAK4GenMatch;
+  Float_t         pfjetAK4PUID[njetmx];
+  Int_t           pfjetAK4GenMatch;
+
    Float_t         GENMET;
    Float_t         GENMETPhi;
    
@@ -1325,6 +1328,8 @@ class Anal_Leptop_PROOF : public TSelector {
 
    Int_t           nelecs;
    Float_t         elpt[njetmx];
+   Float_t         eldxytrk[njetmx];
+   Float_t         eldztrk[njetmx];  
    Float_t         eldxy_sv[njetmx];
    Float_t         eleta[njetmx];
    Float_t         elphi[njetmx];
@@ -1332,7 +1337,9 @@ class Anal_Leptop_PROOF : public TSelector {
    Float_t         ele[njetmx];
    Float_t         elcharge[njetmx];
    Bool_t          elmvaid[njetmx];
+   Bool_t          elmvaid_Fallv2WP80[njetmx]; 
    Bool_t          elmvaid_noIso[njetmx];
+   Bool_t          elmvaid_Fallv2WP80_noIso[njetmx];
 
    Float_t         elhovere[njetmx];
    Float_t         elchi[njetmx];
@@ -1437,6 +1444,7 @@ class Anal_Leptop_PROOF : public TSelector {
    TBranch        *b_pfjetAK8jetID_tightlepveto;   //!
    TBranch        *b_pfjetAK8pt;   //!
    TBranch        *b_pfjetAK8y;   //!
+   TBranch        *b_pfjetAK8eta; //!
    TBranch        *b_pfjetAK8phi;   //!
    TBranch        *b_pfjetAK8mass;   //!
    TBranch        *b_pfjetAK8JEC;   //!
@@ -1625,6 +1633,8 @@ class Anal_Leptop_PROOF : public TSelector {
 
    TBranch        *b_nelecs;   //!
    TBranch        *b_elpt;   //!
+   TBranch        *b_eldxytrk; //!
+   TBranch        *b_eldztrk; //!
    TBranch        *b_eldxy_sv;
    TBranch        *b_eleta;   //!
    TBranch        *b_elphi;   //!
@@ -1632,7 +1642,9 @@ class Anal_Leptop_PROOF : public TSelector {
    TBranch        *b_ele;   //!
    TBranch        *b_elcharge;
    TBranch        *b_elmvaid;   //!
+   TBranch        *b_elmvaid_Fallv2WP80;  //! 
    TBranch        *b_elmvaid_noIso;   //!
+   TBranch        *b_elmvaid_Fallv2WP80_noIso; //!
    
    TBranch        *b_elhovere;   //!
    TBranch        *b_elchi;   //!
@@ -2202,6 +2214,7 @@ void Anal_Leptop_PROOF::Init(TTree *tree)
    fChain->SetBranchAddress("pfjetAK8jetID", pfjetAK8jetID, &b_pfjetAK8jetID);
    fChain->SetBranchAddress("pfjetAK8pt", pfjetAK8pt, &b_pfjetAK8pt);
    fChain->SetBranchAddress("pfjetAK8y", pfjetAK8y, &b_pfjetAK8y);
+   fChain->SetBranchAddress("pfjetAK8eta", pfjetAK8eta, &b_pfjetAK8eta);
    fChain->SetBranchAddress("pfjetAK8phi", pfjetAK8phi, &b_pfjetAK8phi);
    fChain->SetBranchAddress("pfjetAK8mass", pfjetAK8mass, &b_pfjetAK8mass);
    fChain->SetBranchAddress("pfjetAK8JEC", pfjetAK8JEC, &b_pfjetAK8JEC);
@@ -2379,6 +2392,8 @@ void Anal_Leptop_PROOF::Init(TTree *tree)
 
    fChain->SetBranchAddress("nelecs", &nelecs, &b_nelecs);
    fChain->SetBranchAddress("elpt", elpt, &b_elpt);
+   fChain->SetBranchAddress("eldxytrk", eldxytrk, &b_eldxytrk);
+   fChain->SetBranchAddress("eldztrk", eldztrk, &b_eldztrk);
    fChain->SetBranchAddress("eldxy_sv", eldxy_sv, &b_eldxy_sv);
    fChain->SetBranchAddress("eleta", eleta, &b_eleta);
    fChain->SetBranchAddress("elphi", elphi, &b_elphi);
@@ -2386,7 +2401,10 @@ void Anal_Leptop_PROOF::Init(TTree *tree)
    fChain->SetBranchAddress("ele", ele, &b_ele);
    fChain->SetBranchAddress("elcharge", elcharge, &b_elcharge);
    fChain->SetBranchAddress("elmvaid", elmvaid, &b_elmvaid);
+   fChain->SetBranchAddress("elmvaid_Fallv2WP80", elmvaid_Fallv2WP80, &b_elmvaid_Fallv2WP80);
    fChain->SetBranchAddress("elmvaid_noIso", elmvaid_noIso, &b_elmvaid_noIso);
+   fChain->SetBranchAddress("elmvaid_Fallv2WP80_noIso", elmvaid_Fallv2WP80_noIso, &b_elmvaid_Fallv2WP80_noIso);
+
 
    fChain->SetBranchAddress("elhovere", elhovere, &b_elhovere);
    fChain->SetBranchAddress("elchi", elchi, &b_elchi);
