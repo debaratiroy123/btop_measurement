@@ -811,10 +811,6 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     LJet.subemdiff = pfjetAK8subemdiff[ijet];
     LJet.subptdiff = pfjetAK8subptdiff[ijet];
 
-    double check = pfjetAK8NEMF[ijet]*1./pfjetAK8NHF[ijet];
-    float check1 = pfjetAK8sub1chhadfrac[ijet]+pfjetAK8sub1neuhadfrac[ijet];
-    float check2 = pfjetAK8sub2chhadfrac[ijet]+pfjetAK8sub2neuhadfrac[ijet];
-
     LJet.elinsubpt = pfjetAK8elinsubpt[ijet];
     LJet.elinsubeta = pfjetAK8elinsubeta[ijet];
     LJet.elinsubphi = pfjetAK8elinsubphi[ijet];
