@@ -811,6 +811,10 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     LJet.subemdiff = pfjetAK8subemdiff[ijet];
     LJet.subptdiff = pfjetAK8subptdiff[ijet];
 
+    double check = pfjetAK8NEMF[ijet]*1./pfjetAK8NHF[ijet];
+    float check1 = pfjetAK8sub1chhadfrac[ijet]+pfjetAK8sub1neuhadfrac[ijet];
+    float check2 = pfjetAK8sub2chhadfrac[ijet]+pfjetAK8sub2neuhadfrac[ijet];
+
     LJet.elinsubpt = pfjetAK8elinsubpt[ijet];
     LJet.elinsubeta = pfjetAK8elinsubeta[ijet];
     LJet.elinsubphi = pfjetAK8elinsubphi[ijet];
@@ -1307,7 +1311,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     if (!isnan(Rho)) in_pfjetAK8matchedelRho = Rho;
     else in_pfjetAK8matchedelRho = -999;
     
-    hist_2D_msd_deepak8->Fill(LJets[ijet].sdmass,LJets[ijet].DeepTag_TvsQCD);
+    hist_2D_msd_deepak8->Fill(LJets[ijet].sdmass,LJets[ijet].DeepTag_TvsQCD,weight);
     
     LJets[ijet].re_tvsb = reader1->EvaluateMVA("BDTG method");
     if(isnan(LJets[ijet].re_tvsb)) { LJets[ijet].re_tvsb = -100; }
@@ -1908,6 +1912,11 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     hist_obs[33]->Fill(LJets[1].DeepTag_WvsQCD,weight);
     hist_obs[34]->Fill(LJets[1].DeepTag_ZvsQCD,weight);
     hist_obs[35]->Fill(LJets[1].re_tvsb,weight);
+
+    //TString str;                                                                              
+    //str = TString::Format("LJets[1].rmu_tvsb %f",LJets[1].rmu_tvsb);
+    //if(gProofServ) gProofServ->SendAsynMessage(str);
+  
     hist_obs[36]->Fill(LJets[1].rmu_tvsb,weight);
     hist_obs[37]->Fill(LJets[1].haspfelectron,weight);
     hist_obs[38]->Fill(LJets[1].haspfmuon,weight);
@@ -1916,14 +1925,13 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     hist_obs[41]->Fill(delta2R(LJets[1].eta,LJets[1].phi,l1.Eta(),l1.Phi()),weight);
     hist_obs[42]->Fill(delta2R(LJets[1].eta,LJets[1].phi,l2.Eta(),l2.Phi()),weight);
     hist_obs[43]->Fill(delta2R(LJets[1].eta,LJets[1].phi,bjv[0].Eta(),bjv[0].Phi()),weight);
-    if (nbjetAK4>1) {
 
-      TString str;                                                                                
-      str = TString::Format("delta2R %f",delta2R(LJets[1].eta,LJets[1].phi,bjv[1].Eta(),bjv[1].Phi()));
-      if(gProofServ) gProofServ->SendAsynMessage(str);
-
-      hist_obs[44]->Fill(delta2R(LJets[1].eta,LJets[1].phi,bjv[1].Eta(),bjv[1].Phi()),weight);
-    }
+    //if (nbjetAK4>1) {
+    //TString str;                                                                      
+    //str = TString::Format("delta2R %f",delta2R(LJets[1].eta,LJets[1].phi,bjv[1].Eta(),bjv[1].Phi()));
+    //if(gProofServ) gProofServ->SendAsynMessage(str);
+    //hist_obs[44]->Fill(delta2R(LJets[1].eta,LJets[1].phi,bjv[1].Eta(),bjv[1].Phi()),weight);
+    //}
   }
 
 #ifdef E_MU_TTBar
