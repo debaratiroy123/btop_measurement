@@ -980,14 +980,14 @@ void reOrderCollection(std::vector<double>& ch, std::vector<TLorentzVector>& kin
     }
   }
 }
-*/
 
-//template <class Type>
-//void swap(Type &a, Type &b){
-//  Type tmp = a;
-//  a=b;
-//  b=tmp;
-//}
+
+template <class Type>
+void swap(Type &a, Type &b){
+  Type tmp = a;
+  a=b;
+  b=tmp;
+}*/
 
 class Anal_Leptop_PROOF : public TSelector {
  public :
@@ -1082,11 +1082,7 @@ class Anal_Leptop_PROOF : public TSelector {
   Float_t         pfjetAK8PHF[njetmxAK8];
   Float_t         pfjetAK8EEF[njetmxAK8];
   Float_t         pfjetAK8HFHF[njetmxAK8];
-  Float_t	  pfjetAK8neuemfrac[njetmxAK8];
-  Float_t	  pfjetAK8neunhadfrac[njetmxAK8];
-  Float_t	  pfjetAK8HadF[njetmxAK8];
-  Float_t	  pfjetAK8NHadF[njetmxAK8];
-  Float_t	  pfjetAK8EmF[njetmxAK8];
+
   Int_t           pfjetAK8CHM[njetmxAK8];
   Int_t           pfjetAK8NHM[njetmxAK8];
   Int_t           pfjetAK8MUM[njetmxAK8];
@@ -1095,10 +1091,12 @@ class Anal_Leptop_PROOF : public TSelector {
   Int_t           pfjetAK8HFHM[njetmxAK8];
   Int_t           pfjetAK8Neucons[njetmxAK8];
   Int_t           pfjetAK8Chcons[njetmxAK8];
-  Int_t		  pfjetAK8ncons[njetmxAK8];
+
+  //Int_t		  pfjetAK8ncons[njetmxAK8];
   Float_t         pfjetAK8reso[njetmxAK8];
   Float_t         pfjetAK8resoup[njetmxAK8];
   Float_t         pfjetAK8resodn[njetmxAK8];
+
   Float_t         pfjetAK8jesup_pu[njetmxAK8];
   Float_t         pfjetAK8jesup_rel[njetmxAK8];
   Float_t         pfjetAK8jesup_scale[njetmxAK8];
@@ -1107,13 +1105,12 @@ class Anal_Leptop_PROOF : public TSelector {
   Float_t         pfjetAK8jesdn_rel[njetmxAK8];
   Float_t         pfjetAK8jesdn_scale[njetmxAK8];
   Float_t         pfjetAK8jesdn_total[njetmxAK8];
+
   Float_t         pfjetAK8chrad[njetmxAK8];
   Float_t         pfjetAK8pTD[njetmxAK8];
   Float_t         pfjetAK8sdmass[njetmxAK8];
   bool		  pfjetAK8haspfelectron[njetmxAK8];
   bool		  pfjetAK8haspfmuon[njetmxAK8];
-  //Int_t	  pfjetAK8muon[njetmxAK8];
-  //Int_t         pfjetAK8ele[njetmxAK8];
 
   Float_t         pfjetAK8tau1[njetmxAK8];
   Float_t         pfjetAK8tau2[njetmxAK8];
@@ -1125,32 +1122,39 @@ class Anal_Leptop_PROOF : public TSelector {
   Float_t         pfjetAK8sub1phi[njetmxAK8];
   Float_t         pfjetAK8sub1mass[njetmxAK8];
   Float_t         pfjetAK8sub1btag[njetmxAK8];
+  
   Float_t         pfjetAK8sub1chhadfrac[njetmxAK8];
   Float_t         pfjetAK8sub1neuhadfrac[njetmxAK8];
   Float_t         pfjetAK8sub1emfrac[njetmxAK8];
   Float_t         pfjetAK8sub1phofrac[njetmxAK8];
   Float_t         pfjetAK8sub1mufrac[njetmxAK8];
-  Float_t	  pfjetAK8sub1hadfrac[njetmxAK8];
+ 
+  //Float_t	  pfjetAK8sub1hadfrac[njetmxAK8];
+  
   Float_t         pfjetAK8sub2pt[njetmxAK8];
   Float_t         pfjetAK8sub2eta[njetmxAK8];
   Float_t         pfjetAK8sub2phi[njetmxAK8];
   Float_t         pfjetAK8sub2mass[njetmxAK8];
   Float_t         pfjetAK8sub2btag[njetmxAK8];
+  
   Float_t         pfjetAK8sub2chhadfrac[njetmxAK8];
   Float_t         pfjetAK8sub2neuhadfrac[njetmxAK8];
   Float_t         pfjetAK8sub2emfrac[njetmxAK8];
   Float_t         pfjetAK8sub2phofrac[njetmxAK8];
   Float_t         pfjetAK8sub2mufrac[njetmxAK8];
-  Float_t	  pfjetAK8sub2hadfrac[njetmxAK8];
+  
+  //Float_t	  pfjetAK8sub2hadfrac[njetmxAK8];
+  
   Float_t	  pfjetAK8subhaddiff[njetmxAK8];
   Float_t	  pfjetAK8subemdiff[njetmxAK8];
-  
+  Float_t         pfjetAK8subptdiff[njetmxAK8];
+
   Bool_t 	  pfjetAK8_hasmatche[njetmxAK8];
   Bool_t          pfjetAK8_hasmatchmu[njetmxAK8];
   Float_t	  pfjetAK8stau21[njetmxAK8];
   Float_t	  pfjetAK8stau32[njetmxAK8];
-  Float_t	  pfjetAK8subptdiff[njetmxAK8];
-  Float_t	  pfjetAK8subpldiff[njetmxAK8];
+
+
   Float_t	  pfjetAK8subbtag[njetmxAK8];
   Bool_t 	  pfjetAK8haselectron[njetmxAK8];
   Bool_t 		   pfjetAK8hasmuon[njetmxAK8];
@@ -1452,6 +1456,7 @@ class Anal_Leptop_PROOF : public TSelector {
    TBranch        *b_pfjetAK8DeepTag_TvsQCD;   //!
    TBranch        *b_pfjetAK8DeepTag_WvsQCD;   //!
    TBranch        *b_pfjetAK8DeepTag_ZvsQCD;   //!
+
    TBranch        *b_pfjetAK8CHF;   //!
    TBranch        *b_pfjetAK8NHF;   //!
    TBranch        *b_pfjetAK8CEMF;   //!
@@ -1506,6 +1511,11 @@ class Anal_Leptop_PROOF : public TSelector {
    TBranch        *b_pfjetAK8sub2phofrac;   //!
    TBranch        *b_pfjetAK8sub2mufrac;   //!
    
+   TBranch        *b_pfjetAK8subhaddiff;
+   TBranch        *b_pfjetAK8subemdiff;
+   TBranch        *b_pfjetAK8subptdiff;
+
+
    TBranch        *b_pfjetAK8elinsubpt;
    TBranch        *b_pfjetAK8elinsubeta;
    TBranch        *b_pfjetAK8elinsubphi;
@@ -1703,62 +1713,63 @@ class Anal_Leptop_PROOF : public TSelector {
      TBranch        *b_phoietaieta;   //!
    */
    float pfjetAK8pt_resoup[njetmxAK8], pfjetAK8mass_resoup[njetmxAK8], pfjetAK8pt_resodown[njetmxAK8], pfjetAK8mass_resodown[njetmxAK8]; 
-
- float selpfjetAK8pt[njetmxAK8], selpfjetAK8y[njetmxAK8], selpfjetAK8phi[njetmxAK8], selpfjetAK8mass[njetmxAK8];
- float selpfjetAK8matchAK4deepb[njetmxAK8];
- float selpfjetAK8DeepTag_TvsQCD[njetmxAK8], selpfjetAK8DeepTag_WvsQCD[njetmxAK8], selpfjetAK8DeepTag_ZvsQCD[njetmxAK8];
- float selpfjetAK8CHF[njetmxAK8], selpfjetAK8NHF[njetmxAK8], selpfjetAK8CEMF[njetmxAK8], selpfjetAK8NEMF[njetmxAK8], selpfjetAK8MUF[njetmxAK8], selpfjetAK8HOF[njetmxAK8], selpfjetAK8HadF[njetmxAK8], selpfjetAK8NHadF[njetmxAK8], selpfjetAK8EmF[njetmxAK8], selpfjetAK8neuemfrac[njetmxAK8], selpfjetAK8neunhadfrac[njetmxAK8];
- int selpfjetAK8CHM[njetmxAK8], selpfjetAK8NHM[njetmxAK8], selpfjetAK8EEM[njetmxAK8], selpfjetAK8MUM[njetmxAK8], selpfjetAK8Neucons[njetmxAK8], selpfjetAK8Chcons[njetmxAK8];
- float selpfjetAK8chrad[njetmxAK8], selpfjetAK8pTD[njetmxAK8], selpfjetAK8sdmass[njetmxAK8], selpfjetAK8tau21[njetmxAK8], selpfjetAK8tau32[njetmxAK8];
-
- float selpfjetAK8elinsubpt[njetmxAK8], selpfjetAK8elinsubeta[njetmxAK8], selpfjetAK8elinsubphi[njetmxAK8];
- float selpfjetAK8elinsubjpt[njetmxAK8], selpfjetAK8elinsubjeta[njetmxAK8], selpfjetAK8elinsubjphi[njetmxAK8];
- float selpfjetAK8matchedelID[njetmxAK8];
- float selpfjetAK8matchedelpt[njetmxAK8], selpfjetAK8matchedeleta[njetmxAK8], selpfjetAK8matchedelphi[njetmxAK8], selpfjetAK8matchedelE[njetmxAK8], selpfjetAK8matchedeldx[njetmxAK8], selpfjetAK8matchedeldxy_sv[njetmxAK8], selpfjetAK8matchedelcleta[njetmxAK8], selpfjetAK8matchedelclphi[njetmxAK8], selpfjetAK8matchedelclrawE[njetmxAK8]; 
-
- float selpfjetAK8matchedelsigmaieta[njetmxAK8];
- float selpfjetAK8matchedelsigmaiphi[njetmxAK8];
- float selpfjetAK8matchedelr9full[njetmxAK8];
- float selpfjetAK8matchedelsupcl_etaw[njetmxAK8];
- float selpfjetAK8matchedelsupcl_phiw[njetmxAK8];
- float selpfjetAK8matchedelhcaloverecal[njetmxAK8];
- float selpfjetAK8matchedelcloctftrkn[njetmxAK8];
- float selpfjetAK8matchedelcloctftrkchi2[njetmxAK8];
- float selpfjetAK8matchedele1x5bye5x5[njetmxAK8];
- float selpfjetAK8matchedelnormchi2[njetmxAK8];
- float selpfjetAK8matchedelhitsmiss[njetmxAK8];
- float selpfjetAK8matchedeltrkmeasure[njetmxAK8];
- float selpfjetAK8matchedelconvtxprob[njetmxAK8];
- float selpfjetAK8matchedelecloverpout[njetmxAK8];
- float selpfjetAK8matchedelecaletrkmomentum[njetmxAK8];
- float selpfjetAK8matchedeldeltaetacltrkcalo[njetmxAK8];
- float selpfjetAK8matchedelsupcl_preshvsrawe[njetmxAK8];
- float selpfjetAK8matchedelpfisolsumphet[njetmxAK8];
- float selpfjetAK8matchedelpfisolsumchhadpt[njetmxAK8];
- float selpfjetAK8matchedelpfisolsumneuhadet[njetmxAK8];
- float selpfjetAK8matchedeletain[njetmxAK8];
- float selpfjetAK8matchedelphiin[njetmxAK8];
- float selpfjetAK8matchedelfbrem[njetmxAK8];
- float selpfjetAK8matchedeleoverp[njetmxAK8];
- float selpfjetAK8matchedelhovere[njetmxAK8];
- float selpfjetAK8matchedelRho[njetmxAK8];
-
- float selpfjetAK8sub1mass[njetmxAK8], selpfjetAK8sub1btag[njetmxAK8], selpfjetAK8sub1hadfrac[njetmxAK8], selpfjetAK8sub1emfrac[njetmxAK8];
- float selpfjetAK8sub2mass[njetmxAK8], selpfjetAK8sub2btag[njetmxAK8], selpfjetAK8sub2hadfrac[njetmxAK8], selpfjetAK8sub2emfrac[njetmxAK8];
- float selpfjetAK8subbtag[njetmxAK8], selpfjetAK8subhaddiff[njetmxAK8], selpfjetAK8subemdiff[njetmxAK8], selpfjetAK8subptdiff[njetmxAK8];
- 
- bool selpfjetAK8haselectron[njetmxAK8], selpfjetAK8hasmuon[njetmxAK8], selpfjetAK8hasqg[njetmxAK8], selpfjetAK8hasb[njetmxAK8], selpfjetAK8hashadtop[njetmxAK8], selpfjetAK8hasleptop[njetmxAK8], selpfjetAK8hastop[njetmxAK8];
- bool pfjetAK8hashadtop_alldecay[njetmxAK8],pfjetAK8hasleptop_alldecay[njetmxAK8];
- bool selpfjetAK8hashadtop_alldecay[njetmxAK8],selpfjetAK8hasleptop_alldecay[njetmxAK8];
- float selpfjetAK8re_tvsb[njetmxAK8], selpfjetAK8rnu_tvsb[njetmxAK8];
- 
+   float pfjetAK8sub1hadfrac[njetmxAK8], pfjetAK8sub2hadfrac[njetmxAK8], pfjetAK8HadF[njetmxAK8], pfjetAK8NHadF[njetmxAK8];
+   /*
+     float selpfjetAK8pt[njetmxAK8], selpfjetAK8y[njetmxAK8], selpfjetAK8phi[njetmxAK8], selpfjetAK8mass[njetmxAK8];
+     float selpfjetAK8matchAK4deepb[njetmxAK8];
+     float selpfjetAK8DeepTag_TvsQCD[njetmxAK8], selpfjetAK8DeepTag_WvsQCD[njetmxAK8], selpfjetAK8DeepTag_ZvsQCD[njetmxAK8];
+     float selpfjetAK8CHF[njetmxAK8], selpfjetAK8NHF[njetmxAK8], selpfjetAK8CEMF[njetmxAK8], selpfjetAK8NEMF[njetmxAK8], selpfjetAK8MUF[njetmxAK8], selpfjetAK8HOF[njetmxAK8], selpfjetAK8HadF[njetmxAK8], selpfjetAK8NHadF[njetmxAK8], selpfjetAK8EmF[njetmxAK8], selpfjetAK8neuemfrac[njetmxAK8], selpfjetAK8neunhadfrac[njetmxAK8];
+     int selpfjetAK8CHM[njetmxAK8], selpfjetAK8NHM[njetmxAK8], selpfjetAK8EEM[njetmxAK8], selpfjetAK8MUM[njetmxAK8], selpfjetAK8Neucons[njetmxAK8], selpfjetAK8Chcons[njetmxAK8];
+     float selpfjetAK8chrad[njetmxAK8], selpfjetAK8pTD[njetmxAK8], selpfjetAK8sdmass[njetmxAK8], selpfjetAK8tau21[njetmxAK8], selpfjetAK8tau32[njetmxAK8];
+     
+     float selpfjetAK8elinsubpt[njetmxAK8], selpfjetAK8elinsubeta[njetmxAK8], selpfjetAK8elinsubphi[njetmxAK8];
+     float selpfjetAK8elinsubjpt[njetmxAK8], selpfjetAK8elinsubjeta[njetmxAK8], selpfjetAK8elinsubjphi[njetmxAK8];
+     float selpfjetAK8matchedelID[njetmxAK8];
+     float selpfjetAK8matchedelpt[njetmxAK8], selpfjetAK8matchedeleta[njetmxAK8], selpfjetAK8matchedelphi[njetmxAK8], selpfjetAK8matchedelE[njetmxAK8], selpfjetAK8matchedeldx[njetmxAK8], selpfjetAK8matchedeldxy_sv[njetmxAK8], selpfjetAK8matchedelcleta[njetmxAK8], selpfjetAK8matchedelclphi[njetmxAK8], selpfjetAK8matchedelclrawE[njetmxAK8]; 
+     
+     float selpfjetAK8matchedelsigmaieta[njetmxAK8];
+     float selpfjetAK8matchedelsigmaiphi[njetmxAK8];
+     float selpfjetAK8matchedelr9full[njetmxAK8];
+     float selpfjetAK8matchedelsupcl_etaw[njetmxAK8];
+     float selpfjetAK8matchedelsupcl_phiw[njetmxAK8];
+     float selpfjetAK8matchedelhcaloverecal[njetmxAK8];
+     float selpfjetAK8matchedelcloctftrkn[njetmxAK8];
+     float selpfjetAK8matchedelcloctftrkchi2[njetmxAK8];
+     float selpfjetAK8matchedele1x5bye5x5[njetmxAK8];
+     float selpfjetAK8matchedelnormchi2[njetmxAK8];
+     float selpfjetAK8matchedelhitsmiss[njetmxAK8];
+     float selpfjetAK8matchedeltrkmeasure[njetmxAK8];
+     float selpfjetAK8matchedelconvtxprob[njetmxAK8];
+     float selpfjetAK8matchedelecloverpout[njetmxAK8];
+     float selpfjetAK8matchedelecaletrkmomentum[njetmxAK8];
+     float selpfjetAK8matchedeldeltaetacltrkcalo[njetmxAK8];
+     float selpfjetAK8matchedelsupcl_preshvsrawe[njetmxAK8];
+     float selpfjetAK8matchedelpfisolsumphet[njetmxAK8];
+     float selpfjetAK8matchedelpfisolsumchhadpt[njetmxAK8];
+     float selpfjetAK8matchedelpfisolsumneuhadet[njetmxAK8];
+     float selpfjetAK8matchedeletain[njetmxAK8];
+     float selpfjetAK8matchedelphiin[njetmxAK8];
+     float selpfjetAK8matchedelfbrem[njetmxAK8];
+     float selpfjetAK8matchedeleoverp[njetmxAK8];
+     float selpfjetAK8matchedelhovere[njetmxAK8];
+     float selpfjetAK8matchedelRho[njetmxAK8];
+     
+     float selpfjetAK8sub1mass[njetmxAK8], selpfjetAK8sub1btag[njetmxAK8], selpfjetAK8sub1hadfrac[njetmxAK8], selpfjetAK8sub1emfrac[njetmxAK8];
+     float selpfjetAK8sub2mass[njetmxAK8], selpfjetAK8sub2btag[njetmxAK8], selpfjetAK8sub2hadfrac[njetmxAK8], selpfjetAK8sub2emfrac[njetmxAK8];
+     float selpfjetAK8subbtag[njetmxAK8], selpfjetAK8subhaddiff[njetmxAK8], selpfjetAK8subemdiff[njetmxAK8], selpfjetAK8subptdiff[njetmxAK8];
+     
+     bool selpfjetAK8haselectron[njetmxAK8], selpfjetAK8hasmuon[njetmxAK8], selpfjetAK8hasqg[njetmxAK8], selpfjetAK8hasb[njetmxAK8], selpfjetAK8hashadtop[njetmxAK8], selpfjetAK8hasleptop[njetmxAK8], selpfjetAK8hastop[njetmxAK8];
+     bool pfjetAK8hashadtop_alldecay[njetmxAK8],pfjetAK8hasleptop_alldecay[njetmxAK8];
+     bool selpfjetAK8hashadtop_alldecay[njetmxAK8],selpfjetAK8hasleptop_alldecay[njetmxAK8];
+     float selpfjetAK8re_tvsb[njetmxAK8], selpfjetAK8rnu_tvsb[njetmxAK8];
+   
  int npfjetAK8_thad;
  int npfjetAK8_te;
  int npfjetAK8_tmu;
  int npfjetAK8_qg;
  int npfjetAK8_b;
  int npfjetAK8_all;
- 
+   */
  float puWeight, puWeightUp, puWeightDown;
  
  static const int nmaxjet = 10;
@@ -1853,80 +1864,62 @@ class Anal_Leptop_PROOF : public TSelector {
   double pu_rat18_up[100] = {0,11.3701,49.1593,16.3978,10.4484,7.79227,5.70396,4.15872,3.02768,2.28549,1.82582,1.52983,1.3595,1.2554,1.19605,1.1684,1.16115,1.17185,1.18964,1.20936,1.22873,1.23491,1.23159,1.21107,1.18259,1.14644,1.11133,1.08136,1.05384,1.03331,1.01987,1.01367,1.01107,1.01298,1.01865,1.02593,1.03512,1.0447,1.05099,1.0554,1.05447,1.04466,1.02824,1.00332,0.965566,0.923431,0.871249,0.814665,0.752156,0.689408,0.624858,0.564,0.505617,0.452167,0.402,0.359344,0.321227,0.285921,0.258403,0.233682,0.210464,0.192413,0.174424,0.159861,0.146181,0.131623,0.119227,0.10899,0.0963316,0.086803,0.0773651,0.0712667,0.0629173,0.0552031,0.0481823,0.0455058,0.0376989,0.0339163,0.0298286,0.0264131,0.0255965,0.0179475,0.0169746,0.0136435,0.0117583,0.00988318,0.00674005,0.00661599,0.00316237,0.00149674,0.0010104,0.00106782,0.000384941,0.000591271,0.000423128,0.000165822,7.60044e-05,4.96232e-05,7.51979e-05,1.05862e-05};
   double pu_rat18_dn[100] = {0,15.0557,67.8751,22.3278,14.1211,10.4821,7.88069,5.86513,4.31762,3.35551,2.78627,2.40097,2.16428,2.00485,1.9056,1.85092,1.82051,1.80608,1.78719,1.75544,1.71117,1.64481,1.57234,1.49261,1.42092,1.35612,1.3043,1.26517,1.23118,1.20443,1.18302,1.16596,1.14834,1.13047,1.11055,1.08517,1.05388,1.01479,0.96502,0.907499,0.841466,0.767187,0.68971,0.610695,0.530471,0.45611,0.385995,0.32355,0.268127,0.221267,0.181416,0.149012,0.122387,0.100955,0.0832931,0.0694147,0.0579993,0.0482614,0.0406839,0.0341693,0.0284128,0.0238208,0.0196651,0.0163071,0.0134164,0.0108213,0.00875349,0.00713274,0.00561523,0.00450669,0.00357902,0.00293888,0.00231295,0.00180802,0.00140385,0.00117654,0.000861839,0.000682485,0.000525487,0.000404909,0.00033922,0.000204219,0.000164688,0.000112084,8.12391e-05,5.70485e-05,3.2298e-05,2.61592e-05,1.02574e-05,3.96059e-06,2.16985e-06,1.85204e-06,5.36884e-07,6.60936e-07,3.78607e-07,1.19189e-07,4.4536e-08,2.4673e-08,3.47283e-08,5.35281e-09};
   
-  static const int nobshist = 23;
-  
-  const char *obsnames[nobshist] = {
-	  "pt","y","mass",
-	  "NHad","neuhad","sdmass","chrad","subhaddiff","tau21",
-	  "DAK8_topvsQCD","bbyW_E","Kfactor",
-	  "re","rnu",
-	  "hadsdmass",
-	  "haspfelectron",
-	  "haspfmuon",
-	  "deltaR_muon",
-	  "PDGId","Numdaught","Isleptop","Bidaughtid",
-	  "rt"
-	  };
-	  
- double obs_low[nobshist] = {400,-2.5,0,0,0,0,-2.5,0,0,0,0,-2,-1,-1,0,-0.5,-0.5,0,-0.5,-0.5,-0.5,-0.5,-1}; 
- double obs_up[nobshist] = {3100,2.5,300,1,1,300,2.5,1,1,1,2.5,4.5,1,1,300,1.5,1.5,3,19.5,5.5,1.5,12.5,1}; 
- int obs_nbins[nobshist] = {25,25,25,25,25,25,25,25,25,20,25,25,40,40,25,2,2,10,20,6,2,13,25};
+ 
+  // TH1D *hist_obs[nobshist] ;
+ //TH1D *hist_obspuwup[nobshist] ;
+ //TH1D *hist_obspuwdown[nobshist] ;
+ //TH1D *hist_obsbtagwup[nobshist] ;
+ //TH1D *hist_obsbtagwdown[nobshist] ;
 
- TH1D *hist_obs[nobshist] ;
- TH1D *hist_obspuwup[nobshist] ;
- TH1D *hist_obspuwdown[nobshist] ;
- TH1D *hist_obsbtagwup[nobshist] ;
- TH1D *hist_obsbtagwdown[nobshist] ;
+ //TH1D *hist_obswel[nobshist] ;
+ //TH1D *hist_obswelpuwup[nobshist] ;
+ //TH1D *hist_obswelpuwdown[nobshist] ;
+ //TH1D *hist_obswelbtagwup[nobshist] ;
+ //TH1D *hist_obswelbtagwdown[nobshist] ;
 
- TH1D *hist_obswel[nobshist] ;
- TH1D *hist_obswelpuwup[nobshist] ;
- TH1D *hist_obswelpuwdown[nobshist] ;
- TH1D *hist_obswelbtagwup[nobshist] ;
- TH1D *hist_obswelbtagwdown[nobshist] ;
+ //TH1D *hist_obsnoel[nobshist] ;
+ //TH1D *hist_obsnoelpuwup[nobshist] ;
+ //TH1D *hist_obsnoelpuwdown[nobshist] ;
+ //TH1D *hist_obsnoelbtagwup[nobshist] ;
+ //TH1D *hist_obsnoelbtagwdown[nobshist] ;
 
- TH1D *hist_obsnoel[nobshist] ;
- TH1D *hist_obsnoelpuwup[nobshist] ;
- TH1D *hist_obsnoelpuwdown[nobshist] ;
- TH1D *hist_obsnoelbtagwup[nobshist] ;
- TH1D *hist_obsnoelbtagwdown[nobshist] ;
+ //TH1D *hist_obsljesup[3]; 
+ //TH1D *hist_obsljesdown[3];
+ //TH1D *hist_obsljerup[3]; 
+ //TH1D *hist_obsljerdown[3];
 
- TH1D *hist_obsljesup[3]; 
- TH1D *hist_obsljesdown[3];
- TH1D *hist_obsljerup[3]; 
- TH1D *hist_obsljerdown[3];
+ //TH1D *hist_obswelljesup[3];
+ //TH1D *hist_obswelljesdown[3];
+ //TH1D *hist_obswelljerup[3];
+ //TH1D *hist_obswelljerdown[3];
 
- TH1D *hist_obswelljesup[3];
- TH1D *hist_obswelljesdown[3];
- TH1D *hist_obswelljerup[3];
- TH1D *hist_obswelljerdown[3];
+ //TH1D *hist_obsnoelljesup[3];
+ //TH1D *hist_obsnoelljesdown[3];
+ //TH1D *hist_obsnoelljerup[3];
+ //TH1D *hist_obsnoelljerdown[3];
 
- TH1D *hist_obsnoelljesup[3];
- TH1D *hist_obsnoelljesdown[3];
- TH1D *hist_obsnoelljerup[3];
- TH1D *hist_obsnoelljerdown[3];
+ //TH1D *hist_obs_mu[nobshist];
+ //TH1D *hist_obs_mupuwup[nobshist];
+ //TH1D *hist_obs_mupuwdown[nobshist];
+ //TH1D *hist_obs_mubtagwup[nobshist] ;
+ //TH1D *hist_obs_mubtagwdown[nobshist] ;
 
- TH1D *hist_obs_mu[nobshist];
- TH1D *hist_obs_mupuwup[nobshist];
- TH1D *hist_obs_mupuwdown[nobshist];
- TH1D *hist_obs_mubtagwup[nobshist] ;
- TH1D *hist_obs_mubtagwdown[nobshist] ;
+ //TH1D *hist_obs_wmumu[nobshist];
+ //TH1D *hist_obs_wmumupuwup[nobshist];
+ //TH1D *hist_obs_wmumupuwdown[nobshist];
+ //TH1D *hist_obs_wmumubtagwup[nobshist] ;
+ //TH1D *hist_obs_wmumubtagwdown[nobshist] ;
 
- TH1D *hist_obs_wmumu[nobshist];
- TH1D *hist_obs_wmumupuwup[nobshist];
- TH1D *hist_obs_wmumupuwdown[nobshist];
- TH1D *hist_obs_wmumubtagwup[nobshist] ;
- TH1D *hist_obs_wmumubtagwdown[nobshist] ;
+ //TH1D *hist_obs_muljesup[3];
+ //TH1D *hist_obs_muljesdown[3];
+ //TH1D *hist_obs_muljerup[3];
+ //TH1D *hist_obs_muljerdown[3];
 
- TH1D *hist_obs_muljesup[3];
- TH1D *hist_obs_muljesdown[3];
- TH1D *hist_obs_muljerup[3];
- TH1D *hist_obs_muljerdown[3];
-
- TH1D *hist_obs_wmumuljesup[3];
- TH1D *hist_obs_wmumuljesdown[3];
- TH1D *hist_obs_wmumuljerup[3];
- TH1D *hist_obs_wmumuljerdown[3];
-
+ //TH1D *hist_obs_wmumuljesup[3];
+ //TH1D *hist_obs_wmumuljesdown[3];
+ //TH1D *hist_obs_wmumuljerup[3];
+ //TH1D *hist_obs_wmumuljerdown[3];
+ /*
  const char *obsnames_mu[nobshist] = {
    "pt","y","mass",
    "NHad","neuhad","sdmass","chrad","subhaddiff","tau21",
@@ -1939,7 +1932,7 @@ class Anal_Leptop_PROOF : public TSelector {
    "PDGId","Numdaught","Isleptop","Bidaughtid",
    "rt"
  };
-
+*/
  
  TH2D *hist_2D_msd_deepak8;
  TH2D *hist_2D_bpass_flavb;
@@ -2014,14 +2007,41 @@ class Anal_Leptop_PROOF : public TSelector {
     TH2D *hist2D_dRnut;
     TH2D *hist2D_dRbt;
   */
-  TH1D *hist_new_var[15];
-  TH1D *hist_init[18];
-  TH1D *hist_binit[6];
-  TH1D *hist_dRdPhi[14];
-  TH1D *hist_initpuwup[18];
-  TH1D *hist_initpuwdown[18];
-  TH1D *hist_initbtagwup[18];
-  TH1D *hist_initbtagwdown[18];
+
+    TH1D *hist_new_var[15];
+    TH1D *hist_init[18];
+    TH1D *hist_binit[6];
+    TH1D *hist_obs[45];
+
+    static const int nobshist = 45;
+
+    const char *obsnames[nobshist] = {
+      "pt1","y1","mass1",
+      "NHad1","neuhad1","sdmass1","chrad1","subhaddiff1","tau21_1",
+      "DAK8_topvsQCD1","DAK8_WvsQCD1","DAK8_ZvsQCD1",
+      "re1","rmu1",
+      "haspfelectron1",
+      "haspfmuon1","hasmatchel1","hasmatchmu1",
+      "deltaR_l1_1","deltaR_l2_1","deltaR_bj1_1","deltaR_bj2_1",
+      "deltaR_1_2","pt2","y2","mass2",
+      "NHad2","neuhad2","sdmass2","chrad2","subhaddiff2","tau21_2",
+      "DAK8_topvsQCD2","DAK8_WvsQCD2","DAK8_ZvsQCD2",
+      "re2","rmu2",
+      "haspfelectron2",
+      "haspfmuon2","hasmatchel2","hasmatchmu2",
+      "deltaR_l1_2","deltaR_l2_2","deltaR_bj1_2","deltaR_bj2_2"
+    };
+
+    double obs_low[nobshist] = {300,-2.5,0,0,0,0,-2.5,0,0,0,0,0,-1.0,-1.0,-0.5,-0.5,-0.5,-0.5,0,0,0,0,0,300,-2.5,0,0,0,0,-2.5,0,0,0,0,0,-1.0,-1.0,-0.5,-0.5,-0.5,-0.5,0,0,0,0};
+    double obs_up[nobshist] = {3100,2.5,300,1,1,300,2.5,1,1,1,1,1,1,1,1.5,1.5,1.5,1.5,3,3,3,3,3,3100,2.5,300,1,1,300,2.5,1,1,1,1,1,1,1,1.5,1.5,1.5,1.5,3.0,3,3,3};
+    int obs_nbins[nobshist] = {25,25,25,25,25,25,25,25,25,20,20,20,40,40,2,2,2,2,25,25,25,25,25,25,25,25,25,25,25,25,25,20,20,20,40,40,2,2,2,2,25,25,25,25,25};
+
+
+    //TH1D *hist_dRdPhi[14];
+    //TH1D *hist_initpuwup[18];
+    //TH1D *hist_initpuwdown[18];
+    //TH1D *hist_initbtagwup[18];
+    //TH1D *hist_initbtagwdown[18];
   
   //  const char *new_var_names[9] = {"M_l1l2","rat_l1l2","deltaPhi_l1l2","l1pt_wrtjet","l2pt_wrtjet","MET","MET_{#eta}","delta_phil1_met","delta_phil2_met"};
 
@@ -2053,12 +2073,12 @@ class Anal_Leptop_PROOF : public TSelector {
   int ini_bnbins[6] = {10,10,50,50,50,50};
 
 
-  const char *drnames[14] = {"dR_ljmu", "dPhi_ljmu", "dR_ljel", "dPhi_ljel", "dR_ljmu_mu", "dPhi_ljmu_mu", "dR_ljmu_el", "dPhi_ljmu_el", "dR_ljel_mu", "dPhi_ljel_mu", "dR_ljel_el", "dPhi_ljel_el", "dR_muel", "dPhi_muel"}; 
+  //const char *drnames[14] = {"dR_ljmu", "dPhi_ljmu", "dR_ljel", "dPhi_ljel", "dR_ljmu_mu", "dPhi_ljmu_mu", "dR_ljmu_el", "dPhi_ljmu_el", "dR_ljel_mu", "dPhi_ljel_mu", "dR_ljel_el", "dPhi_ljel_el", "dR_muel", "dPhi_muel"}; 
 
-  const char *drtitlenames[14] = {"dR lj,#mu", "dPhi lj,#mu", "dR lj,el", "dPhi lj,el", "dR lj#mu,#mu", "dPhi lj#mu,#mu", "dR lj#mu,el", "dPhi_lj#mu,el", "dR ljel,#mu", "dPhi ljel,#mu", "dR ljel,el", "dPhi ljel,el", "dR #mu el", "dPhi #mu el"};
+  //const char *drtitlenames[14] = {"dR lj,#mu", "dPhi lj,#mu", "dR lj,el", "dPhi lj,el", "dR lj#mu,#mu", "dPhi lj#mu,#mu", "dR lj#mu,el", "dPhi_lj#mu,el", "dR ljel,#mu", "dPhi ljel,#mu", "dR ljel,el", "dPhi ljel,el", "dR #mu el", "dPhi #mu el"};
 
-  double dr_low[14] = {0.0,-3.0,0.0,-3.0,0.0,-3.0,0.0,-3.0,0.0,-3.0,0.0,-3.0,0.0,-3.0};
-  double dr_high[14] = {5.0,3.0,5.0,3.0,5.0,3.0,5.0,3.0,5.0,3.0,5.0,3.0,5.0,3.0};
+  //double dr_low[14] = {0.0,-3.0,0.0,-3.0,0.0,-3.0,0.0,-3.0,0.0,-3.0,0.0,-3.0,0.0,-3.0};
+  //double dr_high[14] = {5.0,3.0,5.0,3.0,5.0,3.0,5.0,3.0,5.0,3.0,5.0,3.0,5.0,3.0};
 
 
   TH1D *hist_npv;
@@ -2277,6 +2297,10 @@ void Anal_Leptop_PROOF::Init(TTree *tree)
    fChain->SetBranchAddress("pfjetAK8sub2phofrac", pfjetAK8sub2phofrac, &b_pfjetAK8sub2phofrac);
    fChain->SetBranchAddress("pfjetAK8sub2mufrac", pfjetAK8sub2mufrac, &b_pfjetAK8sub2mufrac);
    
+   fChain->SetBranchAddress("pfjetAK8subhaddiff", pfjetAK8subhaddiff, &b_pfjetAK8subhaddiff);
+   fChain->SetBranchAddress("pfjetAK8subemdiff", pfjetAK8subemdiff, &b_pfjetAK8subemdiff);
+   fChain->SetBranchAddress("pfjetAK8subptdiff", pfjetAK8subptdiff, &b_pfjetAK8subptdiff);
+
    fChain->SetBranchAddress("pfjetAK8elinsubpt", pfjetAK8elinsubpt, &b_pfjetAK8elinsubpt);
    fChain->SetBranchAddress("pfjetAK8elinsubeta", pfjetAK8elinsubeta, &b_pfjetAK8elinsubeta);
    fChain->SetBranchAddress("pfjetAK8elinsubphi", pfjetAK8elinsubphi, &b_pfjetAK8elinsubphi);

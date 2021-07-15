@@ -124,7 +124,7 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
     hist_binit[binit]->Sumw2();
   }
   
-  for(int init=0; init<18; init++){
+  for(int init=0; init<17; init++){
     char namein[1000];// nameinup[1000], nameindown[1000];
     char titlein[1000];
     
@@ -169,6 +169,13 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
 	hist_initbtagwdown[init]->Sumw2();
       */
     }
+  }
+  for(int lvar=0; lvar<45; lvar++){
+    char lnamein[1000];
+    sprintf(lnamein,"Obs_%s",obsnames[lvar]);
+    hist_obs[lvar] = new TH1D(lnamein,lnamein,obs_nbins[lvar],obs_low[lvar],obs_up[lvar]);
+    hist_obs[lvar]->Sumw2();
+
   }
   /*
     for(int nvar=0; nvar<15; nvar++){
@@ -753,6 +760,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     LJet.mass_resodn = pfjetAK8mass_resodown[ijet];
     LJet.jesup_total = pfjetAK8jesup_total[ijet];
     LJet.jesdn_total = pfjetAK8jesdn_total[ijet];
+
     LJet.chrad = pfjetAK8chrad[ijet];
     LJet.tau21 = pfjetAK8tau2[ijet]*1./pfjetAK8tau1[ijet];
     LJet.tau32 = pfjetAK8tau3[ijet]*1./pfjetAK8tau2[ijet];
@@ -760,6 +768,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     LJet.DeepTag_WvsQCD = pfjetAK8DeepTag_WvsQCD[ijet];
     LJet.DeepTag_ZvsQCD = pfjetAK8DeepTag_ZvsQCD[ijet];
     LJet.btag_DeepCSV = pfjetAK8btag_DeepCSV[ijet];
+
     LJet.CHF = pfjetAK8CHF[ijet];
     LJet.NHF = pfjetAK8NHF[ijet];
     LJet.CEMF = pfjetAK8CEMF[ijet];
@@ -767,13 +776,18 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     LJet.MUF = pfjetAK8MUF[ijet];
     LJet.PHF = pfjetAK8PHF[ijet];
     LJet.HadF = (pfjetAK8NHF[ijet]+pfjetAK8CHF[ijet]);
-    LJet.NHadF = (1.-pfjetAK8HadF[ijet]);
-    LJet.EmF = (pfjetAK8NEMF[ijet]+pfjetAK8CEMF[ijet]);
+    pfjetAK8HadF[ijet] = (pfjetAK8NHF[ijet]+pfjetAK8CHF[ijet]);
+    LJet.NHadF = (1.- pfjetAK8HadF[ijet]);
+
+    LJet.EMF = (pfjetAK8NEMF[ijet]+pfjetAK8CEMF[ijet]);
     LJet.EEM = pfjetAK8EEM[ijet];
-    LJet.ncons = pfjetAK8Chcons[ijet]+pfjetAK8Neucons[ijet];
-    LJet.Chcons = pfjetAK8Chcons[ijet];
-    LJet.neuemfrac = (pfjetAK8NEMF[ijet]*1./pfjetAK8EmF[ijet]);
-    LJet.neunhadfrac = (pfjetAK8NEMF[ijet]*1./pfjetAK8NHadF[ijet]);
+
+    LJet.neucons = pfjetAK8Neucons[ijet];
+    LJet.chcons = pfjetAK8Chcons[ijet];
+
+    LJet.neuemfrac = (pfjetAK8NEMF[ijet]*1.)/(pfjetAK8NEMF[ijet]+pfjetAK8CEMF[ijet]);
+    LJet.neunhadfrac = (pfjetAK8NEMF[ijet]*1.)/(1.- pfjetAK8HadF[ijet]);
+
     LJet.sdmass = pfjetAK8sdmass[ijet];
     LJet.sub1pt = pfjetAK8sub1pt[ijet];
     LJet.sub1eta = pfjetAK8sub1eta[ijet];
@@ -790,11 +804,17 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     LJet.sub2btag = pfjetAK8sub2btag[ijet];
     LJet.sub2hadfrac = pfjetAK8sub2chhadfrac[ijet]+pfjetAK8sub2neuhadfrac[ijet];
     LJet.sub2emfrac = pfjetAK8sub2emfrac[ijet];
+
     LJet.subbtag = max(pfjetAK8sub1btag[ijet],pfjetAK8sub2btag[ijet]);
-    LJet.subhaddiff = diff_func(pfjetAK8sub1hadfrac[ijet],pfjetAK8sub2hadfrac[ijet]);
-    LJet.subemdiff = diff_func(pfjetAK8sub1emfrac[ijet],pfjetAK8sub2emfrac[ijet]);
-    LJet.subptdiff = diff_func(pfjetAK8sub1pt[ijet],pfjetAK8sub2pt[ijet]);
-    
+
+    LJet.subhaddiff = pfjetAK8subhaddiff[ijet];
+    LJet.subemdiff = pfjetAK8subemdiff[ijet];
+    LJet.subptdiff = pfjetAK8subptdiff[ijet];
+
+    double check = pfjetAK8NEMF[ijet]*1./pfjetAK8NHF[ijet];
+    float check1 = pfjetAK8sub1chhadfrac[ijet]+pfjetAK8sub1neuhadfrac[ijet];
+    float check2 = pfjetAK8sub2chhadfrac[ijet]+pfjetAK8sub2neuhadfrac[ijet];
+
     LJet.elinsubpt = pfjetAK8elinsubpt[ijet];
     LJet.elinsubeta = pfjetAK8elinsubeta[ijet];
     LJet.elinsubphi = pfjetAK8elinsubphi[ijet];
@@ -1073,7 +1093,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     if(isnan(LJets[ijet].MUF)) { LJets[ijet].MUF = -100; }
     if(isnan(LJets[ijet].HadF)) { LJets[ijet].HadF = -100; }
     if(isnan(LJets[ijet].NHadF)) { LJets[ijet].NHadF = -100; }
-    if(isnan(LJets[ijet].EmF)) { LJets[ijet].EmF = -100; }
+    if(isnan(LJets[ijet].EMF)) { LJets[ijet].EMF = -100; }
     if(isnan(LJets[ijet].neuemfrac)) { LJets[ijet].neuemfrac = -100; }
     if(isnan(LJets[ijet].neunhadfrac)) { LJets[ijet].neunhadfrac = -100; }
     if(isnan(LJets[ijet].EEM)) { LJets[ijet].EEM = -100; }
@@ -1629,7 +1649,8 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   hist_count->Fill(9,weight);
 #endif
   
-  //Computation of lepton related Suman's variables//                                                            
+  //Computation of lepton related Suman's variables//                                               
+             
   TLorentzVector l1, l2;
 #ifdef E_MU_TTBar
   l1 = (fmucand.Pt()>felcand.Pt()) ? fmucand : felcand;
@@ -1848,6 +1869,66 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   hist_init[4]->Fill(npfjetAK4,weight);
   hist_init[5]->Fill(nbjetAK4,weight);
   hist_init[6]->Fill(npfjetAK8,weight);
+
+  hist_obs[0]->Fill(LJets[0].pt,weight);
+  hist_obs[1]->Fill(LJets[0].y,weight);
+  hist_obs[2]->Fill(LJets[0].mass,weight);
+  hist_obs[3]->Fill(LJets[0].NHadF,weight);
+  hist_obs[4]->Fill(LJets[0].neunhadfrac,weight);
+  hist_obs[5]->Fill(LJets[0].sdmass,weight);
+  hist_obs[6]->Fill(LJets[0].chrad,weight);
+  hist_obs[7]->Fill(LJets[0].subhaddiff,weight);
+  
+  //TString str;                                                                 
+  //  str = TString::Format("NHadF %f neunhadfrac %f subhaddiff %f subhaddiff %f",LJets[0].NHadF,LJets[0].neunhadfrac,LJets[0].subhaddiff,diff_func(LJets[0].sub1hadfrac,LJets[0].sub2hadfrac));
+  //if(gProofServ) gProofServ->SendAsynMessage(str);
+
+  hist_obs[8]->Fill(LJets[0].tau21,weight);
+  hist_obs[9]->Fill(LJets[0].DeepTag_TvsQCD,weight);
+  hist_obs[10]->Fill(LJets[0].DeepTag_WvsQCD,weight);
+  hist_obs[11]->Fill(LJets[0].DeepTag_ZvsQCD,weight);
+  hist_obs[12]->Fill(LJets[0].re_tvsb,weight);
+  hist_obs[13]->Fill(LJets[0].rmu_tvsb,weight);
+  hist_obs[14]->Fill(LJets[0].haspfelectron,weight);
+  hist_obs[15]->Fill(LJets[0].haspfmuon,weight);
+  hist_obs[16]->Fill(LJets[0].hasmatche,weight);
+  hist_obs[17]->Fill(LJets[0].hasmatchmu,weight);
+  hist_obs[18]->Fill(delta2R(LJets[0].eta,LJets[0].phi,l1.Eta(),l1.Phi()),weight);
+  hist_obs[19]->Fill(delta2R(LJets[0].eta,LJets[0].phi,l2.Eta(),l2.Phi()),weight);
+  hist_obs[20]->Fill(delta2R(LJets[0].eta,LJets[0].phi,bjv[0].Eta(),bjv[0].Phi()),weight);
+  if (nbjetAK4>1) hist_obs[21]->Fill(delta2R(LJets[0].eta,LJets[0].phi,bjv[1].Eta(),bjv[1].Phi()),weight); 
+  if (npfjetAK8>1) { 
+    hist_obs[22]->Fill(delta2R(LJets[0].eta,LJets[0].phi,LJets[1].eta,LJets[1].phi),weight);
+    hist_obs[23]->Fill(LJets[1].pt,weight);
+    hist_obs[24]->Fill(LJets[1].y,weight);
+    hist_obs[25]->Fill(LJets[1].mass,weight);
+    hist_obs[26]->Fill(LJets[1].NHadF,weight);
+    hist_obs[27]->Fill(LJets[1].neunhadfrac,weight);
+    hist_obs[28]->Fill(LJets[1].sdmass,weight);
+    hist_obs[29]->Fill(LJets[1].chrad,weight);
+    hist_obs[30]->Fill(LJets[1].subhaddiff,weight);
+    hist_obs[31]->Fill(LJets[1].tau21,weight);
+    hist_obs[32]->Fill(LJets[1].DeepTag_TvsQCD,weight);
+    hist_obs[33]->Fill(LJets[1].DeepTag_WvsQCD,weight);
+    hist_obs[34]->Fill(LJets[1].DeepTag_ZvsQCD,weight);
+    hist_obs[35]->Fill(LJets[1].re_tvsb,weight);
+    hist_obs[36]->Fill(LJets[1].rmu_tvsb,weight);
+    hist_obs[37]->Fill(LJets[1].haspfelectron,weight);
+    hist_obs[38]->Fill(LJets[1].haspfmuon,weight);
+    hist_obs[39]->Fill(LJets[1].hasmatche,weight);
+    hist_obs[40]->Fill(LJets[1].hasmatchmu,weight);
+    hist_obs[41]->Fill(delta2R(LJets[1].eta,LJets[1].phi,l1.Eta(),l1.Phi()),weight);
+    hist_obs[42]->Fill(delta2R(LJets[1].eta,LJets[1].phi,l2.Eta(),l2.Phi()),weight);
+    hist_obs[43]->Fill(delta2R(LJets[1].eta,LJets[1].phi,bjv[0].Eta(),bjv[0].Phi()),weight);
+    if (nbjetAK4>1) {
+
+      TString str;                                                                                
+      str = TString::Format("delta2R %f",delta2R(LJets[1].eta,LJets[1].phi,bjv[1].Eta(),bjv[1].Phi()));
+      if(gProofServ) gProofServ->SendAsynMessage(str);
+
+      hist_obs[44]->Fill(delta2R(LJets[1].eta,LJets[1].phi,bjv[1].Eta(),bjv[1].Phi()),weight);
+    }
+  }
 
 #ifdef E_MU_TTBar
   hist_init[7]->Fill((fmucand + felcand).M(),weight);

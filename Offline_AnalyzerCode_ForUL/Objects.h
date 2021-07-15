@@ -67,6 +67,7 @@ class AK8Jet {
   float DeepTag_WvsQCD;
   float DeepTag_ZvsQCD;
   float btag_DeepCSV;
+  
   float CHF;
   float NHF;
   float CEMF;
@@ -75,12 +76,15 @@ class AK8Jet {
   float PHF;
   float HadF;
   float NHadF;
-  float EmF;
-  float EEM;
-  float ncons;
-  float Chcons;
+  float EMF;
+
+  int EEM;
+  int neucons;
+  int chcons;
+  
   float neuemfrac;
   float neunhadfrac;
+
   float sdmass;
   float sub1pt;
   float sub1eta;
@@ -100,6 +104,7 @@ class AK8Jet {
   float subhaddiff;
   float subemdiff;
   float subptdiff;
+  
   float elinsubpt;
   float elinsubeta;
   float elinsubphi;
