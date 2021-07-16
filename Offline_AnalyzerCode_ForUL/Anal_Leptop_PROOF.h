@@ -955,6 +955,114 @@ double SF_TOP(double alpha, double beta, double pt0, double pt1)
         double sfwt = sqrt(exp(alpha-beta*pt0) * exp(alpha-beta*pt1));
         return sfwt;
 }
+std::vector<double> Thrust_calculate(std::vector<TLorentzVector>& Input_4v) {
+  
+  std::vector<double> Input_Px;
+  std::vector<double> Input_Py;
+
+
+  double thrustmax_calc =0;
+  double temp_calc =0;
+  unsigned int length_thrust_calc =0;
+
+  std::vector<double> ThrustValues;
+  std::vector<double> Thrust_Axis_calc;
+  std::vector<double> p_thrust_max_calc;
+  std::vector<double> p_dec_1_calc;
+  std::vector<double> p_dec_2_calc;
+  std::vector<double> p_pt_beam_calc;
+  
+  if (!ThrustValues.empty()){
+    ThrustValues.clear();
+    Thrust_Axis_calc.clear();
+    p_thrust_max_calc.clear();
+    p_dec_1_calc.clear();
+    p_dec_2_calc.clear();
+    p_pt_beam_calc.clear();
+    }
+  for(unsigned int j = 0; j < 3; j++){
+    p_pt_beam_calc.push_back(0.);
+    p_dec_1_calc.push_back(0.);
+    p_dec_2_calc.push_back(0.);
+    p_thrust_max_calc.push_back(0.);
+    Thrust_Axis_calc.push_back(0.);
+  }
+
+  for(unsigned int j =0;j<4;j++){
+    ThrustValues.push_back(0.);
+  }
+  length_thrust_calc = Input_4v.size();
+  for (unsigned k=0; k<length_thrust_calc; k++) {
+    Input_Px.push_back(Input_4v[k].Px());
+    Input_Py.push_back(Input_4v[k].Py());
+  }
+
+  float Pt_sum_calc =0;
+
+  for(unsigned int k=0;k<length_thrust_calc;k++){
+    Pt_sum_calc+=sqrt(pow(Input_Px[k],2)+pow(Input_Py[k],2));
+    for(unsigned int j = 0; j < 3; j++){
+      p_thrust_max_calc[j]=0;
+    }
+    //get a vector perpendicular to the beam axis and                                                                        
+    //perpendicular to the momentum of particle k                                                                            
+    //per default beam axis b = (0,0,1)                                                                                      
+
+    p_pt_beam_calc[0] = Input_Py[k]*1;
+    p_pt_beam_calc[1] = - Input_Px[k]*1;
+    p_pt_beam_calc[2] = 0.; // GMA p_pt_beam_calc[3] = 0.;                                                                   
+
+    for(unsigned int i=0;i<length_thrust_calc;i++){
+      if(i!=k){
+        if((Input_Px[i]*p_pt_beam_calc[0]+Input_Py[i]*p_pt_beam_calc[1])>=0){
+          p_thrust_max_calc[0]= p_thrust_max_calc[0]+Input_Px[i];
+          p_thrust_max_calc[1]= p_thrust_max_calc[1]+Input_Py[i];
+        }
+        else{
+          p_thrust_max_calc[0]= p_thrust_max_calc[0]-Input_Px[i];
+          p_thrust_max_calc[1]= p_thrust_max_calc[1]-Input_Py[i];
+        }
+      }
+    }
+    
+    p_dec_1_calc[0]=p_thrust_max_calc[0]+Input_Px[k];
+    p_dec_1_calc[1]=p_thrust_max_calc[1]+Input_Py[k];
+    p_dec_1_calc[2]=0;
+
+    p_dec_2_calc[0]=p_thrust_max_calc[0]-Input_Px[k];
+    p_dec_2_calc[1]=p_thrust_max_calc[1]-Input_Py[k];
+    p_dec_2_calc[2]=0;
+
+    temp_calc = pow(p_dec_1_calc[0],2)+pow(p_dec_1_calc[1],2);
+
+    if(temp_calc>thrustmax_calc){
+      thrustmax_calc =temp_calc;
+
+      for(unsigned int i=0;i<3;i++){
+        Thrust_Axis_calc[i]=p_dec_1_calc[i]/sqrt(thrustmax_calc);
+      }
+    }
+    temp_calc = pow(p_dec_2_calc[0],2)+pow(p_dec_2_calc[1],2);
+
+    if(temp_calc>thrustmax_calc){
+      thrustmax_calc =temp_calc;
+      for(unsigned int i=0;i<3;i++){
+        Thrust_Axis_calc[i]=p_dec_2_calc[i]/sqrt(thrustmax_calc);
+      }
+    }
+  }
+  for(unsigned int j=0;j<3;j++){
+    ThrustValues[j]=Thrust_Axis_calc[j];}
+  double thrust_calc=0;
+  thrust_calc = sqrt(thrustmax_calc)/Pt_sum_calc;
+
+  ThrustValues[3]=1.-thrust_calc;
+
+  if (ThrustValues[3] < 1.e-20) ThrustValues[3] = 1.e-20;
+
+  return ThrustValues;
+}
+
 /*
 void reOrder(std::vector<double>& pt, std::vector<double>& eta, std::vector<double>& phi, std::vector<double>& ch) { //std::vector<TLorentzVector>& jetcorr) {
   for (unsigned int i=0; i<pt.size(); i++) {
@@ -995,6 +1103,8 @@ class Anal_Leptop_PROOF : public TSelector {
   
   //New more variables stored as ntuple//
   float M_l1l2, rat_l1pt_l2pt, deltaPhi_l1l2, l1pt_nearjet, l2pt_nearjet, met_pt, met_eta, delta_phil1_met, delta_phil2_met, delta_phibl1_met, delta_phibl2_met, rat_metpt_ak4pt, rat_metpt_ak8pt, rat_metpt_eventHT, mt_of_l1met, mt_of_l2met, no_ak4jets, no_ak4bjets, no_ak8jets, EventHT, extra_ak4j, ptsum_extra_ak4, extra_ak4jqgl, extra_ak4jdeepb, rat_extra_ak4jpt_lpt, ak81pt, ak81y, ak81mass, ak81sdmass, ak81deep_tvsqcd, ak81deep_wvsqcd, ak82pt, ak82y, ak82mass, ak82sdmass, ak82deep_tvsqcd, ak82deep_wvsqcd, M_bl1, M_bl2, M_jl1, M_jl2, delta_phibl1bl2, delta_phijl1jl2, deltaR_l1l2, deltaR_l1b1, deltaR_l2b1, deltaR_l1b2, deltaR_l2b2, deltaR_l1j1, deltaR_l2j1, deltaR_l1j2, deltaR_l2j2; 
+
+  double dirgltrthr, dirglthrmin; 
 
   static const int njetmx = 20;
   static const int njetmxAK8 = 10;
@@ -2008,9 +2118,9 @@ class Anal_Leptop_PROOF : public TSelector {
     TH2D *hist2D_dRbt;
   */
 
-    TH1D *hist_new_var[15];
+    //TH1D *hist_new_var[15];
     TH1D *hist_init[18];
-    TH1D *hist_binit[6];
+    //TH1D *hist_binit[6];
     TH1D *hist_obs[45];
 
     static const int nobshist = 45;
@@ -2070,9 +2180,9 @@ class Anal_Leptop_PROOF : public TSelector {
   const char *binitnames[6] = {"bNJets_AK4","bNBJets_AK4","jet1pt","jet2pt","bjet1pt","bjet2pt"}; 
   const char *btitlenames[6] = {"# of AK4 jets with boost", "# of b tagged AK4 jets with boost", "Leading AK4 jet pT with boost", "Subleading AK4 jet pT with boost", "Leading bjet pT with boost", "Subleading bjet pT with boost"};
 
-  double ini_blow[6] = {-0.1,-0.1,25.0,25.0,25.0,25.0};
-  double ini_bup[6] = {10.5,10.5,1000.0,1000.0,1000.0,1000.0};
-  int ini_bnbins[6] = {10,10,50,50,50,50};
+  //  double ini_blow[6] = {-0.1,-0.1,25.0,25.0,25.0,25.0};
+  //double ini_bup[6] = {10.5,10.5,1000.0,1000.0,1000.0,1000.0};
+  //int ini_bnbins[6] = {10,10,50,50,50,50};
 
 
   //const char *drnames[14] = {"dR_ljmu", "dPhi_ljmu", "dR_ljel", "dPhi_ljel", "dR_ljmu_mu", "dPhi_ljmu_mu", "dR_ljmu_el", "dPhi_ljmu_el", "dR_ljel_mu", "dPhi_ljel_mu", "dR_ljel_el", "dPhi_ljel_el", "dR_muel", "dPhi_muel"}; 

@@ -102,6 +102,7 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
   Tnewvar->Branch("ak82deep_tvsqcd",&ak82deep_tvsqcd,"ak82deep_tvsqcd/F");
   Tnewvar->Branch("ak82deep_wvsqcd",&ak82deep_wvsqcd,"ak82deep_wvsqcd/F");
   Tnewvar->Branch("delta_phibl1bl2",&delta_phibl1bl2,"delta_phibl1bl2/F"); 
+
   //Tnewvar->Branch("delta_phijl1jl2",&delta_phijl1jl2,"delta_phijl1jl2/F");
   Tnewvar->Branch("deltaR_l1l2",&deltaR_l1l2,"deltaR_l1l2/F");
   Tnewvar->Branch("deltaR_l1b1",&deltaR_l1b1,"deltaR_l1b1/F");
@@ -112,9 +113,11 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
   Tnewvar->Branch("deltaR_l2j1",&deltaR_l2j1,"deltaR_l2j1/F");
   Tnewvar->Branch("deltaR_l1j2",&deltaR_l1j2,"deltaR_l1j2/F");
   Tnewvar->Branch("deltaR_l2j2",&deltaR_l2j2,"deltaR_l2j2/F");
+  Tnewvar->Branch("dirgltrthr",&dirgltrthr,"dirgltrthr/D");
+  Tnewvar->Branch("dirglthrmin",&dirglthrmin,"dirglthrmin/D");
     
   char name[1000];
-  
+  /*
   for(int binit=0; binit<6; binit++){
     char bnamein[1000]; 
     char btitlein[1000];
@@ -122,7 +125,7 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
     sprintf(btitlein,"%s",btitlenames[binit]);
     hist_binit[binit] = new TH1D(bnamein,btitlein,ini_bnbins[binit],ini_blow[binit],ini_bup[binit]);
     hist_binit[binit]->Sumw2();
-  }
+    }*/
   
   for(int init=0; init<17; init++){
     char namein[1000];// nameinup[1000], nameindown[1000];
@@ -620,7 +623,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   }
   npfjetAK4 = Jets.size();
   sorted_by_pt(Jets);
-  
+
   for(unsigned ijet=0; ijet<Jets.size(); ijet++){
     
     if(Jets[ijet].btag_DeepFlav > deep_btag_cut) {
@@ -1829,7 +1832,46 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   }
 
   EventHT = Event_HT;
- 
+
+  //calculate the directly global transverse thrust i.e. dirgltrthr
+  dirgltrthr = 0;
+  dirglthrmin = 0;
+  /*
+  if (Jets.size()>=2) {
+    std::vector<TLorentzVector> allsjets_4v;
+    double Pt_sum(0.);
+    for(unsigned ijet=0; ijet<Jets.size(); ijet++){
+      TLorentzVector sjv;
+      sjv.SetPtEtaPhiM(Jets[ijet].pt,Jets[ijet].eta,Jets[ijet].phi,Jets[ijet].mass);
+      allsjets_4v.push_back(sjv);
+      Pt_sum += Jets[ijet].pt;
+    }
+    std::vector<double> ThrustAxis;
+    std::vector<double> Thrust;
+   
+    Thrust = Thrust_calculate(allsjets_4v);
+    
+    for(unsigned int k=0;k<3;k++){
+      ThrustAxis[k] = Thrust[k];
+    }
+    dirgltrthr = Thrust[3];
+    
+    //the directly global thrust minor dirglthrmin                                                      
+    //dirglthrmin =0;
+    //rotate the coordinate system around the beam axis that                                            
+    //the thrust axis is the new y'-Axis - the projections are                                           
+    //simply the new y-values then                                                                       
+    
+    double alpha=atan2(ThrustAxis[1],ThrustAxis[0]);
+    
+    for(unsigned int i=0; i<allsjets_4v.size(); i++){
+      dirglthrmin += fabs(-sin(alpha)*allsjets_4v[i].Px()+cos(alpha)*allsjets_4v[i].Py());
+    }
+    dirglthrmin=dirglthrmin/Pt_sum;
+  }
+  */
+  //********thrust calculation ended******//
+
   ak81pt = LJets[0].pt;
   ak81y = LJets[0].y;
   ak81mass = LJets[0].mass;
@@ -1913,9 +1955,9 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     hist_obs[34]->Fill(LJets[1].DeepTag_ZvsQCD,weight);
     hist_obs[35]->Fill(LJets[1].re_tvsb,weight);
 
-    //TString str;                                                                              
-    //str = TString::Format("LJets[1].rmu_tvsb %f",LJets[1].rmu_tvsb);
-    //if(gProofServ) gProofServ->SendAsynMessage(str);
+    TString str;                                                                                    
+    str = TString::Format("LJets[1].rmu_tvsb %f",LJets[1].rmu_tvsb);
+    if(gProofServ) gProofServ->SendAsynMessage(str);
   
     hist_obs[36]->Fill(LJets[1].rmu_tvsb,weight);
     hist_obs[37]->Fill(LJets[1].haspfelectron,weight);
@@ -2128,7 +2170,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
 	}
       }
     }
-    
+    /*
     if (npfjetAK8wmass>0) {
       hist_binit[0]->Fill(npfjetAK4,weight);
       hist_binit[1]->Fill(nbjetAK4,weight);
@@ -2136,7 +2178,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
       if (npfjetAK4>1) hist_binit[3]->Fill(pfjetAK4pt[1],weight);
       if (nbjetAK4>0) hist_binit[4]->Fill(bjv[0].Pt(),weight);
       if (nbjetAK4>1) hist_binit[5]->Fill(bjv[1].Pt(),weight);
-    }
+      }*/
   }
 
 

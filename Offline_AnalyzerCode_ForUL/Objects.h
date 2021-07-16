@@ -3,9 +3,10 @@
 #include <cassert>
 #include <sstream>
 #include <string>
-
 #include <iostream>
 #include <fstream>
+
+
 
 using namespace std;
 
@@ -321,55 +322,45 @@ bool Lepton_sort_by_pt(Lepton i1, Lepton i2)
 void sorted_by_pt(vector<Lepton> & objs) {
   sort(objs.begin(), objs.end(), Lepton_sort_by_pt);
 }
-/*
-  float compute_HT(vector<AK4Jet>  & objs, float ptcut, float etacut){
-  
+
+float compute_HT(vector<AK4Jet>  & objs, float ptcut, float etacut){
   float HT = 0;
-  
   for(unsigned iobs=0; iobs<objs.size(); iobs++){
-  
     if(objs[iobs].pt > ptcut && abs(objs[iobs].eta)<=etacut){
-    
-    HT += objs[iobs].pt;
-      
+  HT += objs[iobs].pt;
     }
-    }
-    
-    return HT;
-    }
-    
-      
-    bool AK4Jet_sort_by_DeepFlav(AK4Jet i1, AK4Jet i2)
-    {
-    return (i1.btagDeepFlavB > i2.btagDeepFlavB);
-    }
-    void sorted_by_DeepFlav(vector<AK4Jet> & objs) {
-    sort(objs.begin(), objs.end(), AK4Jet_sort_by_DeepFlav);
-    }
-    
-    bool AK8Jet_sort_by_DeepAK8_Htag(AK8Jet i1, AK8Jet i2)
-    {
-    return (i1.deepTagMD_bbvsLight > i2.deepTagMD_bbvsLight);
-    }
-    void sorted_by_DeepAK8_Htag(vector<AK8Jet> & objs) {
-    sort(objs.begin(), objs.end(), AK8Jet_sort_by_DeepAK8_Htag);
-    }
-    
-    bool GenAK4Jet_sort_by_pt(AK4GenJet i1, AK4GenJet i2)
-    {
-    return (i1.pt > i2.pt);
-    }
-    void sorted_by_pt(vector<AK4GenJet> & objs) {
-    sort(objs.begin(), objs.end(), GenAK4Jet_sort_by_pt);
-    }
-    
-    bool GenAK8Jet_sort_by_pt(AK8GenJet i1, AK8GenJet i2)
-    {
-    return (i1.pt > i2.pt);
-    }
-    void sorted_by_pt(vector<AK8GenJet> & objs) {
-    sort(objs.begin(), objs.end(), GenAK8Jet_sort_by_pt);
-    }
+  }
+  return HT;
+}
+/*
+  bool AK4Jet_sort_by_DeepFlav(AK4Jet i1, AK4Jet i2)
+  {
+  return (i1.btagDeepFlavB > i2.btagDeepFlavB);
+  }
+  void sorted_by_DeepFlav(vector<AK4Jet> & objs) {
+  sort(objs.begin(), objs.end(), AK4Jet_sort_by_DeepFlav);
+  }
+  bool AK8Jet_sort_by_DeepAK8_Htag(AK8Jet i1, AK8Jet i2)
+  {
+  return (i1.deepTagMD_bbvsLight > i2.deepTagMD_bbvsLight);
+  }
+  void sorted_by_DeepAK8_Htag(vector<AK8Jet> & objs) {
+  sort(objs.begin(), objs.end(), AK8Jet_sort_by_DeepAK8_Htag);
+  }
+  bool GenAK4Jet_sort_by_pt(AK4GenJet i1, AK4GenJet i2)
+  {
+  return (i1.pt > i2.pt);
+  }
+  void sorted_by_pt(vector<AK4GenJet> & objs) {
+  sort(objs.begin(), objs.end(), GenAK4Jet_sort_by_pt);
+  }
+  bool GenAK8Jet_sort_by_pt(AK8GenJet i1, AK8GenJet i2)
+  {
+  return (i1.pt > i2.pt);
+  }
+  void sorted_by_pt(vector<AK8GenJet> & objs) {
+  sort(objs.begin(), objs.end(), GenAK8Jet_sort_by_pt);
+  }
 */
 
 
