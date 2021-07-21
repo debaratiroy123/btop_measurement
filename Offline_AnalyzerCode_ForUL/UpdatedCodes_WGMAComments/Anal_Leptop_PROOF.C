@@ -17,9 +17,9 @@
 #include <TProofServ.h>
 #include "Objects.h"
 
-//#define E_MU_TTBar
+#define E_MU_TTBar
 //#define E_E_TTBar
-#define MU_MU_TTBar
+//#define MU_MU_TTBar
 
 void Anal_Leptop_PROOF::Begin(TTree * /*tree*/)
 {
@@ -38,7 +38,7 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
   
   TString option = GetOption();
   
-  OutFile = new TProofOutputFile("Summer20UL18_TTBar_DiLeptonic_notmumuoutput.root");
+  OutFile = new TProofOutputFile("Summer20UL18_TTBar_DiLeptonic_emuoutput.root");
   
   fileOut = OutFile->OpenFile("RECREATE");
   if ( !(fileOut = OutFile->OpenFile("RECREATE")) )
@@ -122,52 +122,25 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
     
   char name[1000];
 
-  for(int init=0; init<17; init++){
-    char namein[1000];// nameinup[1000], nameindown[1000];
+  for(int init=0; init<19; init++){
+    char namein[1000]; //nameinup[1000], nameindn[1000];
     char titlein[1000];
     
-    if (init <= 2 || init > 6) {
-      
-      sprintf(namein,"hist_%s",initnames[init]);
-      sprintf(titlein,"%s",titlenames[init]);
-      hist_init[init] = new TH1D(namein,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
-      hist_init[init]->Sumw2();
-      /*
-	sprintf(nameinup,"hist_%s_puwup",initnames[init]);
-	hist_initpuwup[init] = new TH1D(nameinup,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
-	hist_initpuwup[init]->Sumw2();
-	sprintf(nameindown,"hist_%s_puwdown",initnames[init]);
-	hist_initpuwdown[init] = new TH1D(nameindown,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
-	hist_initpuwdown[init]->Sumw2();
-	sprintf(nameinup,"hist_%s_btagwup",initnames[init]);
-	hist_initbtagwup[init] = new TH1D(nameinup,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
-	hist_initbtagwup[init]->Sumw2();
-	sprintf(nameindown,"hist_%s_btagwdown",initnames[init]);
-	hist_initbtagwdown[init] = new TH1D(nameindown,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
-	hist_initbtagwdown[init]->Sumw2();
-      */
-    }
-    else {
-      sprintf(namein,"%s",initnames[init]);
-      sprintf(titlein,"%s",titlenames[init]);
-      hist_init[init] = new TH1D(namein,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
-      hist_init[init]->Sumw2();
-      /*
-	sprintf(nameinup,"hist_%s_puwup",initnames[init]);
-	hist_initpuwup[init] = new TH1D(nameinup,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
-	hist_initpuwup[init]->Sumw2();
-	sprintf(nameindown,"hist_%s_puwdown",initnames[init]);
-	hist_initpuwdown[init] = new TH1D(nameindown,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
-	hist_initpuwdown[init]->Sumw2();
-	sprintf(nameinup,"hist_%s_btagwup",initnames[init]);
-	hist_initbtagwup[init] = new TH1D(nameinup,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
-	hist_initbtagwup[init]->Sumw2();
-	sprintf(nameindown,"hist_%s_btagwdown",initnames[init]);
-	hist_initbtagwdown[init] = new TH1D(nameindown,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
-	hist_initbtagwdown[init]->Sumw2();
-      */
-    }
+    sprintf(namein,"hist_%s",initnames[init]);
+    sprintf(titlein,"%s",titlenames[init]);
+    hist_init[init] = new TH1D(namein,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
+    hist_init[init]->Sumw2();
+
+    /*
+      sprintf(nameinup,"hist_%s_puup",initnames[init]);
+      sprintf(nameindn,"hist_%s_pudn",initnames[init]);
+      hist_init_pu_sys[init][0] = new TH1D(nameinup,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
+      hist_init_pu_sys[init][0]->Sumw2();
+      hist_init_pu_sys[init][1] = new TH1D(nameindn,titlein,ini_nbins[init],ini_low[init],ini_up[init]);
+      hist_init_pu_sys[init][1]->Sumw2();
+    */
   }
+
   for(int lvar=0; lvar<45; lvar++){
     char lnamein[1000];
     sprintf(lnamein,"Obs_%s",obsnames[lvar]);
@@ -582,8 +555,8 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     if(!(DiLeptt && EE)) return kFALSE; //for signal EE
     //if((DiLeptt && EE)) return kFALSE; //for non-signal EE TTbar
 #elif defined(MU_MU_TTBar) 
-    //if(!(DiLeptt && MUMU)) return kFALSE; //for signal MUMU
-    if((DiLeptt && MUMU)) return kFALSE; //for non-signal MUMU TTbar
+    if(!(DiLeptt && MUMU)) return kFALSE; //for signal MUMU
+    //if((DiLeptt && MUMU)) return kFALSE; //for non-signal MUMU TTbar
 #endif
   }
 
@@ -1060,78 +1033,78 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   //}
   
   for(unsigned ijet=0; ijet<LJets.size(); ijet++){
-     
-    if(isnan(LJets[ijet].pt)) {LJets[ijet].pt = -100; }
-    if(isnan(LJets[ijet].y)) { LJets[ijet].y = -100; }
-    if(isnan(LJets[ijet].mass)) { LJets[ijet].mass = -100; }
-    if(isnan(LJets[ijet].phi)) { LJets[ijet].phi = -100; }
+    /*
+      if(isnan(LJets[ijet].pt)) {LJets[ijet].pt = -100; }
+      if(isnan(LJets[ijet].y)) { LJets[ijet].y = -100; }
+      if(isnan(LJets[ijet].mass)) { LJets[ijet].mass = -100; }
+      if(isnan(LJets[ijet].phi)) { LJets[ijet].phi = -100; }
+      
+      if(isnan(LJets[ijet].btag_DeepCSV)) { LJets[ijet].btag_DeepCSV = -100; }
+      if(isnan(LJets[ijet].matchAK4deepb)) { LJets[ijet].matchAK4deepb = -100; }
+      if(isnan(LJets[ijet].DeepTag_TvsQCD)) { LJets[ijet].DeepTag_TvsQCD = -100; }
+      if(isnan(LJets[ijet].DeepTag_WvsQCD)) { LJets[ijet].DeepTag_WvsQCD = -100; }
+      if(isnan(LJets[ijet].DeepTag_ZvsQCD)) { LJets[ijet].DeepTag_ZvsQCD = -100; }
+      
+      if(isnan(LJets[ijet].CHF)) { LJets[ijet].CHF = -100; }
+      if(isnan(LJets[ijet].NHF)) { LJets[ijet].NHF = -100; }
+      if(isnan(LJets[ijet].CEMF)) { LJets[ijet].CEMF = -100; }
+      if(isnan(LJets[ijet].NEMF)) { LJets[ijet].NEMF = -100; }
+      if(isnan(LJets[ijet].MUF)) { LJets[ijet].MUF = -100; }
+      if(isnan(LJets[ijet].NHadF)) { LJets[ijet].NHadF = -100; }
+      if(isnan(LJets[ijet].EMF)) { LJets[ijet].EMF = -100; }
+      if(isnan(LJets[ijet].neuemfrac)) { LJets[ijet].neuemfrac = -100; }
+      if(isnan(LJets[ijet].neunhadfrac)) { LJets[ijet].neunhadfrac = -100; }
+      if(isnan(LJets[ijet].EEM)) { LJets[ijet].EEM = -100; }
+      
+      if(isnan(LJets[ijet].chrad)) { LJets[ijet].chrad = -100; }
+      if(isnan(LJets[ijet].tau21)) { LJets[ijet].tau21 = -100; }
+      if(isnan(LJets[ijet].tau32)) { LJets[ijet].tau32 = -100; }
+      if(isnan(LJets[ijet].sdmass)) { LJets[ijet].sdmass = -100; }
+      
+      if(isnan(LJets[ijet].elinsubpt)) { LJets[ijet].elinsubpt = -100; }
+      if(isnan(LJets[ijet].elinsubeta)) { LJets[ijet].elinsubeta = -100; }
+      if(isnan(LJets[ijet].elinsubphi)) { LJets[ijet].elinsubphi = -100; }
+      if(isnan(LJets[ijet].elinsubjpt)) { LJets[ijet].elinsubjpt = -100; }
+      if(isnan(LJets[ijet].elinsubjeta)) { LJets[ijet].elinsubjeta = -100; }
+      if(isnan(LJets[ijet].elinsubjphi)) { LJets[ijet].elinsubjphi = -100; }
+      if(isnan(LJets[ijet].elinsubjmass)) { LJets[ijet].elinsubjmass = -100; }
+      
+      if(isnan(LJets[ijet].muinsubpt)) { LJets[ijet].muinsubpt = -100; }
+      if(isnan(LJets[ijet].muinsubeta)) { LJets[ijet].muinsubeta = -100; }
+      if(isnan(LJets[ijet].muinsubphi)) { LJets[ijet].muinsubphi = -100; }
+      if(isnan(LJets[ijet].muinsubjpt)) { LJets[ijet].muinsubjpt = -100; }
+      if(isnan(LJets[ijet].muinsubjeta)) { LJets[ijet].muinsubjeta = -100; }
+      if(isnan(LJets[ijet].muinsubjphi)) { LJets[ijet].muinsubjphi = -100; }
+      if(isnan(LJets[ijet].muinsubjmass)) { LJets[ijet].muinsubjmass = -100; }
+      
+      if(isnan(LJets[ijet].muinsubI0)) { LJets[ijet].muinsubI0 = -100; }
+      if(isnan(LJets[ijet].muinsubInear)) { LJets[ijet].muinsubInear = -100; }
+      if(isnan(LJets[ijet].muinsubIfar)) { LJets[ijet].muinsubIfar = -100; }
+      
+      if(isnan(LJets[ijet].sub1mass)) { LJets[ijet].sub1mass = -100; }
+      if(isnan(LJets[ijet].sub1btag)) { LJets[ijet].sub1btag = -100; }
+      if(isnan(LJets[ijet].sub1hadfrac)) { LJets[ijet].sub1hadfrac = -100; }
+      if(isnan(LJets[ijet].sub1emfrac)) { LJets[ijet].sub1emfrac = -100; }
+      if(isnan(LJets[ijet].sub2mass)) { LJets[ijet].sub2mass = -100; }
+      if(isnan(LJets[ijet].sub2btag)) { LJets[ijet].sub2btag = -100; }
+      if(isnan(LJets[ijet].sub2hadfrac)) { LJets[ijet].sub2hadfrac = -100; }
+      if(isnan(LJets[ijet].sub2emfrac)) { LJets[ijet].sub2emfrac = -100; }
     
-    if(isnan(LJets[ijet].btag_DeepCSV)) { LJets[ijet].btag_DeepCSV = -100; }
-    if(isnan(LJets[ijet].matchAK4deepb)) { LJets[ijet].matchAK4deepb = -100; }
-    if(isnan(LJets[ijet].DeepTag_TvsQCD)) { LJets[ijet].DeepTag_TvsQCD = -100; }
-    if(isnan(LJets[ijet].DeepTag_WvsQCD)) { LJets[ijet].DeepTag_WvsQCD = -100; }
-    if(isnan(LJets[ijet].DeepTag_ZvsQCD)) { LJets[ijet].DeepTag_ZvsQCD = -100; }
-    
-    if(isnan(LJets[ijet].CHF)) { LJets[ijet].CHF = -100; }
-    if(isnan(LJets[ijet].NHF)) { LJets[ijet].NHF = -100; }
-    if(isnan(LJets[ijet].CEMF)) { LJets[ijet].CEMF = -100; }
-    if(isnan(LJets[ijet].NEMF)) { LJets[ijet].NEMF = -100; }
-    if(isnan(LJets[ijet].MUF)) { LJets[ijet].MUF = -100; }
-    if(isnan(LJets[ijet].NHadF)) { LJets[ijet].NHadF = -100; }
-    if(isnan(LJets[ijet].EMF)) { LJets[ijet].EMF = -100; }
-    if(isnan(LJets[ijet].neuemfrac)) { LJets[ijet].neuemfrac = -100; }
-    if(isnan(LJets[ijet].neunhadfrac)) { LJets[ijet].neunhadfrac = -100; }
-    if(isnan(LJets[ijet].EEM)) { LJets[ijet].EEM = -100; }
-   
-    if(isnan(LJets[ijet].chrad)) { LJets[ijet].chrad = -100; }
-    if(isnan(LJets[ijet].tau21)) { LJets[ijet].tau21 = -100; }
-    if(isnan(LJets[ijet].tau32)) { LJets[ijet].tau32 = -100; }
-    if(isnan(LJets[ijet].sdmass)) { LJets[ijet].sdmass = -100; }
-
-    if(isnan(LJets[ijet].elinsubpt)) { LJets[ijet].elinsubpt = -100; }
-    if(isnan(LJets[ijet].elinsubeta)) { LJets[ijet].elinsubeta = -100; }
-    if(isnan(LJets[ijet].elinsubphi)) { LJets[ijet].elinsubphi = -100; }
-    if(isnan(LJets[ijet].elinsubjpt)) { LJets[ijet].elinsubjpt = -100; }
-    if(isnan(LJets[ijet].elinsubjeta)) { LJets[ijet].elinsubjeta = -100; }
-    if(isnan(LJets[ijet].elinsubjphi)) { LJets[ijet].elinsubjphi = -100; }
-    if(isnan(LJets[ijet].elinsubjmass)) { LJets[ijet].elinsubjmass = -100; }
-    
-    if(isnan(LJets[ijet].muinsubpt)) { LJets[ijet].muinsubpt = -100; }
-    if(isnan(LJets[ijet].muinsubeta)) { LJets[ijet].muinsubeta = -100; }
-    if(isnan(LJets[ijet].muinsubphi)) { LJets[ijet].muinsubphi = -100; }
-    if(isnan(LJets[ijet].muinsubjpt)) { LJets[ijet].muinsubjpt = -100; }
-    if(isnan(LJets[ijet].muinsubjeta)) { LJets[ijet].muinsubjeta = -100; }
-    if(isnan(LJets[ijet].muinsubjphi)) { LJets[ijet].muinsubjphi = -100; }
-    if(isnan(LJets[ijet].muinsubjmass)) { LJets[ijet].muinsubjmass = -100; }
-    
-    if(isnan(LJets[ijet].muinsubI0)) { LJets[ijet].muinsubI0 = -100; }
-    if(isnan(LJets[ijet].muinsubInear)) { LJets[ijet].muinsubInear = -100; }
-    if(isnan(LJets[ijet].muinsubIfar)) { LJets[ijet].muinsubIfar = -100; }
-       
-    if(isnan(LJets[ijet].sub1mass)) { LJets[ijet].sub1mass = -100; }
-    if(isnan(LJets[ijet].sub1btag)) { LJets[ijet].sub1btag = -100; }
-    if(isnan(LJets[ijet].sub1hadfrac)) { LJets[ijet].sub1hadfrac = -100; }
-    if(isnan(LJets[ijet].sub1emfrac)) { LJets[ijet].sub1emfrac = -100; }
-    if(isnan(LJets[ijet].sub2mass)) { LJets[ijet].sub2mass = -100; }
-    if(isnan(LJets[ijet].sub2btag)) { LJets[ijet].sub2btag = -100; }
-    if(isnan(LJets[ijet].sub2hadfrac)) { LJets[ijet].sub2hadfrac = -100; }
-    if(isnan(LJets[ijet].sub2emfrac)) { LJets[ijet].sub2emfrac = -100; }
-
-    if(isnan(LJets[ijet].subhaddiff)) { LJets[ijet].subhaddiff = -100; }
-    if(isnan(LJets[ijet].subemdiff)) { LJets[ijet].subemdiff = -100; }
-    if(isnan(LJets[ijet].subptdiff)) { LJets[ijet].subptdiff = -100; }
-    if(isnan(LJets[ijet].subbtag)) { LJets[ijet].subbtag = -100; }
-
-    if(isnan(LJets[ijet].haselectron)) { LJets[ijet].haselectron = -100; }
-    if(isnan(LJets[ijet].haspfelectron)) { LJets[ijet].haspfelectron = -100; }
-    if(isnan(LJets[ijet].hasmuon)) { LJets[ijet].hasmuon = -100; }
-    if(isnan(LJets[ijet].haspfmuon)) { LJets[ijet].haspfmuon = -100; }
-
-    if(isnan(LJets[ijet].hasleptop)) { LJets[ijet].hasleptop = -100; }
-    if(isnan(LJets[ijet].hashadtop)) { LJets[ijet].hashadtop = -100; }
-    if(isnan(LJets[ijet].hasqg)) { LJets[ijet].hasqg = -100; }
-    if(isnan(LJets[ijet].hasb)) { LJets[ijet].hasb = -100; }
-        
+      if(isnan(LJets[ijet].subhaddiff)) { LJets[ijet].subhaddiff = -100; }
+      if(isnan(LJets[ijet].subemdiff)) { LJets[ijet].subemdiff = -100; }
+      if(isnan(LJets[ijet].subptdiff)) { LJets[ijet].subptdiff = -100; }
+      if(isnan(LJets[ijet].subbtag)) { LJets[ijet].subbtag = -100; }
+      
+      if(isnan(LJets[ijet].haselectron)) { LJets[ijet].haselectron = -100; }
+      if(isnan(LJets[ijet].haspfelectron)) { LJets[ijet].haspfelectron = -100; }
+      if(isnan(LJets[ijet].hasmuon)) { LJets[ijet].hasmuon = -100; }
+      if(isnan(LJets[ijet].haspfmuon)) { LJets[ijet].haspfmuon = -100; }
+      
+      if(isnan(LJets[ijet].hasleptop)) { LJets[ijet].hasleptop = -100; }
+      if(isnan(LJets[ijet].hashadtop)) { LJets[ijet].hashadtop = -100; }
+      if(isnan(LJets[ijet].hasqg)) { LJets[ijet].hasqg = -100; }
+      if(isnan(LJets[ijet].hasb)) { LJets[ijet].hasb = -100; }
+    */
     in_mupfjetAK8NHadF = -999;                                                     
     in_mupfjetAK8neunhadfrac = -999;
     in_mupfjetAK8subhaddiff = -999;
@@ -1468,8 +1441,12 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     else if (abs(TrigRefObj[trv].first)==0) eltrobj=true;
     
     if (mutrobj==true) {
+     
       TVector3 Trvmu = TrigRefObj[trv].second.Vect();
       TVector3 fmuv = fmucand.Vect();
+
+      hist_init[0]->Fill((fmuv-Trvmu).Mag()/fmuv.Mag(),weight);
+      
       if ((fmuv-Trvmu).Mag()/fmuv.Mag() < matchN_mu) {
 	fmuMatch = true;
 	matchN_mu = (fmuv-Trvmu).Mag()/fmuv.Mag();
@@ -1478,6 +1455,9 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     if (eltrobj==true) {
       TVector3 Trvel = TrigRefObj[trv].second.Vect();
       TVector3 felv = felcand.Vect();
+      
+      hist_init[1]->Fill((felv-Trvel).Mag()/felv.Mag(),weight);
+
       if ((felv-Trvel).Mag()/felv.Mag() < matchN_el) {
 	felMatch = true;
 	matchN_el = (felv-Trvel).Mag()/felv.Mag();
@@ -1499,7 +1479,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   //if(gProofServ) gProofServ->SendAsynMessage(str);
   
   float mulpt(0.), ellpt(0.);
-    if (dlep_pass==true) {
+  if (dlep_pass==true) {
     bool fsttrig = false; 
     bool sndtrig = false;
     bool bothtrig = false;
@@ -1551,6 +1531,10 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
       TVector3 Trvel = TrigRefObj[trv].second.Vect();
       TVector3 fe1v = fe1cand.Vect();
       TVector3 fe2v = fe2cand.Vect();
+
+      hist_init[0]->Fill((fe1v-Trvel).Mag()/fe1v.Mag(),weight);
+      hist_init[1]->Fill((fe2v-Trvel).Mag()/fe2v.Mag(),weight);
+    
       if ((fe1v-Trvel).Mag()/fe1v.Mag() < matchN_e1) {
 	fe1Match = true;
         matchN_e1 = (fe1v-Trvel).Mag()/fe1v.Mag();
@@ -1594,6 +1578,10 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
       TVector3 Trvmu = TrigRefObj[trv].second.Vect();
       TVector3 fmu1v = fmu1cand.Vect();
       TVector3 fmu2v = fmu2cand.Vect();
+      
+      hist_init[0]->Fill((fmu1v-Trvmu).Mag()/fmu1v.Mag(),weight);
+      hist_init[1]->Fill((fmu2v-Trvmu).Mag()/fmu2v.Mag(),weight);
+      
       if ((fmu1v-Trvmu).Mag()/fmu1v.Mag() < matchN_mu1) {
 	fmu1Match = true;
         matchN_mu1 = (fmu1v-Trvmu).Mag()/fmu1v.Mag();
@@ -1882,13 +1870,13 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   if (PFMET<50.) return kFALSE; //before it was 70 GeV. 100 GeV on 17th April, 50GeV on June  
   hist_count->Fill(14,weight);
   
-  hist_init[0]->Fill(nmuons,weight);
-  hist_init[1]->Fill(nelecs,weight);
-  hist_init[2]->Fill(PFMET,weight);
-  hist_init[3]->Fill(nprimi,weight);
-  hist_init[4]->Fill(npfjetAK4,weight);
-  hist_init[5]->Fill(nbjetAK4,weight);
-  hist_init[6]->Fill(npfjetAK8,weight);
+  hist_init[2]->Fill(nmuons,weight);
+  hist_init[3]->Fill(nelecs,weight);
+  hist_init[4]->Fill(PFMET,weight);
+  hist_init[5]->Fill(nprimi,weight);
+  hist_init[6]->Fill(npfjetAK4,weight);
+  hist_init[7]->Fill(nbjetAK4,weight);
+  hist_init[8]->Fill(npfjetAK8,weight);
 
   hist_obs[0]->Fill(LJets[0].pt,weight);
   hist_obs[1]->Fill(LJets[0].y,weight);
@@ -1944,187 +1932,39 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   }
 
 #ifdef E_MU_TTBar
-  hist_init[7]->Fill((fmucand + felcand).M(),weight);
-  hist_init[8]->Fill(fmucand.Pt(),weight);
-  hist_init[9]->Fill(fmucand.Eta(),weight);
-  hist_init[10]->Fill(fmucand.Phi(),weight);
+  hist_init[9]->Fill((fmucand + felcand).M(),weight);
+  hist_init[10]->Fill(fmucand.Pt(),weight);
+  hist_init[11]->Fill(fmucand.Eta(),weight);
+  hist_init[12]->Fill(fmucand.Phi(),weight);
   
-  hist_init[11]->Fill(felcand.Pt(),weight);
-  hist_init[12]->Fill(felcand.Eta(),weight);
-  hist_init[13]->Fill(felcand.Phi(),weight);
+  hist_init[13]->Fill(felcand.Pt(),weight);
+  hist_init[14]->Fill(felcand.Eta(),weight);
+  hist_init[15]->Fill(felcand.Phi(),weight);
 #elif defined(E_E_TTBar)
-  hist_init[7]->Fill((fe1cand + fe2cand).M(),weight);
-  hist_init[8]->Fill(fe1cand.Pt(),weight);
-  hist_init[9]->Fill(fe1cand.Eta(),weight);
-  hist_init[10]->Fill(fe1cand.Phi(),weight);
+  hist_init[9]->Fill((fe1cand + fe2cand).M(),weight);
+  hist_init[10]->Fill(fe1cand.Pt(),weight);
+  hist_init[11]->Fill(fe1cand.Eta(),weight);
+  hist_init[12]->Fill(fe1cand.Phi(),weight);
 
-  hist_init[11]->Fill(fe2cand.Pt(),weight);
-  hist_init[12]->Fill(fe2cand.Eta(),weight);
-  hist_init[13]->Fill(fe2cand.Phi(),weight);
+  hist_init[13]->Fill(fe2cand.Pt(),weight);
+  hist_init[14]->Fill(fe2cand.Eta(),weight);
+  hist_init[15]->Fill(fe2cand.Phi(),weight);
 #elif defined(MU_MU_TTBar)
-  hist_init[7]->Fill((fmu1cand + fmu2cand).M(),weight);
-  hist_init[8]->Fill(fmu1cand.Pt(),weight);
-  hist_init[9]->Fill(fmu1cand.Eta(),weight);
-  hist_init[10]->Fill(fmu1cand.Phi(),weight);
+  hist_init[9]->Fill((fmu1cand + fmu2cand).M(),weight);
+  hist_init[10]->Fill(fmu1cand.Pt(),weight);
+  hist_init[11]->Fill(fmu1cand.Eta(),weight);
+  hist_init[12]->Fill(fmu1cand.Phi(),weight);
 
-  hist_init[11]->Fill(fmu2cand.Pt(),weight);
-  hist_init[12]->Fill(fmu2cand.Eta(),weight);
-  hist_init[13]->Fill(fmu2cand.Phi(),weight);
+  hist_init[13]->Fill(fmu2cand.Pt(),weight);
+  hist_init[14]->Fill(fmu2cand.Eta(),weight);
+  hist_init[15]->Fill(fmu2cand.Phi(),weight);
 #endif
   if (nbjetAK4>0) {
-    hist_init[14]->Fill(bjv[0].Pt(),weight);
-    hist_init[15]->Fill(bjv[0].Eta(),weight);
-    hist_init[16]->Fill(bjv[0].Phi(),weight);
+    hist_init[16]->Fill(bjv[0].Pt(),weight);
+    hist_init[17]->Fill(bjv[0].Eta(),weight);
+    hist_init[18]->Fill(bjv[0].Phi(),weight);
   }
-  /*
-    hist_initpuwup[0]->Fill(nmuons,weight_puwup);
-    hist_initpuwup[1]->Fill(nelecs,weight_puwup);
-    hist_initpuwup[2]->Fill(PFMET,weight_puwup);
-    hist_initpuwup[3]->Fill(nprimi,weight_puwup);
-    hist_initpuwup[4]->Fill(npfjetAK4,weight_puwup);
-    hist_initpuwup[5]->Fill(nbjetAK4,weight_puwup);
-    hist_initpuwup[6]->Fill(npfjetAK8,weight_puwup);
-    
-    #ifdef E_MU_TTBar
-    hist_initpuwup[7]->Fill((fmucand + felcand).M(),weight_puwup);
-    hist_initpuwup[8]->Fill(fmucand.Pt(),weight_puwup);
-    hist_initpuwup[9]->Fill(fmucand.Eta(),weight_puwup);
-    hist_initpuwup[10]->Fill(fmucand.Phi(),weight_puwup);
-    
-    hist_initpuwup[11]->Fill(felcand.Pt(),weight_puwup);
-    hist_initpuwup[12]->Fill(felcand.Eta(),weight_puwup);
-    hist_initpuwup[13]->Fill(felcand.Phi(),weight_puwup);
-    #elif defined(E_E_TTBar)
-    hist_initpuwup[7]->Fill((fe1cand + fe2cand).M(),weight_puwup);
-    hist_initpuwup[8]->Fill(fe1cand.Pt(),weight_puwup);
-    hist_initpuwup[9]->Fill(fe1cand.Eta(),weight_puwup);
-    hist_initpuwup[10]->Fill(fe1cand.Phi(),weight_puwup);
-    
-    hist_initpuwup[11]->Fill(fe2cand.Pt(),weight_puwup);
-    hist_initpuwup[12]->Fill(fe2cand.Eta(),weight_puwup);
-    hist_initpuwup[13]->Fill(fe2cand.Phi(),weight_puwup);
-    #elif defined(MU_MU_TTBar)
-    hist_initpuwup[7]->Fill((fmu1cand + fmu2cand).M(),weight_puwup);
-    hist_initpuwup[8]->Fill(fmu1cand.Pt(),weight_puwup);
-    hist_initpuwup[9]->Fill(fmu1cand.Eta(),weight_puwup);
-    hist_initpuwup[10]->Fill(fmu1cand.Phi(),weight_puwup);
-    
-    hist_initpuwup[11]->Fill(fmu2cand.Pt(),weight_puwup);
-    hist_initpuwup[12]->Fill(fmu2cand.Eta(),weight_puwup);
-    hist_initpuwup[13]->Fill(fmu2cand.Phi(),weight_puwup);
-    #endif
-    hist_initpuwup[14]->Fill(bjv[0].Pt(),weight_puwup);
-    hist_initpuwup[15]->Fill(bjv[0].Eta(),weight_puwup);
-    hist_initpuwup[16]->Fill(bjv[0].Phi(),weight_puwup);
-    
-    hist_initbtagwup[0]->Fill(nmuons,weight_btagwup);
-    hist_initbtagwup[1]->Fill(nelecs,weight_btagwup);
-    hist_initbtagwup[2]->Fill(PFMET,weight_btagwup);
-    hist_initbtagwup[3]->Fill(nprimi,weight_btagwup);
-    hist_initbtagwup[4]->Fill(npfjetAK4,weight_btagwup);
-    hist_initbtagwup[5]->Fill(nbjetAK4,weight_btagwup);
-    hist_initbtagwup[6]->Fill(npfjetAK8,weight_btagwup);
-    #ifdef E_MU_TTBar
-    hist_initbtagwup[7]->Fill((fmucand + felcand).M(),weight_btagwup);
-    hist_initbtagwup[8]->Fill(fmucand.Pt(),weight_btagwup);
-    hist_initbtagwup[9]->Fill(fmucand.Eta(),weight_btagwup);
-    hist_initbtagwup[10]->Fill(fmucand.Phi(),weight_btagwup);
-    hist_initbtagwup[11]->Fill(felcand.Pt(),weight_btagwup);
-    hist_initbtagwup[12]->Fill(felcand.Eta(),weight_btagwup);
-    hist_initbtagwup[13]->Fill(felcand.Phi(),weight_btagwup);
-    #elif defined(E_E_TTBar)
-    hist_initbtagwup[7]->Fill((fe1cand + fe2cand).M(),weight_btagwup);
-    hist_initbtagwup[8]->Fill(fe1cand.Pt(),weight_btagwup);
-    hist_initbtagwup[9]->Fill(fe1cand.Eta(),weight_btagwup);
-    hist_initbtagwup[10]->Fill(fe1cand.Phi(),weight_btagwup);
-    hist_initbtagwup[11]->Fill(fe2cand.Pt(),weight_btagwup);
-    hist_initbtagwup[12]->Fill(fe2cand.Eta(),weight_btagwup);
-    hist_initbtagwup[13]->Fill(fe2cand.Phi(),weight_btagwup);
-    #elif defined(MU_MU_TTBar)
-    hist_initbtagwup[7]->Fill((fmu1cand + fmu2cand).M(),weight_btagwup);
-    hist_initbtagwup[8]->Fill(fmu1cand.Pt(),weight_btagwup);
-    hist_initbtagwup[9]->Fill(fmu1cand.Eta(),weight_btagwup);
-    hist_initbtagwup[10]->Fill(fmu1cand.Phi(),weight_btagwup);
-    hist_initbtagwup[11]->Fill(fmu2cand.Pt(),weight_btagwup);
-    hist_initbtagwup[12]->Fill(fmu2cand.Eta(),weight_btagwup);
-    hist_initbtagwup[13]->Fill(fmu2cand.Phi(),weight_btagwup);
-    #endif
-    hist_initbtagwup[14]->Fill(bjv[0].Pt(),weight_btagwup);
-    hist_initbtagwup[15]->Fill(bjv[0].Eta(),weight_btagwup);
-    hist_initbtagwup[16]->Fill(bjv[0].Phi(),weight_btagwup);
-    
-    hist_initpuwdown[0]->Fill(nmuons,weight_puwdown);
-    hist_initpuwdown[1]->Fill(nelecs,weight_puwdown);
-    hist_initpuwdown[2]->Fill(PFMET,weight_puwdown);
-    hist_initpuwdown[3]->Fill(nprimi,weight_puwdown);
-    hist_initpuwdown[4]->Fill(npfjetAK4,weight_puwdown);
-    hist_initpuwdown[5]->Fill(nbjetAK4,weight_puwdown);
-    hist_initpuwdown[6]->Fill(npfjetAK8,weight_puwdown);
-    #ifdef E_MU_TTBar
-    hist_initpuwdown[7]->Fill((fmucand + felcand).M(),weight_puwdown);
-    hist_initpuwdown[8]->Fill(fmucand.Pt(),weight_puwdown);
-    hist_initpuwdown[9]->Fill(fmucand.Eta(),weight_puwdown);
-    hist_initpuwdown[10]->Fill(fmucand.Phi(),weight_puwdown);
-    hist_initpuwdown[11]->Fill(felcand.Pt(),weight_puwdown);
-    hist_initpuwdown[12]->Fill(felcand.Eta(),weight_puwdown);
-    hist_initpuwdown[13]->Fill(felcand.Phi(),weight_puwdown);
-    #elif defined(E_E_TTBar)
-    hist_initpuwdown[7]->Fill((fe1cand + fe2cand).M(),weight_puwdown);
-    hist_initpuwdown[8]->Fill(fe1cand.Pt(),weight_puwdown);
-    hist_initpuwdown[9]->Fill(fe1cand.Eta(),weight_puwdown);
-    hist_initpuwdown[10]->Fill(fe1cand.Phi(),weight_puwdown);
-    hist_initpuwdown[11]->Fill(fe2cand.Pt(),weight_puwdown);
-    hist_initpuwdown[12]->Fill(fe2cand.Eta(),weight_puwdown);
-    hist_initpuwdown[13]->Fill(fe2cand.Phi(),weight_puwdown);
-    #elif defined(MU_MU_TTBar)
-    hist_initpuwdown[7]->Fill((fmu1cand + fmu2cand).M(),weight_puwdown);
-    hist_initpuwdown[8]->Fill(fmu1cand.Pt(),weight_puwdown);
-    hist_initpuwdown[9]->Fill(fmu1cand.Eta(),weight_puwdown);
-    hist_initpuwdown[10]->Fill(fmu1cand.Phi(),weight_puwdown);
-    hist_initpuwdown[11]->Fill(fmu2cand.Pt(),weight_puwdown);
-    hist_initpuwdown[12]->Fill(fmu2cand.Eta(),weight_puwdown);
-    hist_initpuwdown[13]->Fill(fmu2cand.Phi(),weight_puwdown);
-    #endif
-    hist_initpuwdown[14]->Fill(bjv[0].Pt(),weight_puwdown);
-    hist_initpuwdown[15]->Fill(bjv[0].Eta(),weight_puwdown);
-    hist_initpuwdown[16]->Fill(bjv[0].Phi(),weight_puwdown);
-    
-    hist_initbtagwdown[0]->Fill(nmuons,weight_btagwdown);
-    hist_initbtagwdown[1]->Fill(nelecs,weight_btagwdown);
-    hist_initbtagwdown[2]->Fill(PFMET,weight_btagwdown);
-    hist_initbtagwdown[3]->Fill(nprimi,weight_btagwdown);
-    hist_initbtagwdown[4]->Fill(npfjetAK4,weight_btagwdown);
-    hist_initbtagwdown[5]->Fill(nbjetAK4,weight_btagwdown);
-    hist_initbtagwdown[6]->Fill(npfjetAK8,weight_btagwdown);
-    #ifdef E_MU_TTBar  
-    hist_initbtagwdown[7]->Fill((fmucand + felcand).M(),weight_btagwdown);
-    hist_initbtagwdown[8]->Fill(fmucand.Pt(),weight_btagwdown);
-    hist_initbtagwdown[9]->Fill(fmucand.Eta(),weight_btagwdown);
-    hist_initbtagwdown[10]->Fill(fmucand.Phi(),weight_btagwdown);
-    hist_initbtagwdown[11]->Fill(felcand.Pt(),weight_btagwdown);
-    hist_initbtagwdown[12]->Fill(felcand.Eta(),weight_btagwdown);
-    hist_initbtagwdown[13]->Fill(felcand.Phi(),weight_btagwdown);
-    #elif defined(E_E_TTBar)
-    hist_initbtagwdown[7]->Fill((fe1cand + fe2cand).M(),weight_btagwdown);
-    hist_initbtagwdown[8]->Fill(fe1cand.Pt(),weight_btagwdown);
-    hist_initbtagwdown[9]->Fill(fe1cand.Eta(),weight_btagwdown);
-    hist_initbtagwdown[10]->Fill(fe1cand.Phi(),weight_btagwdown);
-    hist_initbtagwdown[11]->Fill(fe2cand.Pt(),weight_btagwdown);
-    hist_initbtagwdown[12]->Fill(fe2cand.Eta(),weight_btagwdown);
-    hist_initbtagwdown[13]->Fill(fe2cand.Phi(),weight_btagwdown);
-    #elif defined(MU_MU_TTBar)
-    hist_initbtagwdown[7]->Fill((fmu1cand + fmu2cand).M(),weight_btagwdown);
-    hist_initbtagwdown[8]->Fill(fmu1cand.Pt(),weight_btagwdown);
-    hist_initbtagwdown[9]->Fill(fmu1cand.Eta(),weight_btagwdown);
-    hist_initbtagwdown[10]->Fill(fmu1cand.Phi(),weight_btagwdown);
-    hist_initbtagwdown[11]->Fill(fmu2cand.Pt(),weight_btagwdown);
-    hist_initbtagwdown[12]->Fill(fmu2cand.Eta(),weight_btagwdown);
-    hist_initbtagwdown[13]->Fill(fmu2cand.Phi(),weight_btagwdown);
-    #endif
-    hist_initbtagwdown[14]->Fill(bjv[0].Pt(),weight_btagwdown);
-    hist_initbtagwdown[15]->Fill(bjv[0].Eta(),weight_btagwdown);
-    hist_initbtagwdown[16]->Fill(bjv[0].Phi(),weight_btagwdown);
-  */
+ 
   // end //                                                                            
   
     return kTRUE;                                                                       

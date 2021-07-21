@@ -1750,60 +1750,8 @@ class Anal_Leptop_PROOF : public TSelector {
   double pu_rat18_dn[100] = {0,15.0557,67.8751,22.3278,14.1211,10.4821,7.88069,5.86513,4.31762,3.35551,2.78627,2.40097,2.16428,2.00485,1.9056,1.85092,1.82051,1.80608,1.78719,1.75544,1.71117,1.64481,1.57234,1.49261,1.42092,1.35612,1.3043,1.26517,1.23118,1.20443,1.18302,1.16596,1.14834,1.13047,1.11055,1.08517,1.05388,1.01479,0.96502,0.907499,0.841466,0.767187,0.68971,0.610695,0.530471,0.45611,0.385995,0.32355,0.268127,0.221267,0.181416,0.149012,0.122387,0.100955,0.0832931,0.0694147,0.0579993,0.0482614,0.0406839,0.0341693,0.0284128,0.0238208,0.0196651,0.0163071,0.0134164,0.0108213,0.00875349,0.00713274,0.00561523,0.00450669,0.00357902,0.00293888,0.00231295,0.00180802,0.00140385,0.00117654,0.000861839,0.000682485,0.000525487,0.000404909,0.00033922,0.000204219,0.000164688,0.000112084,8.12391e-05,5.70485e-05,3.2298e-05,2.61592e-05,1.02574e-05,3.96059e-06,2.16985e-06,1.85204e-06,5.36884e-07,6.60936e-07,3.78607e-07,1.19189e-07,4.4536e-08,2.4673e-08,3.47283e-08,5.35281e-09};
   
  
-  //TH1D *hist_obs[nobshist] ;
-  //TH1D *hist_obspuwup[nobshist] ;
-  //TH1D *hist_obspuwdown[nobshist] ;
-  //TH1D *hist_obsbtagwup[nobshist] ;
-  //TH1D *hist_obsbtagwdown[nobshist] ;
-
-  //TH1D *hist_obswel[nobshist] ;
-  //TH1D *hist_obswelpuwup[nobshist] ;
-  //TH1D *hist_obswelpuwdown[nobshist] ;
-  //TH1D *hist_obswelbtagwup[nobshist] ;
-  //TH1D *hist_obswelbtagwdown[nobshist] ;
+  //TH1D *hist_obs_pu_sys[nobshist][2];
   
-  //TH1D *hist_obsnoel[nobshist] ;
-  //TH1D *hist_obsnoelpuwup[nobshist] ;
-  //TH1D *hist_obsnoelpuwdown[nobshist] ;
-  //TH1D *hist_obsnoelbtagwup[nobshist] ;
-  //TH1D *hist_obsnoelbtagwdown[nobshist] ;
-  
-  //TH1D *hist_obsljesup[3]; 
-  //TH1D *hist_obsljesdown[3];
-  //TH1D *hist_obsljerup[3]; 
-  //TH1D *hist_obsljerdown[3];
-  
-  //TH1D *hist_obswelljesup[3];
-  //TH1D *hist_obswelljesdown[3];
-  //TH1D *hist_obswelljerup[3];
-  //TH1D *hist_obswelljerdown[3];
-  
-  //TH1D *hist_obsnoelljesup[3];
-  //TH1D *hist_obsnoelljesdown[3];
-  //TH1D *hist_obsnoelljerup[3];
-  //TH1D *hist_obsnoelljerdown[3];
-  
-  //TH1D *hist_obs_mu[nobshist];
-  //TH1D *hist_obs_mupuwup[nobshist];
-  //TH1D *hist_obs_mupuwdown[nobshist];
-  //TH1D *hist_obs_mubtagwup[nobshist] ;
-  //TH1D *hist_obs_mubtagwdown[nobshist] ;
-  
-  //TH1D *hist_obs_wmumu[nobshist];
-  //TH1D *hist_obs_wmumupuwup[nobshist];
-  //TH1D *hist_obs_wmumupuwdown[nobshist];
-  //TH1D *hist_obs_wmumubtagwup[nobshist] ;
-  //TH1D *hist_obs_wmumubtagwdown[nobshist] ;
-  
-  //TH1D *hist_obs_muljesup[3];
-  //TH1D *hist_obs_muljesdown[3];
-  //TH1D *hist_obs_muljerup[3];
-  //TH1D *hist_obs_muljerdown[3];
-  
-  //TH1D *hist_obs_wmumuljesup[3];
-  //TH1D *hist_obs_wmumuljesdown[3];
-  //TH1D *hist_obs_wmumuljerup[3];
-  //TH1D *hist_obs_wmumuljerdown[3];
   
  TH2D *hist_2D_msd_deepak8;
  TH2D *hist_2D_bpass_flavb;
@@ -1843,8 +1791,7 @@ class Anal_Leptop_PROOF : public TSelector {
   TTree *Tnewvar;
     
   //TH1D *hist_new_var[15];
-  TH1D *hist_init[18];
-  //TH1D *hist_binit[6];
+  TH1D *hist_init[19];
   TH1D *hist_obs[45];
   
   static const int nobshist = 45;
@@ -1872,10 +1819,7 @@ class Anal_Leptop_PROOF : public TSelector {
     int obs_nbins[nobshist] = {25,25,25,25,25,25,25,25,25,20,20,20,40,40,2,2,2,2,25,25,25,25
 			   ,25,25,25,25,25,25,25,25,25,25,20,20,20,40,40,2,2,2,2,25,25,25,25};
 
-    //TH1D *hist_initpuwup[18];
-    //TH1D *hist_initpuwdown[18];
-    //TH1D *hist_initbtagwup[18];
-    //TH1D *hist_initbtagwdown[18];
+    TH1D *hist_init_pu_sys[18][2];
   
     //  const char *new_var_names[9] = {"M_l1l2","rat_l1l2","deltaPhi_l1l2","l1pt_wrtjet","l2pt_wrtjet","MET","MET_{#eta}","delta_phil1_met","delta_phil2_met"};
     
@@ -1883,26 +1827,18 @@ class Anal_Leptop_PROOF : public TSelector {
     
     //const char *new_var_title[9] = {"M_{l1,l2}","rat_{l1,l2}","#delta#phi_{l1,l2}","l1p_{T}wrtj","l2p_{T}wrtj","MET","MET_{#eta}","#delta#phi_{l1,MET}","#delta#phi_{l2,MET}"};
     
-    const char *initnames[18] = {"nmu","nel","PFMET","N_PV_sel","NJets_AK4","NBJets_AK4","NJets_AK8","mll","l1pt","l1eta","l1phi","l2pt","l2eta","l2phi","bjetpt","bjeteta","bjetphi","NJets_balAK8"};//,"dRmuelcand","dPhimuelcand","Mmuelcand","Ptmuelcand","njets_AK4_out"};
+    const char *initnames[19] = {"matchN_l1","matchN_l2","nmu","nel","PFMET","N_PV_sel","NJets_AK4","NBJets_AK4","NJets_AK8","mll","l1pt","l1eta","l1phi","l2pt","l2eta","l2phi","bjetpt","bjeteta","bjetphi"};
     
-    const char *titlenames[18] = {"nmu","nel","PFMET","# of Primary Vertices","# of AK4 jets","# of b tagged AK4 jets","# of AK8 jets","mll","l1pt","l1eta","l1phi","l2pt","l2eta","l2phi","bjet pT","bjet eta","bjet phi","# of bal.AK8 jets wrt mu"};//"dR between top candidates","dPhi between top candidates","Invariant mass of top candidates","pT of top candidates","# of AK4 jets outside top candidates"}; 
+    const char *titlenames[19] = {"trigger matching for mu","trigger matching for el","nmu","nel","PFMET","# of Primary Vertices","# of AK4 jets","# of b tagged AK4 jets","# of AK8 jets","mll","l1pt","l1eta","l1phi","l2pt","l2eta","l2phi","bjet pT","bjet eta","bjet phi"};
 
     //double new_var_low[9] = {0.0,0.0,-5.0,0.0,0.0,0.0,-2.5,-5.0,-5.0};//,0.0,0.0,0.0,0.0,0.0,0.0,0.0,300.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
     //double new_var_up[9] = {500.0,2.0,5.0,1000.0,1000.0,500.0,2.5,5.0,5.0};//1000,3.15,3.15,3.15,500,500,3000,500,3.15,3.15,3.15,3.15,500,500,5.};
     //int new_var_nbins[9] = {25,25,50,50,50,25,25,50,50};//30,25,25,25,25,25,30,25,25,25,25,25,25,25,25};
       
-    double ini_low[18] = {0.5,0.5,0.0,-0.1,0.5,0.5,0.5,0.0,25.0,-2.5,-5.0,25.0,-2.5,-5.0,25.0,-2.5,-5.0,0.5};//0.0,-3.0,0.0,400.0,-0.5};
-    double ini_up[18] = {10.5,10.5,500,99.9,10.5,10.5,10.5,500.0,1000.0,2.5,5.0,1000.0,2.5,5.0,1000.0,2.5,5.0,10.5};//5.0,3.0,1500.0,3100.0,10.5};
-    
-    int ini_nbins[18] = {10,10,25,100,10,10,10,25,50,25,50,50,25,50,50,25,50,10};//,50,50,50,25,10};
+    double ini_low[19] = {0.0,0.0,0.5,0.5,0.0,-0.1,0.5,0.5,0.5,0.0,25.0,-2.5,-5.0,25.0,-2.5,-5.0,25.0,-2.5,-5.0};
+    double ini_up[19] = {1.0,1.0,10.5,10.5,500,99.9,10.5,10.5,10.5,500.0,1000.0,2.5,5.0,1000.0,2.5,5.0,1000.0,2.5,5.0};
+    int ini_nbins[19] = {50,50,10,10,25,100,10,10,10,25,50,25,50,50,25,50,50,25,50};
 
-    const char *binitnames[6] = {"bNJets_AK4","bNBJets_AK4","jet1pt","jet2pt","bjet1pt","bjet2pt"}; 
-    const char *btitlenames[6] = {"# of AK4 jets with boost", "# of b tagged AK4 jets with boost", "Leading AK4 jet pT with boost", "Subleading AK4 jet pT with boost", "Leading bjet pT with boost", "Subleading bjet pT with boost"};
-    
-    //double ini_blow[6] = {-0.1,-0.1,25.0,25.0,25.0,25.0};
-    //double ini_bup[6] = {10.5,10.5,1000.0,1000.0,1000.0,1000.0};
-    //int ini_bnbins[6] = {10,10,50,50,50,50};
-    
     TH1D *hist_npv;
     TH1D *hist_npv_nopuwt;
 
