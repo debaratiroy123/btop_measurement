@@ -227,14 +227,14 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
   reader1->BookMVA("BDTG method", weightfile1);
   
   /*
-  reader3 = new TMVA::Reader( "BDTG_Rt" );
-  reader3->AddVariable( "selpfjetAK8NHadF", &in_pfjetAK8NHadF);
-  reader3->AddVariable( "selpfjetAK8neunhadfrac", &in_pfjetAK8neunhadfrac);
-  reader3->AddVariable( "selpfjetAK8subhaddiff", &in_pfjetAK8subhaddiff);
-  reader3->AddVariable( "selpfjetAK8tau21", &in_pfjetAK8tau21);
-  reader3->AddVariable( "selpfjetAK8chrad", &in_pfjetAK8chrad);
-  reader3->AddVariable( "selpfjetAK8sdmass", &in_pfjetAK8sdmass);
-  reader3->BookMVA("BDTG method", weightfile3);
+    reader3 = new TMVA::Reader( "BDTG_Rt" );
+    reader3->AddVariable( "selpfjetAK8NHadF", &in_pfjetAK8NHadF);
+    reader3->AddVariable( "selpfjetAK8neunhadfrac", &in_pfjetAK8neunhadfrac);
+    reader3->AddVariable( "selpfjetAK8subhaddiff", &in_pfjetAK8subhaddiff);
+    reader3->AddVariable( "selpfjetAK8tau21", &in_pfjetAK8tau21);
+    reader3->AddVariable( "selpfjetAK8chrad", &in_pfjetAK8chrad);
+    reader3->AddVariable( "selpfjetAK8sdmass", &in_pfjetAK8sdmass);
+    reader3->BookMVA("BDTG method", weightfile3);
   */
   
   reader4 = new TMVA::Reader( "BDTG_Rmu" );
@@ -295,7 +295,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   // event selection starts
 
   //if (npfjetAK8==0) {
-  //TString str;                                                                               
+  //TString str;                                                                 
   //str = TString::Format("npfjetAK8 %d",npfjetAK8);           
   //if(gProofServ) gProofServ->SendAsynMessage(str);
   //}
@@ -313,13 +313,16 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   //puWeightDown = pu_rat18_dn[npu_vert];
   //}
   //if(!isnan(puWeightUp) || fabs(puWeightUp)<1.e+6){
-  //weight_puwup = weight*puWeightUp;                                                          
+  //weight_puwup = weight*puWeightUp;                                           
+               
   //}
   //if(!isnan(puWeightDown) || fabs(puWeightDown)<1.e+6){
-  //weight_puwdown = weight*puWeightDown;                                                      
+  //weight_puwdown = weight*puWeightDown;                                        
+              
   //}
   //if(!isnan(puWeight) || fabs(puWeight)<1.e+6){
-  // weight *= puWeight;                                                                       
+  // weight *= puWeight;                                                         
+              
   //}
   //}
   //hist_npv->Fill(nprimi,weight);
@@ -605,6 +608,47 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
     sJet.btag_DeepCSV = pfjetAK4btag_DeepCSV[ijet];
     sJet.puid = pfjetAK4PUID[ijet];
     sJet.qgl = pfjetAK4qgl[ijet];
+
+    sJet.closebymu = false;
+    sJet.closebyel = false;
+    
+    for(int imu=0; imu<nmuons; imu++){
+      if (delta2R(pfjetAK4eta[ijet],pfjetAK4phi[ijet],muoneta[imu],muonphi[imu]) < 0.4)
+	{
+	  sJet.closebymu = true;
+	  
+	  TLorentzVector j_mom, mu_mom, clj_mom;
+          j_mom.SetPtEtaPhiM(pfjetAK4pt[ijet],pfjetAK4eta[ijet],pfjetAK4phi[ijet],pfjetAK4mass[ijet]);
+          mu_mom.SetPtEtaPhiM(muonpt[imu],muoneta[imu],muonphi[imu],0.105658);
+          clj_mom = j_mom - mu_mom;
+          sJet.pt = clj_mom.Pt();
+          sJet.eta = clj_mom.Eta();
+	  sJet.phi = clj_mom.Phi();
+          sJet.y = clj_mom.Rapidity();
+          sJet.mass = clj_mom.M();
+
+
+	}
+    }
+
+    for(int ie=0; ie<nelecs; ie++) {
+      if (delta2R(pfjetAK4eta[ijet],pfjetAK4phi[ijet],eleta[ie],elphi[ie]) < 0.4)
+	{
+	  sJet.closebyel = true;
+
+	  TLorentzVector j_mom, el_mom, clj_mom;
+          j_mom.SetPtEtaPhiM(pfjetAK4pt[ijet],pfjetAK4eta[ijet],pfjetAK4phi[ijet],pfjetAK4mass[ijet]);
+          el_mom.SetPtEtaPhiM(elpt[ie],eleta[ie],elphi[ie],0.000511);
+          clj_mom = j_mom - el_mom;
+          sJet.pt = clj_mom.Pt();
+          sJet.eta = clj_mom.Eta();
+          sJet.phi = clj_mom.Phi();
+          sJet.y = clj_mom.Rapidity();
+          sJet.mass = clj_mom.M();
+
+	}
+    }
+    
     
     Jets.push_back(sJet);
     
@@ -614,6 +658,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   npfjetAK4 = Jets.size();
   sorted_by_pt(Jets);
   
+
   for(unsigned ijet=0; ijet<Jets.size(); ijet++){
     
     if(Jets[ijet].btag_DeepFlav > deep_btag_cut) {
@@ -1105,7 +1150,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
       if(isnan(LJets[ijet].hasqg)) { LJets[ijet].hasqg = -100; }
       if(isnan(LJets[ijet].hasb)) { LJets[ijet].hasb = -100; }
     */
-    in_mupfjetAK8NHadF = -999;                                                     
+    in_mupfjetAK8NHadF = -999;                                                   
     in_mupfjetAK8neunhadfrac = -999;
     in_mupfjetAK8subhaddiff = -999;
     in_mupfjetAK8tau21 = -999;
@@ -1640,21 +1685,33 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   l2 = fmu2cand;
 #endif
 
-  if (npfjetAK4<2) return kFALSE;
+  if (npfjetAK8<2) return kFALSE;
   hist_count->Fill(10,weight);
   
-  if (Jets[0].pt<180.) return kFALSE;
+  if (npfjetAK4<2) return kFALSE;
   hist_count->Fill(11,weight);
   
-  if (npfjetAK8<1) return kFALSE;
-  hist_count->Fill(12,weight);
+  if (!(delta2R(LJets[0].y,LJets[0].phi,Jets[0].y,Jets[0].phi) < 0.6 || delta2R(LJets[1].y,LJets[1].phi,Jets[0].y,Jets[0].phi) < 0.6)) return kFALSE;
+  hist_count->Fill(12,weight);    
+  
+  if (!(delta2R(LJets[0].y,LJets[0].phi,Jets[1].y,Jets[1].phi) < 0.6 || delta2R(LJets[1].y,LJets[1].phi,Jets[1].y,Jets[1].phi) < 0.6)) return kFALSE;
+  hist_count->Fill(13,weight);
+  
+  if (nbjetAK4<1) return kFALSE;
+  hist_count->Fill(14,weight);
+
+  if (!(delta2R(bjv[0].Rapidity(),bjv[0].Phi(),LJets[0].y,LJets[0].phi) < 0.6 || delta2R(bjv[0].Rapidity(),bjv[0].Phi(),LJets[1].y,LJets[1].phi) < 0.6)) return kFALSE;
+  hist_count->Fill(15,weight);
+
+  if (Jets[0].pt<180.) return kFALSE;
+  hist_count->Fill(16,weight);
   
   M_l1l2 = (l1+l2).M();
   //hist_new_var[0]->Fill(M_l1l2,weight);
 
   /***** invariant mass of lepton at least more than 20 GeV as resolved analysis cut****/
   if (M_l1l2 < 20.) return kFALSE;
-  hist_count->Fill(13,weight);
+  hist_count->Fill(17,weight);
   
   //Computation of selected lepton related variables (Suman's proposal)
   rat_l2pt_l1pt = l2.Pt()/l1.Pt();
@@ -1868,7 +1925,7 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
   Tnewvar->Fill();
   
   if (PFMET<50.) return kFALSE; //before it was 70 GeV. 100 GeV on 17th April, 50GeV on June  
-  hist_count->Fill(14,weight);
+  hist_count->Fill(18,weight);
   
   hist_init[2]->Fill(nmuons,weight);
   hist_init[3]->Fill(nelecs,weight);

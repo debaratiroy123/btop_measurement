@@ -1914,7 +1914,7 @@ class Anal_Leptop_PROOF : public TSelector {
   TString weightfile3 = dir + TString("TMVAClassification_only7varsnomatchel_BDTG.weights.xml");
   TString weightfile4 = dir + TString("TMVAClassification_BDTG_muIDvar_Jan2021Corr_TTbarUL18.weights.xml");
   
-  float ptcut = 400;
+  float ptcut = 200;
   
  Anal_Leptop_PROOF(TTree * /*tree*/ =0) : fChain(0) { }
   virtual ~Anal_Leptop_PROOF() { }

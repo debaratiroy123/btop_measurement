@@ -27,7 +27,9 @@ class AK4Jet {
   float  btag_DeepCSV;
   float  puid;
   float  qgl;
-  
+  bool   closebymu;
+  bool   closebyel;
+
   /*
     float  reso;
     float  reso_up;
