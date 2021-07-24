@@ -1061,7 +1061,7 @@ class Anal_Leptop_PROOF : public TSelector {
   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
   
   //New more variables stored as ntuple//
-  float M_l1l2, rat_l2pt_l1pt, deltaPhi_l1l2, l1pt_nearjet, l2pt_nearjet, met_pt, met_phi, delta_phil1_met, delta_phil2_met, delta_phibl1_met, delta_phibl2_met, rat_metpt_ak4pt, rat_metpt_ak8pt, rat_metpt_eventHT, mt_of_l1met, mt_of_l2met, no_ak4jets, no_ak4bjets, no_ak8jets, EventHT, extra_ak4j, ptsum_extra_ak4, extra_ak4jqgl, extra_ak4jdeepb, rat_extra_ak4jpt_lpt, ak81pt, ak81y, ak81mass, ak81sdmass, ak81deep_tvsqcd, ak81deep_wvsqcd, ak82pt, ak82y, ak82mass, ak82sdmass, ak82deep_tvsqcd, ak82deep_wvsqcd, M_bl1, M_bl2, M_jl1, M_jl2, delta_phibl1bl2, delta_phijl1jl2, deltaR_l1l2, /*deltaR_l1b1, deltaR_l2b1, deltaR_l1b2, deltaR_l2b2,*/ deltaR_l1j1, deltaR_l2j1, deltaR_l1j2, deltaR_l2j2, j1_btag_sc, j2_btag_sc; 
+  float M_l1l2, rat_l2pt_l1pt, deltaPhi_l1l2, l1pt_nearjet, l2pt_nearjet, met_pt, met_phi, delta_phil1_met, delta_phil2_met, delta_phibl1_met, delta_phibl2_met, rat_metpt_ak4pt, rat_metpt_ak8pt, rat_metpt_eventHT, mt_of_l1met, mt_of_l2met, no_ak4jets, no_ak4bjets, no_ak8jets, EventHT, extra_ak4j, ptsum_extra_ak4, extra_ak4jqgl, extra_ak4jdeepb, rat_extra_ak4jpt_lpt, ak81pt, ak81y, ak81mass, ak81sdmass, ak81deep_tvsqcd, ak81deep_wvsqcd, ak82pt, ak82y, ak82mass, ak82sdmass, ak82deep_tvsqcd, ak82deep_wvsqcd, M_bl1, M_bl2, M_jl1, M_jl2, delta_phibl1bl2, delta_phijl1jl2, deltaR_l1l2, deltaR_l1b1, deltaR_l2b1, deltaR_l1b2, deltaR_l2b2, deltaR_l1j1, deltaR_l2j1, deltaR_l1j2, deltaR_l2j2, lj1_btag_sc, lj2_btag_sc, j1_btag_sc, j2_btag_sc; 
 
   double dirgltrthr, dirglthrmin; 
   

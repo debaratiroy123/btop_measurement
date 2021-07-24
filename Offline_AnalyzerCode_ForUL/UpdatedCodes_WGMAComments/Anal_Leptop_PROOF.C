@@ -105,17 +105,20 @@ void Anal_Leptop_PROOF::SlaveBegin(TTree * /*tree*/)
   //Tnewvar->Branch("delta_phijl1jl2",&delta_phijl1jl2,"delta_phijl1jl2/F");
   Tnewvar->Branch("deltaR_l1l2",&deltaR_l1l2,"deltaR_l1l2/F");
   
-  //Tnewvar->Branch("deltaR_l1b1",&deltaR_l1b1,"deltaR_l1b1/F");
-  //Tnewvar->Branch("deltaR_l2b1",&deltaR_l2b1,"deltaR_l2b1/F");
-  //Tnewvar->Branch("deltaR_l1b2",&deltaR_l1b2,"deltaR_l1b2/F");
-  //Tnewvar->Branch("deltaR_l2b2",&deltaR_l2b2,"deltaR_l2b2/F");
+  Tnewvar->Branch("deltaR_l1b1",&deltaR_l1b1,"deltaR_l1b1/F");
+  Tnewvar->Branch("deltaR_l2b1",&deltaR_l2b1,"deltaR_l2b1/F");
+  Tnewvar->Branch("deltaR_l1b2",&deltaR_l1b2,"deltaR_l1b2/F");
+  Tnewvar->Branch("deltaR_l2b2",&deltaR_l2b2,"deltaR_l2b2/F");
   
   Tnewvar->Branch("deltaR_l1j1",&deltaR_l1j1,"deltaR_l1j1/F");
   Tnewvar->Branch("deltaR_l2j1",&deltaR_l2j1,"deltaR_l2j1/F");
   Tnewvar->Branch("deltaR_l1j2",&deltaR_l1j2,"deltaR_l1j2/F");
   Tnewvar->Branch("deltaR_l2j2",&deltaR_l2j2,"deltaR_l2j2/F");
+  
   Tnewvar->Branch("j1_btag_sc",&j1_btag_sc,"j1_btag_sc/F"); 
   Tnewvar->Branch("j2_btag_sc",&j2_btag_sc,"j2_btag_sc/F");
+  Tnewvar->Branch("lj1_btag_sc",&lj1_btag_sc,"lj1_btag_sc/F");
+  Tnewvar->Branch("lj2_btag_sc",&lj2_btag_sc,"lj2_btag_sc/F");
 
   Tnewvar->Branch("dirgltrthr",&dirgltrthr,"dirgltrthr/D");
   Tnewvar->Branch("dirglthrmin",&dirglthrmin,"dirglthrmin/D");
@@ -1910,17 +1913,43 @@ Bool_t Anal_Leptop_PROOF::Process(Long64_t entry)
 
   deltaR_l1l2 = delta2R(l1.Eta(),l1.Phi(),l2.Eta(),l2.Phi());
   
-  //deltaR_l1b1 = delta2R(l1.Eta(),l1.Phi(),bjv[0].Eta(),bjv[0].Phi());
-  //if (bjv.size() >1) deltaR_l1b2 = delta2R(l1.Eta(),l1.Phi(),bjv[1].Eta(),bjv[1].Phi());
-  //deltaR_l2b1 = delta2R(l2.Eta(),l2.Phi(),bjv[0].Eta(),bjv[0].Phi());
-  //if (bjv.size() >1) deltaR_l2b2 = delta2R(l2.Eta(),l2.Phi(),bjv[1].Eta(),bjv[1].Phi());
+  deltaR_l1b1 = delta2R(l1.Eta(),l1.Phi(),bjv[0].Eta(),bjv[0].Phi());
+  if (bjv.size() >1) deltaR_l1b2 = delta2R(l1.Eta(),l1.Phi(),bjv[1].Eta(),bjv[1].Phi());
+  deltaR_l2b1 = delta2R(l2.Eta(),l2.Phi(),bjv[0].Eta(),bjv[0].Phi());
+  if (bjv.size() >1) deltaR_l2b2 = delta2R(l2.Eta(),l2.Phi(),bjv[1].Eta(),bjv[1].Phi());
   
   deltaR_l1j1 = delta2R(l1.Eta(),l1.Phi(),Jets[0].eta,Jets[0].phi);
   deltaR_l1j2 = delta2R(l1.Eta(),l1.Phi(),Jets[1].eta,Jets[1].phi);
   deltaR_l2j1 = delta2R(l2.Eta(),l2.Phi(),Jets[0].eta,Jets[0].phi);
   deltaR_l2j2 = delta2R(l2.Eta(),l2.Phi(),Jets[1].eta,Jets[1].phi);
-  j1_btag_sc = Jets[0].btag_DeepFlav;
-  j2_btag_sc = Jets[1].btag_DeepFlav;
+
+
+  
+  if (delta2R(LJets[0].y,LJets[0].phi,Jets[0].y,Jets[0].phi) < 0.6 || delta2R(LJets[1].y,LJets[1].phi,Jets[0].y,Jets[0].phi) < 0.6) j1_btag_sc = Jets[0].btag_DeepFlav;
+
+  if (delta2R(LJets[0].y,LJets[0].phi,Jets[1].y,Jets[1].phi) < 0.6 || delta2R(LJets[1].y,LJets[1].phi,Jets[1].y,Jets[1].phi) < 0.6) j2_btag_sc = Jets[1].btag_DeepFlav;
+
+  int nearjet_ljet1(-1);
+  int nearjet_ljet2(-1);
+  float dRljet1_min(0.6), dRljet2_min(0.6);
+
+  for(unsigned kjet=0; kjet<Jets.size(); kjet++){
+    if(delta2R(Jets[kjet].y,Jets[kjet].phi,LJets[0].y,LJets[0].phi) < dRljet1_min){
+      dRljet1_min = delta2R(Jets[kjet].y,Jets[kjet].phi,LJets[0].y,LJets[0].phi);
+      nearjet_ljet1 = kjet;
+    }
+  }
+  for(unsigned kjet=0; kjet<Jets.size(); kjet++){
+    if(delta2R(Jets[kjet].y,Jets[kjet].phi,LJets[1].y,LJets[1].phi) < dRljet2_min){
+      dRljet2_min = delta2R(Jets[kjet].y,Jets[kjet].phi,LJets[1].y,LJets[1].phi);
+      nearjet_ljet2 = kjet;
+    }
+  }
+  
+  
+  if (nearjet_ljet1>=0) lj1_btag_sc = Jets[nearjet_ljet1].btag_DeepFlav;
+  if (nearjet_ljet2>=0) lj2_btag_sc = Jets[nearjet_ljet2].btag_DeepFlav;
+
 
   Tnewvar->Fill();
   
