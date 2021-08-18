@@ -1965,9 +1965,8 @@ class Anal_Leptop_PROOF : public TSelector {
 				Lepton lepcand_1, Lepton lepcand_2, vector<AK4Jet> Jets,
 				bool &trig_threshold_pass,
 				bool &trig_matching_pass,
-				vector<TH1D*> &hist_init
-				//,
-				//vector<TH2D*> &hist_2d
+				vector<TH1D*> &hist_init,
+				vector<TH2D*> &hist_2d
 				);
 
   virtual Bool_t  Process(Long64_t entry);

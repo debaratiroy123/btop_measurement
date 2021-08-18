@@ -734,7 +734,7 @@ void Anal_Leptop_PROOF::ReadTagger(std::vector<AK8Jet> &LJets, std::vector<Lepto
   }//for (int ij=0; ij<min(LJets.size(),2); ij++)	
 }
 
-void Anal_Leptop_PROOF::Match_trigger(vector<bool> double_hlts, vector<bool> single_hlts,vector<vector<float>> double_pt_cuts, vector<float> single_pt_cuts, vector<vector<int>> double_pids, vector<int> single_pids, vector<float> single_other_pt_cuts, vector<int> single_other_pids, vector<std::pair<int,TLorentzVector>> TrigRefObj,Lepton lepcand_1, Lepton lepcand_2, vector<AK4Jet> Jets, bool &trig_threshold_pass, bool &trig_matching_pass, vector<TH1D*> &hist_init/*,vector<TH2D*> &hist2d*/)
+void Anal_Leptop_PROOF::Match_trigger(vector<bool> double_hlts, vector<bool> single_hlts,vector<vector<float>> double_pt_cuts, vector<float> single_pt_cuts, vector<vector<int>> double_pids, vector<int> single_pids, vector<float> single_other_pt_cuts, vector<int> single_other_pids, vector<std::pair<int,TLorentzVector>> TrigRefObj,Lepton lepcand_1, Lepton lepcand_2, vector<AK4Jet> Jets, bool &trig_threshold_pass, bool &trig_matching_pass, vector<TH1D*> &hist_init,vector<TH2D*> &hist2d)
 {
   
   if(double_hlts.size()<1 && single_hlts.size()<1) { 
@@ -809,7 +809,7 @@ void Anal_Leptop_PROOF::Match_trigger(vector<bool> double_hlts, vector<bool> sin
 	
 	hist_init[0]->Fill(tmprat1, weight);
 	hist_init[1]->Fill(tmprat2, weight);
-	/*
+	
 	if(lepcand_1.pdgId==11||lepcand_2.pdgId==11) {
 	  TVector3 felv = (lepcand_1.pdgId==11) ? flep1v : flep2v;
 	  double tmpratel = (lepcand_1.pdgId==11) ? tmprat1 : tmprat2;
@@ -819,7 +819,7 @@ void Anal_Leptop_PROOF::Match_trigger(vector<bool> double_hlts, vector<bool> sin
           TVector3 fmuv = (lepcand_1.pdgId==13) ? flep1v : flep2v;
 	  double tmpratmu = (lepcand_1.pdgId==13) ? tmprat1 : tmprat2;
           hist2d[0]->Fill(fmuv.Mag(), tmpratmu, weight);
-        }*/
+        }
 	if (tmprat1 < ptratmin_lep1) {
 	  if((mutrobj && lepcand_1.pdgId==13)||(eltrobj && lepcand_1.pdgId==11)){
 	    lep1_match = true;
