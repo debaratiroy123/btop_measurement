@@ -1273,7 +1273,7 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       std::vector<PileupSummaryInfo>::const_iterator PVI;
       for(PVI = PupInfo->begin(); PVI != PupInfo->end(); ++PVI) {
 	if (PVI->getBunchCrossing()==0) {
-	  npu = PVI->getPU_NumInteractions();
+	  npu = PVI->getTrueNumInteractions();
 	  break;
 	}
       }
