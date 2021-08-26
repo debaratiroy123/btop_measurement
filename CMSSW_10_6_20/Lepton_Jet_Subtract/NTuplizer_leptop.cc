@@ -47,6 +47,8 @@
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "SimDataFormats/JetMatching/interface/JetFlavourInfo.h"
+#include "SimDataFormats/JetMatching/interface/JetFlavourInfoMatching.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 #include "DataFormats/JetReco/interface/GenJet.h"
 #include "DataFormats/JetReco/interface/PFJetCollection.h"
@@ -272,6 +274,21 @@ struct JetIDVars
   int NumConst, NumNeutralParticle, CHM;
 };
 
+bool Muon_TightID(bool muonisGL,bool muonisPF, float muonchi, float muonhit, float muonmst,
+		  float muontrkvtx, float muondz, float muonpixhit, float muontrklay){
+  bool tightid = false;
+  if(muonisGL && muonisPF){
+    if(muonchi<10 && muonhit>0 && muonmst>1){
+      if(fabs(muontrkvtx)<0.2 && fabs(muondz)<0.5){
+	if(muonpixhit>0 && muontrklay>5){
+	  tightid = true;
+	}
+      }
+    }
+  }
+  return tightid;
+}
+
 bool getJetID(JetIDVars vars, string jettype="CHS", int year=2018, double eta=0, bool tightLepVeto=true, bool UltraLegacy=false){
   
   //https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID
@@ -433,6 +450,7 @@ private:
   edm::EDGetTokenT<edm::View<pat::Jet>>tok_pfjetAK4s_;
   edm::EDGetTokenT<reco::GenJetCollection>tok_genjetAK4s_;
   edm::EDGetTokenT<std::vector<reco::GenParticle>>tok_genparticles_;
+  edm::EDGetTokenT<reco::JetFlavourInfoMatchingCollection> jetFlavourInfosToken_;
   edm::EDGetTokenT<HepMCProduct> tok_HepMC ;
   edm::EDGetTokenT<GenEventInfoProduct> tok_wt_;
   edm::EDGetTokenT<LHEEventProduct> lheEventProductToken_;
@@ -528,15 +546,22 @@ private:
   
   int ngenjetAK8;
   float genjetAK8pt[njetmxAK8], genjetAK8eta[njetmxAK8], genjetAK8phi[njetmxAK8], genjetAK8mass[njetmxAK8], genjetAK8sdmass[njetmxAK8]; 
-  
+  int genjetAK8hadronflav[njetmxAK8], genjetAK8partonflav[njetmxAK8];
+
   int ngenjetAK4;
   float genjetAK4pt[njetmx], genjetAK4eta[njetmx], genjetAK4phi[njetmx], genjetAK4mass[njetmx];
-  
+  int genjetAK4hadronflav[njetmx], genjetAK4partonflav[njetmx];
+
   int ngenparticles;
   int genpartstatus[npartmx], genpartpdg[npartmx], genpartmompdg[npartmx], genpartgrmompdg[npartmx], genpartmomid[npartmx], genpartdaugno[npartmx];
   float genpartpt[npartmx], genparteta[npartmx], genpartphi[npartmx], genpartm[npartmx]; //genpartq[npartmx];
   bool genpartfromhard[npartmx], genpartfromhardbFSR[npartmx], genpartisPromptFinalState[npartmx], genpartisLastCopyBeforeFSR[npartmx];
   
+  static const int nlhemax = 10;
+  int nLHEparticles;
+  float LHEpartpt[nlhemax], LHEparteta[nlhemax], LHEpartphi[nlhemax], LHEpartm[nlhemax];
+  int LHEpartpdg[nlhemax];
+
   float miset , misphi , sumEt, misetsig;
   float genmiset, genmisphi, genmisetsig;
   
@@ -727,6 +752,7 @@ Leptop::Leptop(const edm::ParameterSet& pset):
     tok_genjetAK8s_= consumes<reco::GenJetCollection>( pset.getParameter<edm::InputTag>("GENJetAK8"));
     tok_genjetAK4s_= consumes<reco::GenJetCollection>( pset.getParameter<edm::InputTag>("GENJetAK4"));
     tok_genparticles_ = consumes<std::vector<reco::GenParticle>>( pset.getParameter<edm::InputTag>("GenParticles"));
+    jetFlavourInfosToken_ = consumes<reco::JetFlavourInfoMatchingCollection>(pset.getParameter<edm::InputTag>("jetFlavourInfos"));
   }
   
   melectronID_isowp90       = pset.getParameter<std::string>("electronID_isowp90");
@@ -754,6 +780,7 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   if(isMC){    
     tok_HepMC = consumes<HepMCProduct>(pset.getParameter<edm::InputTag>("Generator"));
     tok_wt_ = consumes<GenEventInfoProduct>(pset.getParameter<edm::InputTag>("Generator")) ;
+    lheEventProductToken_ = consumes<LHEEventProduct>(pset.getParameter<edm::InputTag>("LHEEventProductInputTag")) ;
     pileup_ = consumes<std::vector<PileupSummaryInfo> >(pset.getParameter<edm::InputTag>("slimmedAddPileupInfo"));
   } 
   
@@ -987,7 +1014,9 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("genjetAK8phi",genjetAK8phi,"genjetAK8phi[ngenjetAK8]/F");
   T1->Branch("genjetAK8mass",genjetAK8mass,"genjetAK8mass[ngenjetAK8]/F"); 
   T1->Branch("genjetAK8sdmass",genjetAK8sdmass,"genjetAK8sdmass[ngenjetAK8]/F");
- 
+  T1->Branch("genjetAK8hadronflav",genjetAK8hadronflav,"genjetAK8hadronflav[ngenjetAK8]/I");
+  T1->Branch("genjetAK8partonflav",genjetAK8partonflav,"genjetAK8partonflav[ngenjetAK8]/I");
+
   // GEN AK4 jet info //  
  
   T1->Branch("ngenjetAK4",&ngenjetAK4, "ngenjetAK4/I");
@@ -995,7 +1024,8 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("genjetAK4eta",genjetAK4eta,"genjetAK4eta[ngenjetAK4]/F");
   T1->Branch("genjetAK4phi",genjetAK4phi,"genjetAK4phi[ngenjetAK4]/F");
   T1->Branch("genjetAK4mass",genjetAK4mass,"genjetAK4mass[ngenjetAK4]/F");
-  
+  T1->Branch("genjetAK4hadronflav",genjetAK4hadronflav,"genjetAK4hadronflav[ngenjetAK4]/I");
+  T1->Branch("genjetAK4partonflav",genjetAK4partonflav,"genjetAK4partonflav[ngenjetAK4]/I");
   
   // GEN particles info //  
   
@@ -1013,7 +1043,12 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("genparteta",genparteta,"genparteta[ngenparticles]/F");
   T1->Branch("genpartphi",genpartphi,"genpartphi[ngenparticles]/F");
   T1->Branch("genpartm",genpartm,"genpartm[ngenparticles]/F");
-  
+  T1->Branch("nLHEparticles",&nLHEparticles, "nLHEparticles/I");
+  T1->Branch("LHEpartpdg",LHEpartpdg,"LHEpartpdg[nLHEparticles]/I");
+  T1->Branch("LHEpartpt",LHEpartpt,"LHEpartpt[nLHEparticles]/F");
+  T1->Branch("LHEparteta",LHEparteta,"LHEparteta[nLHEparticles]/F");
+  T1->Branch("LHEpartphi",LHEpartphi,"LHEpartphi[nLHEparticles]/F");
+  T1->Branch("LHEpartm",LHEpartm,"LHEpartm[nLHEparticles]/F");
   
   } //isMC
   
@@ -1154,6 +1189,30 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
        event_weight = eventinfo->weight();
        qscale = eventinfo->qScale();
        wtfact *= event_weight; //Debarati : Moved inside according to GMA
+    }
+
+    edm::Handle<LHEEventProduct>lheeventinfo ;
+    iEvent.getByToken(lheEventProductToken_,lheeventinfo) ;
+    
+    if(lheeventinfo.isValid()){
+      
+      const auto & hepeup = lheeventinfo->hepeup();
+      const auto & pup = hepeup.PUP;
+      
+      nLHEparticles = 0;
+      
+      for (unsigned int i = 0; i  < pup.size(); ++i) {
+	if(hepeup.ISTUP[i]==1){// status==1 --> particles stay up to final state                          
+	  TLorentzVector p4(pup[i][0], pup[i][1], pup[i][2], pup[i][3]);
+	  LHEpartpt[nLHEparticles] = p4.Pt();
+	  LHEparteta[nLHEparticles] = p4.Eta();
+	  LHEpartphi[nLHEparticles] = p4.Phi();
+	  LHEpartm[nLHEparticles] = p4.M();
+	  LHEpartpdg[nLHEparticles] = (hepeup.IDUP[i]);
+	  nLHEparticles++;
+	  if(nLHEparticles>=nlhemax) break;
+	}
+      }
     }
   }
   
@@ -1965,8 +2024,13 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	  muonpfiso[nmuons] = (muon1->pfIsolationR04().sumChargedHadronPt + max(0., muon1->pfIsolationR04().sumNeutralHadronEt + muon1->pfIsolationR04().sumPhotonEt - 0.5*muon1->pfIsolationR04().sumPUPt))/muon1->pt();                                               
 
 	  TLorentzVector tlmu;
-	  tlmu.SetPtEtaPhiE(muonpt[nmuons],muoneta[nmuons],muonphi[nmuons],muon1->energy());
-	  tlvmu.push_back(tlmu);
+	  bool mu_id = Muon_TightID(muonisGL[nmuons],muonisPF[nmuons],
+				    muonchi[nmuons],muonhit[nmuons],muonmst[nmuons],
+				    muontrkvtx[nmuons],muondz[nmuons],muonpixhit[nmuons],muontrklay[nmuons]);
+	  if (mu_id == true && fabs(muoneta[nmuons])<2.5) {
+	    tlmu.SetPtEtaPhiE(muonpt[nmuons],muoneta[nmuons],muonphi[nmuons],muon1->energy());
+	    tlvmu.push_back(tlmu);
+	  }
 	  if (++nmuons>=njetmx) break;                                                                                                                 
 	}                                                                                                                                              
       }                                                                                                                                               
@@ -2049,8 +2113,10 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       elndf[nelecs] = (int)gsftrk1->ndof();                                                                                                            
       elmisshits[nelecs] = (int)gsftrk1->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
       TLorentzVector tlel;
-      tlel.SetPtEtaPhiE(elpt[nelecs],eleta[nelecs],elphi[nelecs],electron1.energy());
-      tlvel.push_back(tlel);
+      if (elmvaid_noIso[nelecs] == true && fabs(eleta[nelecs])<2.5) {
+	tlel.SetPtEtaPhiE(elpt[nelecs],eleta[nelecs],elphi[nelecs],electron1.energy());
+	tlvel.push_back(tlel);
+      }
       if(++nelecs>=njetmx) break;                                                                                                                      
     }
     
@@ -2067,40 +2133,57 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	HepLorentzVector pfjetAK44v(ak4jet.correctedP4("Uncorrected").px(),ak4jet.correctedP4("Uncorrected").py(),ak4jet.correctedP4("Uncorrected").pz(), ak4jet.correctedP4("Uncorrected").energy());
 	double tmprecpt = pfjetAK44v.perp();
 
-	for(unsigned int c = 0 ; c < ak4jet.numberOfDaughters() ; ++c) {
-	  const pat::PackedCandidate* con = dynamic_cast<const pat::PackedCandidate*>(ak4jet.daughter(c));
-	  TLorentzVector tlvcon(con->px(), con->py(), con->pz(), con->energy());
-	  bool mumember = false;
-	  bool elmember = false;
-	  int mu_index(-1), el_index(-1);
-	  if (tlvmu.size()>0) {
-	    for (unsigned int imu = 0; imu<tlvmu.size(); imu++) {
-	      if (delta2R(tlvmu[imu].Eta(),tlvmu[imu].Phi(),tlvcon.Eta(),tlvcon.Phi()) < 0.000001) 
-		{
-		  mumember = true;
-		  mu_index = int(imu);
-		  if (mumember) {
-		    pfjetAK44v(ak4jet.correctedP4("Uncorrected").px()-tlvmu[mu_index].Px(),ak4jet.correctedP4("Uncorrected").py()-tlvmu[mu_index].Py(),ak4jet.correctedP4("Uncorrected").pz()-tlvmu[mu_index].Pz(), ak4jet.correctedP4("Uncorrected").energy()-tlvmu[mu_index].E());
-		    tmprecpt = pfjetAK44v.perp();
-		  }
+	if (tlvmu.size()>0) {                                                                                                                          
+	  for (unsigned int imu = 0; imu<tlvmu.size(); imu++) {
+
+	    bool mumember = false;
+	    int mu_index(-1);
+	    
+	    for(unsigned int c = 0 ; c < ak4jet.numberOfDaughters() ; ++c) {                                                                          
+	      const pat::PackedCandidate* con = dynamic_cast<const pat::PackedCandidate*>(ak4jet.daughter(c));                                         
+	      TLorentzVector tlvcon(con->px(), con->py(), con->pz(), con->energy());
+	      if (delta2R(tlvmu[imu].Eta(),tlvmu[imu].Phi(),tlvcon.Eta(),tlvcon.Phi()) < 0.000001)                                                     
+                {                                                                                                                                      
+                  mumember = true;                                                                                                                     
+                  mu_index = int(imu);
+		  break;
 		}
 	    }
+
+	    if (mumember) {
+	      HepLorentzVector hep_muv(tlvmu[mu_index].Px(),tlvmu[mu_index].Py(),tlvmu[mu_index].Pz(),tlvmu[mu_index].E());
+	      pfjetAK44v = pfjetAK44v - hep_muv;
+	      tmprecpt = pfjetAK44v.perp();
+	    }
 	  }
-	  if (tlvel.size()>0) {
-            for (unsigned int iel = 0; iel<tlvel.size(); iel++) {
+	}
+	
+	if (tlvel.size()>0) {
+          for (unsigned int iel = 0; iel<tlvel.size(); iel++) {
+
+            bool elmember = false;
+            int el_index(-1);
+	    
+            for(unsigned int c = 0 ; c < ak4jet.numberOfDaughters() ; ++c) {
+              const pat::PackedCandidate* con = dynamic_cast<const pat::PackedCandidate*>(ak4jet.daughter(c));
+              TLorentzVector tlvcon(con->px(), con->py(), con->pz(), con->energy());
               if (delta2R(tlvel[iel].Eta(),tlvel[iel].Phi(),tlvcon.Eta(),tlvcon.Phi()) < 0.000001)
                 {
                   elmember = true;
                   el_index = int(iel);
-                  if (elmember) {
-                    pfjetAK44v(ak4jet.correctedP4("Uncorrected").px()-tlvel[el_index].Px(),ak4jet.correctedP4("Uncorrected").py()-tlvel[el_index].Py(),ak4jet.correctedP4("Uncorrected").pz()-tlvel[el_index].Pz(), ak4jet.correctedP4("Uncorrected").energy()-tlvel[el_index].E());
-                    tmprecpt = pfjetAK44v.perp();
-                  }
-		}
+                  break;
+                }
             }
-          }
+
+	    if (elmember) {
+	      HepLorentzVector hep_elv(tlvel[el_index].Px(),tlvel[el_index].Py(),tlvel[el_index].Pz(),tlvel[el_index].E());
+	      pfjetAK44v = pfjetAK44v - hep_elv;
+	      tmprecpt = pfjetAK44v.perp();
+	    }
+	  }
 	}
-	        
+        
+	      
       if(tmprecpt<minPt) continue;
       if(abs(pfjetAK44v.rapidity())>maxEta) continue;
       
@@ -2265,6 +2348,50 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
   
     
     if(isMC){
+
+      // Flavor tagging of GEN jets using ghost-matching //                                                             
+
+      edm::Handle<reco::JetFlavourInfoMatchingCollection> jetFlavourInfos;
+      iEvent.getByToken(jetFlavourInfosToken_, jetFlavourInfos);
+      
+      std::vector<int> partonFlavour_AK4;
+      std::vector<uint8_t> hadronFlavour_AK4;
+      
+      for (const reco::GenJet & jet : *genjetAK4s) {
+	bool matched = false;
+	for (const reco::JetFlavourInfoMatching & jetFlavourInfoMatching : *jetFlavourInfos) {
+	  if (deltaR(jet.p4(), jetFlavourInfoMatching.first->p4()) < 0.1) {
+	    partonFlavour_AK4.push_back(jetFlavourInfoMatching.second.getPartonFlavour());
+	    hadronFlavour_AK4.push_back(jetFlavourInfoMatching.second.getHadronFlavour());
+	    matched = true;
+	    break;
+	  }
+	}
+	if (!matched) {
+	  partonFlavour_AK4.push_back(0);
+	  hadronFlavour_AK4.push_back(0);
+	}
+      }
+      
+      std::vector<int> partonFlavour_AK8;
+      std::vector<uint8_t> hadronFlavour_AK8;
+
+      for (const reco::GenJet & jet : *genjetAK8s) {
+	bool matched = false;
+	for (const reco::JetFlavourInfoMatching & jetFlavourInfoMatching : *jetFlavourInfos) {
+	  if (deltaR(jet.p4(), jetFlavourInfoMatching.first->p4()) < 0.1) {
+	    partonFlavour_AK8.push_back(jetFlavourInfoMatching.second.getPartonFlavour());
+	    hadronFlavour_AK8.push_back(jetFlavourInfoMatching.second.getHadronFlavour());
+	    matched = true;
+	    break;
+	  }
+	}
+	if (!matched) {
+	  partonFlavour_AK8.push_back(0);
+	  hadronFlavour_AK8.push_back(0);
+	}
+      }
+
       
       ngenjetAK8 = 0;
       
@@ -2278,6 +2405,8 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	genjetAK8eta[ngenjetAK8] = genjetAK84v.eta();
 	genjetAK8phi[ngenjetAK8] = genjetAK84v.phi();
 	genjetAK8mass[ngenjetAK8] = (*genjetAK8s)[gjet].mass();
+	genjetAK8hadronflav[ngenjetAK8] = (int)hadronFlavour_AK8[gjet];
+	genjetAK8partonflav[ngenjetAK8] = partonFlavour_AK8[gjet];
 	
 	std::vector<reco::CandidatePtr> daught((*genjetAK8s)[gjet].daughterPtrVector());
 	
@@ -2319,7 +2448,9 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
 	genjetAK4eta[ngenjetAK4] = genjetAK44v.eta();
 	genjetAK4phi[ngenjetAK4] = genjetAK44v.phi();
 	genjetAK4mass[ngenjetAK4] = (*genjetAK4s)[gjet].mass();
-	
+	genjetAK4hadronflav[ngenjetAK4] = (int)hadronFlavour_AK4[gjet];
+	genjetAK4partonflav[ngenjetAK4] = partonFlavour_AK4[gjet];
+
 	if (++ngenjetAK4>=njetmx) break;
       }
       
