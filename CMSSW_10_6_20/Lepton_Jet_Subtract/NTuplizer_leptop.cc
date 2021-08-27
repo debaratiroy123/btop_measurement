@@ -2200,7 +2200,10 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
       pfjetAK4eta[npfjetAK4] = 	pfjetAK44v.eta();
       pfjetAK4y[npfjetAK4] = pfjetAK44v.rapidity();
       pfjetAK4phi[npfjetAK4] = pfjetAK44v.phi();
-      pfjetAK4mass[npfjetAK4] = ak4jet.correctedP4("Uncorrected").mass();
+      //if (ak4jet.correctedP4("Uncorrected").mass()<0) { 
+      //std::cout << " mass " << pfjetAK44v.m() << " calculated mass " << sqrt(pfjetAK44v.e()*pfjetAK44v.e() - (pfjetAK44v.px()*pfjetAK44v.px() + pfjetAK44v.py()*pfjetAK44v.py() + pfjetAK44v.pz()*pfjetAK44v.pz())) << " stored mass " << ak4jet.correctedP4("Uncorrected").mass() << std::endl;
+      //}
+      pfjetAK4mass[npfjetAK4] = pfjetAK44v.m(); //ak4jet.correctedP4("Uncorrected").mass();
       
       pfjetAK4btag_DeepCSV[npfjetAK4] = ak4jet.bDiscriminator("pfDeepCSVJetTags:probb")+ak4jet.bDiscriminator("pfDeepCSVJetTags:probbb");
       pfjetAK4btag_DeepFlav[npfjetAK4] = ak4jet.bDiscriminator("pfDeepFlavourJetTags:probb") + ak4jet.bDiscriminator("pfDeepFlavourJetTags:probbb")+ak4jet.bDiscriminator("pfDeepFlavourJetTags:problepb");
