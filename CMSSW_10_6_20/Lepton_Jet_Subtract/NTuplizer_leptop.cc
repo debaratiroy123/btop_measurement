@@ -625,6 +625,7 @@ private:
   float qscale;
   float wtfact;
   int npu_vert;
+  int npu_vert_true;
   
   //int nchict;
   //int nvert;;
@@ -815,7 +816,8 @@ Leptop::Leptop(const edm::ParameterSet& pset):
   T1->Branch("event_weight", &event_weight, "event_weight/D") ;
   T1->Branch("qscale",&qscale,"qscale/F");
   T1->Branch("npu_vert",&npu_vert,"npu_vert/I");
-  
+  T1->Branch("npu_vert_true",&npu_vert_true,"npu_vert_true/I");
+
   // trigger info //
   
   T1->Branch("trig_value",&trig_value,"trig_value/I");  
@@ -1260,7 +1262,8 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
   }
   
   npu_vert = 0;
-  
+  npu_vert_true = 0;
+
   edm::Handle<reco::VertexCompositePtrCandidateCollection> svin;
   iEvent.getByToken(tok_sv,svin);
   
@@ -1269,18 +1272,21 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     edm::Handle<std::vector<PileupSummaryInfo> > PupInfo;
     iEvent.getByToken(pileup_, PupInfo);
     int npu = -1;
+    int npu_true = -1;
     if (PupInfo.isValid()) {
       std::vector<PileupSummaryInfo>::const_iterator PVI;
       for(PVI = PupInfo->begin(); PVI != PupInfo->end(); ++PVI) {
 	if (PVI->getBunchCrossing()==0) {
-	  npu = PVI->getTrueNumInteractions();
+	  npu = PVI->getPU_NumInteractions();
+	  npu_true = PVI->getTrueNumInteractions();
 	  break;
 	}
       }
     }
     
     npu_vert = npu;
-    
+    npu_vert_true = npu_true;
+
   }//isMC
   
   edm::Handle<double> Rho_PF;
@@ -2123,67 +2129,70 @@ Leptop::analyze(const edm::Event& iEvent, const edm::EventSetup& pset) {
     
     npfjetAK4 = 0;
     iEvent.getByToken(tok_pfjetAK4s_, pfjetAK4s);
-      if(isMC){
-	iEvent.getByToken(tok_genjetAK4s_, genjetAK4s);
+    if(isMC){
+      iEvent.getByToken(tok_genjetAK4s_, genjetAK4s);
+    }
+    
+    for (unsigned jet = 0; jet< pfjetAK4s->size(); jet++) {
+      
+      const auto &ak4jet = (*pfjetAK4s)[jet];
+      HepLorentzVector pfjetAK44v(ak4jet.correctedP4("Uncorrected").px(),ak4jet.correctedP4("Uncorrected").py(),ak4jet.correctedP4("Uncorrected").pz(), ak4jet.correctedP4("Uncorrected").energy());
+      double tmprecpt = pfjetAK44v.perp();
+      
+      if (tlvmu.size()>0) {                                                                                           
+	
+	for (unsigned int imu = 0; imu<tlvmu.size(); imu++) {
+	  
+	  bool mumember = false;
+	  int mu_index(-1);
+	  
+	  for(unsigned int c = 0 ; c < ak4jet.numberOfDaughters() ; ++c) {                                            
+	    
+	    const pat::PackedCandidate* con = dynamic_cast<const pat::PackedCandidate*>(ak4jet.daughter(c));          
+            
+	    TLorentzVector tlvcon(con->px(), con->py(), con->pz(), con->energy());
+	    if (delta2R(tlvmu[imu].Eta(),tlvmu[imu].Phi(),tlvcon.Eta(),tlvcon.Phi()) < 0.000001)                      
+	      {                                                                                                       
+		mumember = true;                                                                                      
+		mu_index = int(imu);
+		break;
+	      }
+	  }
+	  
+	  if (mumember) {
+	    HepLorentzVector hep_muv(tlvmu[mu_index].Px(),tlvmu[mu_index].Py(),tlvmu[mu_index].Pz(),tlvmu[mu_index].E());
+	    pfjetAK44v = pfjetAK44v - hep_muv;
+	    //tmprecpt = pfjetAK44v.perp();
+	  }
+	}
       }
       
-      for (unsigned jet = 0; jet< pfjetAK4s->size(); jet++) {
+      if (tlvel.size()>0) {
+	for (unsigned int iel = 0; iel<tlvel.size(); iel++) {
+	  
+	  bool elmember = false;
+	  int el_index(-1);
+	  
+	  for(unsigned int c = 0 ; c < ak4jet.numberOfDaughters() ; ++c) {
+	    const pat::PackedCandidate* con = dynamic_cast<const pat::PackedCandidate*>(ak4jet.daughter(c));
+	    TLorentzVector tlvcon(con->px(), con->py(), con->pz(), con->energy());
+	    if (delta2R(tlvel[iel].Eta(),tlvel[iel].Phi(),tlvcon.Eta(),tlvcon.Phi()) < 0.000001)
+	      {
+		elmember = true;
+		el_index = int(iel);
+		break;
+	      }
+	  }
+	  
+	  if (elmember) {
+	    HepLorentzVector hep_elv(tlvel[el_index].Px(),tlvel[el_index].Py(),tlvel[el_index].Pz(),tlvel[el_index].E());
+	    pfjetAK44v = pfjetAK44v - hep_elv;
+	    //tmprecpt = pfjetAK44v.perp();
+	  }
+	}
+      }
       
-	const auto &ak4jet = (*pfjetAK4s)[jet];
-	HepLorentzVector pfjetAK44v(ak4jet.correctedP4("Uncorrected").px(),ak4jet.correctedP4("Uncorrected").py(),ak4jet.correctedP4("Uncorrected").pz(), ak4jet.correctedP4("Uncorrected").energy());
-	double tmprecpt = pfjetAK44v.perp();
-
-	if (tlvmu.size()>0) {                                                                                                                          
-	  for (unsigned int imu = 0; imu<tlvmu.size(); imu++) {
-
-	    bool mumember = false;
-	    int mu_index(-1);
-	    
-	    for(unsigned int c = 0 ; c < ak4jet.numberOfDaughters() ; ++c) {                                                                          
-	      const pat::PackedCandidate* con = dynamic_cast<const pat::PackedCandidate*>(ak4jet.daughter(c));                                         
-	      TLorentzVector tlvcon(con->px(), con->py(), con->pz(), con->energy());
-	      if (delta2R(tlvmu[imu].Eta(),tlvmu[imu].Phi(),tlvcon.Eta(),tlvcon.Phi()) < 0.000001)                                                     
-                {                                                                                                                                      
-                  mumember = true;                                                                                                                     
-                  mu_index = int(imu);
-		  break;
-		}
-	    }
-
-	    if (mumember) {
-	      HepLorentzVector hep_muv(tlvmu[mu_index].Px(),tlvmu[mu_index].Py(),tlvmu[mu_index].Pz(),tlvmu[mu_index].E());
-	      pfjetAK44v = pfjetAK44v - hep_muv;
-	      tmprecpt = pfjetAK44v.perp();
-	    }
-	  }
-	}
-	
-	if (tlvel.size()>0) {
-          for (unsigned int iel = 0; iel<tlvel.size(); iel++) {
-
-            bool elmember = false;
-            int el_index(-1);
-	    
-            for(unsigned int c = 0 ; c < ak4jet.numberOfDaughters() ; ++c) {
-              const pat::PackedCandidate* con = dynamic_cast<const pat::PackedCandidate*>(ak4jet.daughter(c));
-              TLorentzVector tlvcon(con->px(), con->py(), con->pz(), con->energy());
-              if (delta2R(tlvel[iel].Eta(),tlvel[iel].Phi(),tlvcon.Eta(),tlvcon.Phi()) < 0.000001)
-                {
-                  elmember = true;
-                  el_index = int(iel);
-                  break;
-                }
-            }
-
-	    if (elmember) {
-	      HepLorentzVector hep_elv(tlvel[el_index].Px(),tlvel[el_index].Py(),tlvel[el_index].Pz(),tlvel[el_index].E());
-	      pfjetAK44v = pfjetAK44v - hep_elv;
-	      tmprecpt = pfjetAK44v.perp();
-	    }
-	  }
-	}
-        
-	      
+      tmprecpt = pfjetAK44v.perp();
       if(tmprecpt<minPt) continue;
       if(abs(pfjetAK44v.rapidity())>maxEta) continue;
       
